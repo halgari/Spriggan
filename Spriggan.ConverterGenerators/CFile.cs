@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using System.Reflection;
 using System.Text.Json;
 using Loqui;
+using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Noggog;
@@ -18,11 +19,14 @@ public class CFile
     private int _indent;
 
 
-    private Dictionary<Type, Action<Type, string>> _emitters;
+    private Dictionary<Type, Action<Type, string>> _writerEmitters;
+    private Dictionary<Type, Action<Type, string>> _readerEmitters;
+    private readonly GameRelease _game;
 
-    public CFile()
+    public CFile(GameRelease game)
     {
-        _emitters = new()
+        _game = game;
+        _writerEmitters = new()
         {
             {typeof(IFormLinkNullableGetter<>), IFormLinkNullableWriter},
             {typeof(IFormLinkGetter<>), IFormLinkWriter},
@@ -31,6 +35,12 @@ public class CFile
             {typeof(bool), PrimitiveWriter<bool>},
             {typeof(ILoquiObject), LoquiObjectWriter},
             {typeof(Enum), EnumWriter},
+        };
+
+        _readerEmitters = new()
+        {
+            {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
+
         };
 
         
@@ -42,6 +52,7 @@ public class CFile
         Code("using System.Drawing;");
         Code("using Mutagen.Bethesda.Skyrim;");
         Code("using Spriggan.Converters.Base;");
+        Code("using Mutagen.Bethesda;");
         Code("using Microsoft.Extensions.DependencyInjection;");
         Code("");
     }
@@ -71,8 +82,7 @@ public class CFile
 
     public void EmitTypeHeader(Type tGetter, string baseName)
     {
-        Code(
-            $"writer.WriteString(\"FormKey\", value.FormKey.ModKey.FileName + \":\" + value.FormKey.ID.ToString(\"x8\") + \":{baseName}\");");
+        Code($"writer.WriteFormKeyHeader(value, options);");
     }
 
 
@@ -86,12 +96,20 @@ public class CFile
         Code("else");
         
         using (var _ = WithIndent()) 
-            Code($"writer.WriteStringValue({getter}.FormKey.ModKey.FileName + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
+            Code($"writer.WriteStringValue({getter}.FormKey.ModKey.Name + \":\" + {getter}.FormKey.ModKey.Type + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
+
+    }
+
+    private void IFormLinkNullableReader(Type info, string getter)
+    {
+        Code($"if (reader.TokenType != JsonTokenType.Null)");
+        using var _ = WithIndent();
+        Code($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
     
     private void IFormLinkWriter(Type info, string getter)
     {
-        Code($"writer.WriteStringValue({getter}.FormKey.ModKey.FileName + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
+        Code($"writer.WriteStringValue({getter}.FormKey.ModKey.Name + \":\" + {getter}.FormKey.ModKey.Type + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
     }
 
     private void LoquiObjectWriter(Type info, string getter)
@@ -125,7 +143,10 @@ public class CFile
 
     private void EnumWriter(Type info, string getter)
     {
-        Code($"writer.WriteEnum({getter});");
+        if (info.CustomAttributes.Any(a => a.AttributeType == typeof(FlagsAttribute)))
+            Code($"writer.WriteFlags({getter});");
+        else
+            Code($"writer.WriteEnum({getter});");
     }
 
     private void IReadOnlyListWriter(Type info, string getter)
@@ -143,7 +164,7 @@ public class CFile
     public void EmitWriter(Type type, string getter)
     {
         
-        var (_, emitter) = _emitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
+        var (_, emitter) = _writerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
 
         
         if (emitter == null)
@@ -151,4 +172,19 @@ public class CFile
         emitter(type, getter);
     }
 
+    public void EmitReader(Type type, string getter)
+    {
+        var (_, emitter) = _readerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
+        if (emitter == null)
+            throw new Exception($"No emitter for property of type {type.FullName}");
+        emitter(type, getter);
+    }
+
+    public void EmitCtor(string retval, Type tMain)
+    {
+        if (_game == GameRelease.SkyrimLE || _game == GameRelease.SkyrimSE)
+        {
+            Code($"var retval = new {tMain.FullName}(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.{_game});");
+        }
+    }
 }

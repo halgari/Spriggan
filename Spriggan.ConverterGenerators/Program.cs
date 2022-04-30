@@ -3,6 +3,7 @@
 
 using System.Data.SqlTypes;
 using System.Text.Json;
+using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Plugins.RecordTypeMapping;
@@ -12,7 +13,7 @@ using Spriggan.ConverterGenerators;
 using Spriggan.TupleGen;
 
 
-var cfile = new CFile();
+var cfile = new CFile(GameRelease.SkyrimSE);
 
 List<string> generatedConverters = new List<string>();
 
@@ -24,6 +25,8 @@ string MakeCommonName(string n)
 var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
+
+var propLimit = 1;
 
 // Writers
 foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))
@@ -51,7 +54,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.EmitTypeHeader(t.Getter, t.Main.Name);
     
     
-    foreach (var p in props.Where(p => p.Name != "FormKey").Take(5))
+    foreach (var p in props.Where(p => p.Name != "FormKey").Take(propLimit))
     {
         cfile.Code("");
         cfile.Code($"// {p.Name}");
@@ -65,13 +68,14 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("}");
     cfile.Code("}");
     
-    /*
+    
+    generatedConverters.Add($"{t.Main.Name}_Converter");
     cfile.Code($"public class {t.Main.Name}_Converter : JsonConverter<{t.Main.FullName}>");
     cfile.Code("{");
     cfile.Code($"private {t.Getter.Name}_Converter _getterConverter;");
-    cfile.Code($"public {t.Main.Name}_Converter({t.Getter.Name}_Converter getterConverter)");
+    cfile.Code($"public {t.Main.Name}_Converter()");
     cfile.Code("{");
-    cfile.Code("_getterConverter = getterConverter;");
+    cfile.Code($"_getterConverter = new {t.Getter.Name}_Converter();");
     cfile.Code("}");
     
     cfile.Code($"public override void Write(Utf8JsonWriter writer, {t.Main.FullName} value, JsonSerializerOptions options)");
@@ -83,7 +87,8 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("{");
     cfile.Code("if (reader.TokenType != JsonTokenType.StartObject)");
     cfile.Code("    throw new JsonException();");
-    cfile.Code($"var retval = new {t.Main.FullName}();");
+    cfile.Code("reader.Read();");
+    cfile.EmitCtor("retval", t.Main);
     cfile.Code("while (true)");
     cfile.Code("{");
     cfile.Code("reader.Read();");
@@ -98,77 +103,12 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("switch (prop)");
     cfile.Code("{");
 
-    foreach (var p in mProps)
+    foreach (var p in mProps.Where(p => p.Name != "FormKey").Take(propLimit))
     {
         cfile.Code($"case \"{p.Name}\":");
-        var ptype = p.PropertyType;
-        
-        if (ptype.InheritsFrom(typeof(IFormLink<>)))
-        {
-            var gname = ptype.GetGenericArguments()[0];
-            cfile.Code($"    ConverterHelpers.ReadFormLink<{gname.Name}>(retval.{p.Name}, ref reader);");
-            cfile.Code("    break;");
-        }
-        else if (ptype.InheritsFrom(typeof(IFormLinkNullable<>)))
-        {
-            var gname = ptype.GetGenericArguments()[0];
-            cfile.Code($"    ConverterHelpers.ReadFormLinkNullable<{gname.Name}>(retval.{p.Name}, ref reader);");
-            cfile.Code("    break;");
-        }
-
-        else if (ptype.InheritsFrom(typeof(ExtendedList<>)) && !ptype.GetGenericArguments()[0].InheritsFrom(typeof(IFormLinkGetter<>)))
-        {
-            var gname = ptype.GetGenericArguments()[0];
-            if (gname.IsPrimitive)
-            {
-                cfile.Code(
-                    $"    ConverterHelpers.ReadExtendedList<{gname.Name}>(retval.{p.Name}, ref reader, options);");
-                cfile.Code("    break;");
-            }
-            else if (gname.Name.EndsWith("Getter"))
-            {
-
-                var elist = allTypes.FirstOrDefault(l => l.Main == gname || l.Getter == gname);
-
-
-                cfile.Code(
-                    $"    ConverterHelpers.ReadExtendedList<{elist.Getter}, {elist.Main}>(retval.{p.Name}, ref reader, options);");
-                cfile.Code("    break;");
-            }
-            else
-            {
-                cfile.Code(
-                    $"    ConverterHelpers.ReadExtendedList<{gname.Name}>(retval.{p.Name}, ref reader, options);");
-                cfile.Code("    break;");
-            }
-        }
-        else if (ptype.InheritsFrom(typeof(ExtendedList<>)) &&
-                 ptype.GetGenericArguments()[0].InheritsFrom(typeof(IFormLinkGetter<>)))
-        {
-            var gtype = ptype.GetGenericArguments()[0].GetGenericArguments()[0];
-            cfile.Code(
-                $"    ConverterHelpers.ReadFormLinkList<{gtype.Name}>(retval.{p.Name}, ref reader);");
-            cfile.Code("    break;");
-        }
-        else
-        {
-            var tname = p.PropertyType.FullName!.Replace("+", ".");
-
-            if (ptype.InheritsFrom(typeof(Nullable<>)))
-            {
-                tname = p.PropertyType.GetGenericArguments()[0].Name + "?";
-            }
-            
-            if (tname.Contains('`'))
-            {
-                cfile.Code("    break;");
-                continue;
-            }
-            
-            cfile.Code(
-                $"    retval.{p.Name} = JsonSerializer.Deserialize<{tname}>(ref reader, options);");
-            cfile.Code($"    break;");
-        }
+        using var _ = cfile.WithIndent();
+        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}");
+        cfile.Code("break;");
     }
     cfile.Code("default:");
     cfile.Code("    reader.Skip();");
@@ -180,7 +120,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("return retval;");
     cfile.Code("}");
     cfile.Code("}");
-    */
+    
 
 }
 

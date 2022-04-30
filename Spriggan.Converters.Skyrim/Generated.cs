@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Drawing;
 using Mutagen.Bethesda.Skyrim;
 using Spriggan.Converters.Base;
+using Mutagen.Bethesda;
 using Microsoft.Extensions.DependencyInjection;
 
 public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
@@ -16,56 +17,56 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
   public override void Write(Utf8JsonWriter writer, IArmorGetter value, JsonSerializerOptions options)
   {
     writer.WriteStartObject();
-    writer.WriteString("FormKey", value.FormKey.ModKey.FileName + ":" + value.FormKey.ID.ToString("x8") + ":Armor");
+    writer.WriteFormKeyHeader(value, options);
     
     // AlternateBlockMaterial
     writer.WritePropertyName("AlternateBlockMaterial");
     if (value.AlternateBlockMaterial.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ModKey.FileName + ":" + value.AlternateBlockMaterial.FormKey.ID.ToString("x8"));
-    
-    // Armature
-    writer.WritePropertyName("Armature");
-    writer.WriteStartArray();
-    foreach(var itm in value.Armature)
+      writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ModKey.Name + ":" + value.AlternateBlockMaterial.FormKey.ModKey.Type + ":" + value.AlternateBlockMaterial.FormKey.ID.ToString("x8"));
+    writer.WriteEndObject();
+  }
+}
+public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
+{
+  private IArmorGetter_Converter _getterConverter;
+  public Armor_Converter()
+  {
+    _getterConverter = new IArmorGetter_Converter();
+  }
+  public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Armor value, JsonSerializerOptions options)
+  {
+    _getterConverter.Write(writer, (IArmorGetter)value, options);
+  }
+  public override Mutagen.Bethesda.Skyrim.Armor Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  {
+    if (reader.TokenType != JsonTokenType.StartObject)
+        throw new JsonException();
+    reader.Read();
+    var retval = new Mutagen.Bethesda.Skyrim.Armor(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+    while (true)
     {
-      writer.WriteStringValue(itm.FormKey.ModKey.FileName + ":" + itm.FormKey.ID.ToString("x8"));
+      reader.Read();
+      if (reader.TokenType == JsonTokenType.EndObject)
+      {
+        reader.Read();
+        break;
+      }
+      var prop = reader.GetString();
+      reader.Read();
+      switch (prop)
+      {
+        case "AlternateBlockMaterial":
+          if (reader.TokenType != JsonTokenType.Null)
+            retval.AlternateBlockMaterial.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+          break;
+        default:
+            reader.Skip();
+            break;
+      }
     }
-    writer.WriteEndArray();
-    
-    // ArmorRating
-    writer.WritePropertyName("ArmorRating");
-    writer.WriteNumberValue(value.ArmorRating);
-    
-    // BashImpactDataSet
-    writer.WritePropertyName("BashImpactDataSet");
-    if (value.BashImpactDataSet.IsNull)
-      writer.WriteNullValue();
-    else
-      writer.WriteStringValue(value.BashImpactDataSet.FormKey.ModKey.FileName + ":" + value.BashImpactDataSet.FormKey.ID.ToString("x8"));
-    
-    // BodyTemplate
-    writer.WritePropertyName("BodyTemplate");
-    writer.WriteStartObject();
-    
-    // FirstPersonFlags
-    writer.WritePropertyName("FirstPersonFlags");
-    writer.WriteEnum(value.BodyTemplate.FirstPersonFlags);
-    
-    // Flags
-    writer.WritePropertyName("Flags");
-    writer.WriteEnum(value.BodyTemplate.Flags);
-    
-    // ArmorType
-    writer.WritePropertyName("ArmorType");
-    writer.WriteEnumValue(value.BodyTemplate.ArmorType);
-    
-    // ActsLike44
-    writer.WritePropertyName("ActsLike44");
-    writer.WriteBooleanValue(value.BodyTemplate.ActsLike44);
-    writer.WriteEndObject();
-    writer.WriteEndObject();
+    return retval;
   }
 }
 public static class GeneratedConvertersExtensions
@@ -73,6 +74,7 @@ public static class GeneratedConvertersExtensions
   public static IServiceCollection UseConverters(this IServiceCollection services)
   {
     services.AddSingleton<JsonConverter, IArmorGetter_Converter>();
+    services.AddSingleton<JsonConverter, Armor_Converter>();
     return services;
   }
 }
