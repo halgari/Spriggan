@@ -56,4 +56,16 @@ public static class SerializerExtensions
             $"{rec.FormKey.ModKey.Name}:{rec.FormKey.ModKey.Type}:{rec.FormVersion}:{rec.FormKey.ID.ToString("x8")}");
 
     }
+
+    public static T ReadFlags<T>(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        where T : struct, Enum
+    {
+        return Enum.Parse<T>(reader.GetString()!);
+    }
+
+    public static T ReadEnum<T>(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        where T : struct, Enum
+    {
+        return Enum.Parse<T>(reader.GetString()!);
+    }
 }

@@ -26,7 +26,7 @@ var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
 
-var propLimit = 2;
+var propLimit = 5;
 
 // Writers
 foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))

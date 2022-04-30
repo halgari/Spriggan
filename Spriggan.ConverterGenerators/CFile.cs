@@ -22,6 +22,8 @@ public class CFile
     private Dictionary<Type, Action<Type, string>> _writerEmitters;
     private Dictionary<Type, Action<Type, string>> _readerEmitters;
     private readonly GameRelease _game;
+    private int genSym = 0;
+
 
     public CFile(GameRelease game)
     {
@@ -41,6 +43,10 @@ public class CFile
         {
             {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
             {typeof(ExtendedList<>), ExtendedListReader},
+            {typeof(float), PrimitiveReader<float>},
+            {typeof(bool), PrimitiveReader<bool>},
+            {typeof(ILoquiObject), LoquiObjectReader},
+            {typeof(Enum), EnumReader}
 
         };
 
@@ -56,6 +62,29 @@ public class CFile
         Code("using Mutagen.Bethesda;");
         Code("using Microsoft.Extensions.DependencyInjection;");
         Code("");
+    }
+
+
+    private string GetProp()
+    {
+        genSym++;
+        return $"prop{genSym}";
+    }
+
+    private void PrimitiveReader<T>(Type type, string getter)
+    {
+        if (typeof(T) == typeof(float))
+        {
+            Code($"{getter} = reader.GetSingle();");
+        }
+        else if (typeof(T) == typeof(bool))
+        {
+            Code($"{getter} = reader.GetBoolean();");
+        }
+        else
+        {
+            throw new NotImplementedException($"{type}");
+        }
     }
 
     public void Write(string path)
@@ -126,6 +155,48 @@ public class CFile
         Code("writer.WriteEndObject();");
     }
     
+    
+    private void LoquiObjectReader(Type type, string getter)
+    {
+        Code("if (reader.TokenType != JsonTokenType.StartObject)");
+        using (var _ = WithIndent())
+            Code("throw new JsonException();");
+        
+        
+        Code("while (true)");
+        Code("{");
+        Code("reader.Read();");
+        Code("if (reader.TokenType == JsonTokenType.EndObject)");
+        using (var _2 = WithIndent())
+            Code("break;");
+
+        var propName = GetProp();
+        Code($"var {propName} = reader.GetString();");
+        Code("reader.Read();");
+        
+        Code($"switch({propName})");
+        Code("{");
+        foreach (var prop in VisitorGenerator.Members(type))
+        {
+            Code($"case \"{prop.Name}\":");
+            
+            using var _ = WithIndent();
+            EmitReader(prop.PropertyType, $"{getter}.{prop.Name}");
+            Code("break;");
+
+        }
+
+        Code("}");
+        
+        Code("}");
+    }
+
+
+    private string CleanName(string s)
+    {
+        return s.Replace("+", ".");
+    }
+    
     private void PrimitiveWriter<T>(Type info, string getter)
     {
         if (typeof(T) == typeof(float))
@@ -148,6 +219,15 @@ public class CFile
             Code($"writer.WriteFlags({getter});");
         else
             Code($"writer.WriteEnum({getter});");
+    }
+    
+    
+    private void EnumReader(Type type, string getter)
+    {
+        if (type.CustomAttributes.Any(a => a.AttributeType == typeof(FlagsAttribute)))
+            Code($"{getter} = SerializerExtensions.ReadFlags<{CleanName(type.FullName)}>(ref reader, options);");
+        else
+            Code($"{getter} = SerializerExtensions.ReadEnum<{CleanName(type.FullName)}>(ref reader, options);");
     }
 
     private void IReadOnlyListWriter(Type info, string getter)

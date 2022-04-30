@@ -34,6 +34,38 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
       writer.WriteStringValue(itm.FormKey.ToString());
     }
     writer.WriteEndArray();
+    
+    // ArmorRating
+    writer.WritePropertyName("ArmorRating");
+    writer.WriteNumberValue(value.ArmorRating);
+    
+    // BashImpactDataSet
+    writer.WritePropertyName("BashImpactDataSet");
+    if (value.BashImpactDataSet.IsNull)
+      writer.WriteNullValue();
+    else
+      writer.WriteStringValue(value.BashImpactDataSet.FormKey.ModKey.Name + ":" + value.BashImpactDataSet.FormKey.ModKey.Type + ":" + value.BashImpactDataSet.FormKey.ID.ToString("x8"));
+    
+    // BodyTemplate
+    writer.WritePropertyName("BodyTemplate");
+    writer.WriteStartObject();
+    
+    // FirstPersonFlags
+    writer.WritePropertyName("FirstPersonFlags");
+    writer.WriteFlags(value.BodyTemplate.FirstPersonFlags);
+    
+    // Flags
+    writer.WritePropertyName("Flags");
+    writer.WriteFlags(value.BodyTemplate.Flags);
+    
+    // ArmorType
+    writer.WritePropertyName("ArmorType");
+    writer.WriteEnum(value.BodyTemplate.ArmorType);
+    
+    // ActsLike44
+    writer.WritePropertyName("ActsLike44");
+    writer.WriteBooleanValue(value.BodyTemplate.ActsLike44);
+    writer.WriteEndObject();
     writer.WriteEndObject();
   }
 }
@@ -79,6 +111,41 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
             if (reader.TokenType == JsonTokenType.EndArray)
               break;
             retval.Armature.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+          }
+          break;
+        case "ArmorRating":
+          retval.ArmorRating = reader.GetSingle();
+          break;
+        case "BashImpactDataSet":
+          if (reader.TokenType != JsonTokenType.Null)
+            retval.BashImpactDataSet.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+          break;
+        case "BodyTemplate":
+          if (reader.TokenType != JsonTokenType.StartObject)
+            throw new JsonException();
+          while (true)
+          {
+            reader.Read();
+            if (reader.TokenType == JsonTokenType.EndObject)
+              break;
+            var prop1 = reader.GetString();
+            reader.Read();
+            retval.BodyTemplate = new BodyTemplate();
+            switch(prop1)
+            {
+              case "FirstPersonFlags":
+                retval.BodyTemplate.FirstPersonFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.BipedObjectFlag>(ref reader, options);
+                break;
+              case "Flags":
+                retval.BodyTemplate.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.BodyTemplate.Flag>(ref reader, options);
+                break;
+              case "ArmorType":
+                retval.BodyTemplate.ArmorType = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ArmorType>(ref reader, options);
+                break;
+              case "ActsLike44":
+                retval.BodyTemplate.ActsLike44 = reader.GetBoolean();
+                break;
+            }
           }
           break;
         default:
