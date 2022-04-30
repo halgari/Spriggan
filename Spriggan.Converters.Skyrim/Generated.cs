@@ -25,6 +25,15 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
       writer.WriteNullValue();
     else
       writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ModKey.Name + ":" + value.AlternateBlockMaterial.FormKey.ModKey.Type + ":" + value.AlternateBlockMaterial.FormKey.ID.ToString("x8"));
+    
+    // Armature
+    writer.WritePropertyName("Armature");
+    writer.WriteStartArray();
+    foreach(var itm in value.Armature)
+    {
+      writer.WriteStringValue(itm.FormKey.ToString());
+    }
+    writer.WriteEndArray();
     writer.WriteEndObject();
   }
 }
@@ -60,6 +69,17 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
         case "AlternateBlockMaterial":
           if (reader.TokenType != JsonTokenType.Null)
             retval.AlternateBlockMaterial.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+          break;
+        case "Armature":
+          if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+          while (true)
+          {
+            reader.Read();
+            if (reader.TokenType == JsonTokenType.EndArray)
+              break;
+            retval.Armature.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+          }
           break;
         default:
             reader.Skip();

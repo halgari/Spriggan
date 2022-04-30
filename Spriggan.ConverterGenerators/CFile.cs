@@ -40,6 +40,7 @@ public class CFile
         _readerEmitters = new()
         {
             {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
+            {typeof(ExtendedList<>), ExtendedListReader},
 
         };
 
@@ -109,7 +110,7 @@ public class CFile
     
     private void IFormLinkWriter(Type info, string getter)
     {
-        Code($"writer.WriteStringValue({getter}.FormKey.ModKey.Name + \":\" + {getter}.FormKey.ModKey.Type + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
+        Code($"writer.WriteStringValue({getter}.FormKey.ToString());");
     }
 
     private void LoquiObjectWriter(Type info, string getter)
@@ -159,6 +160,40 @@ public class CFile
         Code("}");
         Code("writer.WriteEndArray();");
 
+    }
+
+    private void ExtendedListReader(Type info, string getter)
+    {
+        var itype = info.GetGenericArguments()[0];
+
+        Code("if (reader.TokenType != JsonTokenType.StartArray)");
+        using (var _ = WithIndent())
+            Code("throw new JsonException();");
+        
+        
+        Code("while (true)");
+        Code("{");
+        Code("reader.Read();");
+        Code("if (reader.TokenType == JsonTokenType.EndArray)");
+        using (var _2 = WithIndent())
+            Code("break;");
+        
+        if (itype.InheritsFrom(typeof(IFormLinkGetter<>)))
+        {
+            EmitExtendedListFormLinkGetterReadOne(info, getter);
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
+        
+        
+        Code("}");
+    }
+
+    private void EmitExtendedListFormLinkGetterReadOne(Type info, string getter)
+    {
+        Code($"{getter}.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
 
     public void EmitWriter(Type type, string getter)

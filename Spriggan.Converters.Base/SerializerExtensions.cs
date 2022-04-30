@@ -46,7 +46,8 @@ public static class SerializerExtensions
 
     public static FormKey ReadFormKeyValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        var val = reader.GetString();
+        return FormKey.Factory(val);
     }
 
     public static void WriteFormKeyHeader(this Utf8JsonWriter writer, IMajorRecordGetter rec, JsonSerializerOptions options)
