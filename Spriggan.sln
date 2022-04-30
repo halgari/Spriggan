@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spriggan", "Spriggan\Spriggan.csproj", "{A9AEFF93-614E-42E9-9596-0FA0C977C800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spriggan.TupleGen", "Spriggan.TupleGen\Spriggan.TupleGen.csproj", "{FA9C4A2C-CC5A-4D53-ACDC-B9CED254E8E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spriggan.ConverterGenerators", "Spriggan.ConverterGenerators\Spriggan.ConverterGenerators.csproj", "{BFB4F269-3973-4D4E-AD92-C29A51F30E91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spriggan.Converters.Skyrim", "Spriggan.Converters.Skyrim\Spriggan.Converters.Skyrim.csproj", "{B4D3EDB9-933B-4FD8-BAB9-63E3770AA6C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spriggan.Converters.Base", "Spriggan.Converters.Base\Spriggan.Converters.Base.csproj", "{7F5FF16B-8595-4FF1-8029-032D41966C92}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9AEFF93-614E-42E9-9596-0FA0C977C800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AEFF93-614E-42E9-9596-0FA0C977C800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AEFF93-614E-42E9-9596-0FA0C977C800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AEFF93-614E-42E9-9596-0FA0C977C800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9C4A2C-CC5A-4D53-ACDC-B9CED254E8E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9C4A2C-CC5A-4D53-ACDC-B9CED254E8E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9C4A2C-CC5A-4D53-ACDC-B9CED254E8E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9C4A2C-CC5A-4D53-ACDC-B9CED254E8E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB4F269-3973-4D4E-AD92-C29A51F30E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB4F269-3973-4D4E-AD92-C29A51F30E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB4F269-3973-4D4E-AD92-C29A51F30E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB4F269-3973-4D4E-AD92-C29A51F30E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D3EDB9-933B-4FD8-BAB9-63E3770AA6C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D3EDB9-933B-4FD8-BAB9-63E3770AA6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D3EDB9-933B-4FD8-BAB9-63E3770AA6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D3EDB9-933B-4FD8-BAB9-63E3770AA6C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5FF16B-8595-4FF1-8029-032D41966C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5FF16B-8595-4FF1-8029-032D41966C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5FF16B-8595-4FF1-8029-032D41966C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F5FF16B-8595-4FF1-8029-032D41966C92}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
