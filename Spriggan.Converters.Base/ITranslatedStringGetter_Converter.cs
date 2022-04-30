@@ -24,7 +24,5 @@ public class ITranslatedStringGetter_Converter : JsonConverter<ITranslatedString
             writer.WriteString(par.Key.ToString(), par.Value);
         }
         writer.WriteEndObject();
-        
-        TranslatedString
     }
 }

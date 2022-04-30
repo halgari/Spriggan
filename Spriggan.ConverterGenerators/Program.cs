@@ -25,7 +25,8 @@ var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
 
-foreach (var t in allTypes)
+// Writers
+foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))
 {
     var props = VisitorGenerator.Members(t.Getter).ToArray().OrderBy(t => t.Name);
     var mProps = VisitorGenerator.Members(t.Main)
@@ -46,65 +47,25 @@ foreach (var t in allTypes)
     cfile.Code($"public override void Write(Utf8JsonWriter writer, {t.Getter.Name} value, JsonSerializerOptions options)");
     cfile.Code("{");
     cfile.Code("writer.WriteStartObject();");
+
+    cfile.EmitTypeHeader(t.Getter, t.Main.Name);
     
-    cfile.Code("writer.WriteString(\"$type\", \"" + t.Main.Name + "\");");
     
-    foreach (var p in props)
+    foreach (var p in props.Where(p => p.Name != "FormKey").Take(5))
     {
-        if (p.PropertyType.InheritsFrom(typeof(IReadOnlyList<>)))
-        {
-            var itemType = p.PropertyType.GetGenericArguments()[0];
-            if (itemType.InheritsFrom(typeof(IFormLinkGetter<>)))
-            {
-                formLinkGetters.Add(itemType.GetGenericArguments()[0]);
-            }
-            
-            cfile.Code($"if (value.{p.Name} != default)");
-            cfile.Code("{");
-            cfile.Code("writer.WritePropertyName(\"" + p.Name + "\");");
-            cfile.Code("writer.WriteStartArray();");
-            cfile.Code($"foreach (var itm in value.{p.Name})");
-            cfile.Code("{");
-            cfile.Code($"JsonSerializer.Serialize(writer, itm, options);");
-            cfile.Code("}");
-            cfile.Code("writer.WriteEndArray();");
-            cfile.Code("}");
-            cfile.Code("else");
-            cfile.Code("{");
-            cfile.Code("writer.WriteNull(\"" + p.Name + "\");");
-            cfile.Code("}");
-        }
-        else if (p.PropertyType.InheritsFrom(typeof(INullable)))
-        {
-            cfile.Code($"if (value.{p.Name} != default)");
-            cfile.Code("{");
-            cfile.Code("writer.WritePropertyName(\"" + p.Name + "\");");
-            cfile.Code($"JsonSerializer.Serialize(writer, value.{p.Name}, options);");            
-            cfile.Code("}");
-            cfile.Code("else");
-            cfile.Code("{");
-            cfile.Code("writer.WriteNull(\"" + p.Name + "\");");
-            cfile.Code("}");
-            
-        }
-        else if (p.PropertyType.InheritsFrom(typeof(IFormLinkNullableGetter<>)))
-        {
-            nullableFormLinkGetters.Add(p.PropertyType.GetGenericArguments()[0]);
-            cfile.Code("writer.WritePropertyName(\"" + p.Name + "\");");
-            cfile.Code($"JsonSerializer.Serialize(writer, value.{p.Name}, options);");
-        }
-        else
-        {
-            cfile.Code("writer.WritePropertyName(\"" + p.Name + "\");");
-            cfile.Code($"JsonSerializer.Serialize(writer, value.{p.Name}, options);");
-        }
+        cfile.Code("");
+        cfile.Code($"// {p.Name}");
+        cfile.Code($"writer.WritePropertyName(\"{p.Name}\");");
+        cfile.EmitWriter(p.PropertyType, $"value.{p.Name}");
+
     }
+    
     cfile.Code("writer.WriteEndObject();");
 
     cfile.Code("}");
     cfile.Code("}");
     
-    
+    /*
     cfile.Code($"public class {t.Main.Name}_Converter : JsonConverter<{t.Main.FullName}>");
     cfile.Code("{");
     cfile.Code($"private {t.Getter.Name}_Converter _getterConverter;");
@@ -219,6 +180,7 @@ foreach (var t in allTypes)
     cfile.Code("return retval;");
     cfile.Code("}");
     cfile.Code("}");
+    */
 
 }
 
