@@ -121,6 +121,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
             retval.BashImpactDataSet.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
           break;
         case "BodyTemplate":
+          retval.BodyTemplate = new Mutagen.Bethesda.Skyrim.BodyTemplate();
           if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
           while (true)
@@ -130,7 +131,6 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
               break;
             var prop1 = reader.GetString();
             reader.Read();
-            retval.BodyTemplate = new BodyTemplate();
             switch(prop1)
             {
               case "FirstPersonFlags":

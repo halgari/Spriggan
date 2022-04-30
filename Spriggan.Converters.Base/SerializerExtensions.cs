@@ -60,6 +60,10 @@ public static class SerializerExtensions
     public static T ReadFlags<T>(ref Utf8JsonReader reader, JsonSerializerOptions options)
         where T : struct, Enum
     {
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            return Enum.Parse<T>("0");
+        }
         return Enum.Parse<T>(reader.GetString()!);
     }
 

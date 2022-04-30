@@ -4,6 +4,7 @@ using System.Text.Json;
 using Loqui;
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
 using Noggog;
 using Spriggan.TupleGen;
@@ -158,6 +159,7 @@ public class CFile
     
     private void LoquiObjectReader(Type type, string getter)
     {
+        EmitCtor(getter, type);
         Code("if (reader.TokenType != JsonTokenType.StartObject)");
         using (var _ = WithIndent())
             Code("throw new JsonException();");
@@ -297,9 +299,23 @@ public class CFile
 
     public void EmitCtor(string retval, Type tMain)
     {
-        if (_game == GameRelease.SkyrimLE || _game == GameRelease.SkyrimSE)
+        if (tMain.InheritsFrom(typeof(IMajorRecord)))
         {
-            Code($"var retval = new {tMain.FullName}(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.{_game});");
+            if (_game == GameRelease.SkyrimLE || _game == GameRelease.SkyrimSE)
+            {
+                Code(
+                    $"var {retval} = new {tMain.FullName}(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.{_game});");
+            }
+
+            return;
         }
+
+        if (tMain.GetConstructors().Any(t => t.GetParameters().Length == 0))
+        {
+            Code($"{retval} = new {tMain.FullName}();");
+            return;
+        }
+
+        throw new NotImplementedException();
     }
 }
