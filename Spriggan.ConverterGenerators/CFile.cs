@@ -22,7 +22,7 @@ public class CFile
 
 
     private Dictionary<Type, Action<Type, string>> _writerEmitters;
-    private Dictionary<Type, Action<Type, string>> _readerEmitters;
+    private Dictionary<Type, Action<Type, string, bool>> _readerEmitters;
     private readonly GameRelease _game;
     private int genSym = 0;
 
@@ -85,11 +85,13 @@ public class CFile
         Code("using Mutagen.Bethesda.Skyrim;");
         Code("using Spriggan.Converters.Base;");
         Code("using Mutagen.Bethesda;");
+        Code("using Mutagen.Bethesda.Strings;");
         Code("using Microsoft.Extensions.DependencyInjection;");
+        Code("using Mutagen.Bethesda.Plugins.Records;");
         Code("");
     }
 
-    private void GenderedItemReader(Type type, string gettter)
+    private void GenderedItemReader(Type type, string gettter, bool isSettable)
     {
         var itype = type.GetGenericArguments()[0];
         Code("if (reader.TokenType != JsonTokenType.Null)");
@@ -97,9 +99,17 @@ public class CFile
         Code("if (reader.TokenType != JsonTokenType.StartObject)");
         using (var _ = WithIndent())
             Code("throw new JsonException();");
+
+        if (isSettable) 
+            Code($"{gettter} = new GenderedItem<{itype.FullName}?>(null, null);");
+
         Code("reader.Read();");
         Code("while(true)");
         Code("{");
+        Code("if (reader.TokenType == JsonTokenType.EndObject)");
+        Code("{");
+        Code("break;");
+        Code("}");
         var prop = GetProp();
         Code($"var {prop} = reader.GetString();");
         Code("reader.Read();");
@@ -108,14 +118,14 @@ public class CFile
         Code("case \"Male\":");
         using (var _male = WithIndent())
         {
-            EmitReader(itype, $"{gettter}.Male");
+            EmitReader(itype, $"{gettter}.Male", true);
         }
         Code("break;");
         
         Code("case \"Female\":");
         using (var _female = WithIndent())
         {
-            EmitReader(itype, $"{gettter}.Female");
+            EmitReader(itype, $"{gettter}.Female", true);
         }
         Code("break;");
         
@@ -148,15 +158,15 @@ public class CFile
         Code("}");
     }
 
-    private void MemorySliceReader(Type type, string getter)
+    private void MemorySliceReader(Type type, string getter, bool isSettable)
     {
         Code($"{getter} = reader.GetBytesFromBase64();");
     }
 
-    private void NullableReader(Type type, string getter)
+    private void NullableReader(Type type, string getter, bool isSettable)
     {
         Code("if (reader.TokenType != JsonTokenType.Null) {");
-        EmitReader(type.GetGenericArguments()[0], getter);
+        EmitReader(type.GetGenericArguments()[0], getter, true);
         Code("}");
     }
 
@@ -177,8 +187,10 @@ public class CFile
         Code("}");
     }
 
-    private void TranslatedStringReader(Type type, string getter)
+    private void TranslatedStringReader(Type type, string getter, bool isSettable)
     {
+        if (isSettable)
+            Code($"{getter} ??= new TranslatedString(Language.English);");
         Code($"SerializerExtensions.ReadTranslatedString(ref reader, {getter}, options);");
     }
 
@@ -232,7 +244,7 @@ public class CFile
         }
     }
 
-    private void PrimitiveReader<T>(Type type, string getter)
+    private void PrimitiveReader<T>(Type type, string getter, bool isSettable)
     {
         if (typeof(T) == typeof(float))
         {
@@ -304,6 +316,15 @@ public class CFile
         Code($"writer.WriteFormKeyHeader(value, options);");
     }
 
+    public static bool IsSettable(PropertyInfo pi)
+    {
+        var setMethod = pi.SetMethod;
+        if (setMethod == null) return false;
+        if (!setMethod.IsPublic) return false;
+        var isExternalInitType = typeof(System.Runtime.CompilerServices.IsExternalInit);
+        return !setMethod.ReturnParameter.GetRequiredCustomModifiers().Contains(isExternalInitType);
+    }
+
 
     private void IFormLinkNullableWriter(Type info, string getter)
     {
@@ -315,18 +336,18 @@ public class CFile
         Code("else");
         
         using (var _ = WithIndent()) 
-            Code($"writer.WriteStringValue({getter}.FormKey.ModKey.Name + \":\" + {getter}.FormKey.ModKey.Type + \":\" + {getter}.FormKey.ID.ToString(\"x8\"));");
+            Code($"writer.WriteStringValue({getter}.FormKey.ToString());");
 
     }
 
-    private void IFormLinkNullableReader(Type info, string getter)
+    private void IFormLinkNullableReader(Type info, string getter, bool isSettable)
     {
         Code($"if (reader.TokenType != JsonTokenType.Null)");
         using var _ = WithIndent();
         Code($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
     
-    private void IFormLinkReader(Type info, string getter)
+    private void IFormLinkReader(Type info, string getter, bool isSettable)
     {
         Code($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
@@ -357,7 +378,7 @@ public class CFile
     }
 
 
-    private void LoquiObjectReader(Type type, string getter)
+    private void LoquiObjectReader(Type type, string getter, bool isSettable)
     {
         EmitCtor(getter, type);
         Code("if (reader.TokenType != JsonTokenType.Null)");
@@ -385,7 +406,7 @@ public class CFile
             Code($"case \"{prop.Name}\":");
 
             using var _ = WithIndent();
-            EmitReader(prop.PropertyType, $"{getter}.{prop.Name}");
+            EmitReader(prop.PropertyType, $"{getter}.{prop.Name}", IsSettable(prop));
             Code("break;");
 
         }
@@ -418,7 +439,7 @@ public class CFile
     }
     
     
-    private void EnumReader(Type type, string getter)
+    private void EnumReader(Type type, string getter, bool isSettable)
     {
         if (type.CustomAttributes.Any(a => a.AttributeType == typeof(FlagsAttribute)))
             Code($"{getter} = SerializerExtensions.ReadFlags<{CleanName(type.FullName)}>(ref reader, options);");
@@ -446,13 +467,14 @@ public class CFile
 
     }
 
-    private void ExtendedListReader(Type info, string getter)
+    private void ExtendedListReader(Type info, string getter, bool isSettable)
     {
         var itype = info.GetGenericArguments()[0];
 
-        Code("if (reader.TokenType != null)");
+        Code("if (reader.TokenType != JsonTokenType.Null)");
         Code("{");
-        Code($"{getter} ??= new();");
+        if (isSettable) 
+            Code($"{getter} ??= new();");
 
         Code("if (reader.TokenType != JsonTokenType.StartArray)");
         using (var _ = WithIndent())
@@ -468,11 +490,11 @@ public class CFile
 
         if (itype.InheritsFrom(typeof(IFormLinkGetter<>)))
         {
-            EmitExtendedListFormLinkGetterReadOne(info, getter);
+            EmitExtendedListFormLinkGetterReadOne(info, getter, true);
         }
         else
         {
-            EmitExtendedListOtherReadOne(info, itype, getter);
+            EmitExtendedListOtherReadOne(info, itype, getter, true);
         }
 
 
@@ -481,15 +503,15 @@ public class CFile
 
 }
 
-    private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter)
+    private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter, bool isSettable)
     {
         var sym = GetItem();
         EmitCtor(sym, itemType, true);
-        EmitReader(itemType, sym);
+        EmitReader(itemType, sym, false);
         Code($"{getter}.Add({sym});");
     }
 
-    private void EmitExtendedListFormLinkGetterReadOne(Type info, string getter)
+    private void EmitExtendedListFormLinkGetterReadOne(Type info, string getter, bool isSettable)
     {
         Code($"{getter}.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
@@ -505,12 +527,12 @@ public class CFile
         emitter(type, getter);
     }
 
-    public void EmitReader(Type type, string getter)
+    public void EmitReader(Type type, string getter, bool isSettable)
     {
         var (_, emitter) = _readerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
         if (emitter == null)
             throw new Exception($"No emitter for property of type {type.FullName}");
-        emitter(type, getter);
+        emitter(type, getter, isSettable);
     }
 
     public void EmitCtor(string retval, Type tMain, bool emitVar = false)

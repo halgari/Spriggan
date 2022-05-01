@@ -6,7 +6,9 @@ using System.Drawing;
 using Mutagen.Bethesda.Skyrim;
 using Spriggan.Converters.Base;
 using Mutagen.Bethesda;
+using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
+using Mutagen.Bethesda.Plugins.Records;
 
 public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
 {
@@ -24,7 +26,7 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
     if (value.AlternateBlockMaterial.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ModKey.Name + ":" + value.AlternateBlockMaterial.FormKey.ModKey.Type + ":" + value.AlternateBlockMaterial.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ToString());
     
     // Armature
     writer.WritePropertyName("Armature");
@@ -51,7 +53,7 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
     if (value.BashImpactDataSet.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.BashImpactDataSet.FormKey.ModKey.Name + ":" + value.BashImpactDataSet.FormKey.ModKey.Type + ":" + value.BashImpactDataSet.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.BashImpactDataSet.FormKey.ToString());
     
     // BodyTemplate
     writer.WritePropertyName("BodyTemplate");
@@ -276,7 +278,7 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
     if (value.EquipmentType.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.EquipmentType.FormKey.ModKey.Name + ":" + value.EquipmentType.FormKey.ModKey.Type + ":" + value.EquipmentType.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.EquipmentType.FormKey.ToString());
     
     // IsCompressed
     writer.WritePropertyName("IsCompressed");
@@ -339,28 +341,28 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
     if (value.ObjectEffect.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.ObjectEffect.FormKey.ModKey.Name + ":" + value.ObjectEffect.FormKey.ModKey.Type + ":" + value.ObjectEffect.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.ObjectEffect.FormKey.ToString());
     
     // PickUpSound
     writer.WritePropertyName("PickUpSound");
     if (value.PickUpSound.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.PickUpSound.FormKey.ModKey.Name + ":" + value.PickUpSound.FormKey.ModKey.Type + ":" + value.PickUpSound.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.PickUpSound.FormKey.ToString());
     
     // PutDownSound
     writer.WritePropertyName("PutDownSound");
     if (value.PutDownSound.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.PutDownSound.FormKey.ModKey.Name + ":" + value.PutDownSound.FormKey.ModKey.Type + ":" + value.PutDownSound.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.PutDownSound.FormKey.ToString());
     
     // Race
     writer.WritePropertyName("Race");
     if (value.Race.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.Race.FormKey.ModKey.Name + ":" + value.Race.FormKey.ModKey.Type + ":" + value.Race.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.Race.FormKey.ToString());
     
     // RagdollConstraintTemplate
     writer.WritePropertyName("RagdollConstraintTemplate");
@@ -371,7 +373,7 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
     if (value.TemplateArmor.IsNull)
       writer.WriteNullValue();
     else
-      writer.WriteStringValue(value.TemplateArmor.FormKey.ModKey.Name + ":" + value.TemplateArmor.FormKey.ModKey.Type + ":" + value.TemplateArmor.FormKey.ID.ToString("x8"));
+      writer.WriteStringValue(value.TemplateArmor.FormKey.ToString());
     
     // Value
     writer.WritePropertyName("Value");
@@ -703,9 +705,8 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
             retval.AlternateBlockMaterial.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
           break;
         case "Armature":
-          if (reader.TokenType != null)
+          if (reader.TokenType != JsonTokenType.Null)
           {
-            retval.Armature ??= new();
             if (reader.TokenType != JsonTokenType.StartArray)
               throw new JsonException();
             while (true)
@@ -763,6 +764,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
           retval.DATADataTypeState = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Armor.DATADataType>(ref reader, options);
           break;
         case "Description":
+          retval.Description ??= new TranslatedString(Language.English);
           SerializerExtensions.ReadTranslatedString(ref reader, retval.Description, options);
           break;
         case "Destructible":
@@ -816,9 +818,8 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                   }
                   break;
                 case "Stages":
-                  if (reader.TokenType != null)
+                  if (reader.TokenType != JsonTokenType.Null)
                   {
-                    retval.Destructible.Stages ??= new();
                     if (reader.TokenType != JsonTokenType.StartArray)
                       throw new JsonException();
                     while (true)
@@ -904,7 +905,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                   switch(prop15)
                                   {
                                     case "AlternateTextures":
-                                      if (reader.TokenType != null)
+                                      if (reader.TokenType != JsonTokenType.Null)
                                       {
                                         itm12.Model.AlternateTextures ??= new();
                                         if (reader.TokenType != JsonTokenType.StartArray)
@@ -1006,7 +1007,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
           retval.IsDeleted = reader.GetBoolean();
           break;
         case "Keywords":
-          if (reader.TokenType != null)
+          if (reader.TokenType != JsonTokenType.Null)
           {
             retval.Keywords ??= new();
             if (reader.TokenType != JsonTokenType.StartArray)
@@ -1027,6 +1028,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
           retval.MajorRecordFlagsRaw = reader.GetInt32();
           break;
         case "Name":
+          retval.Name ??= new TranslatedString(Language.English);
           SerializerExtensions.ReadTranslatedString(ref reader, retval.Name, options);
           break;
         case "ObjectBounds":
@@ -1115,9 +1117,8 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                   retval.VirtualMachineAdapter.ObjectFormat = reader.GetUInt16();
                   break;
                 case "Scripts":
-                  if (reader.TokenType != null)
+                  if (reader.TokenType != JsonTokenType.Null)
                   {
-                    retval.VirtualMachineAdapter.Scripts ??= new();
                     if (reader.TokenType != JsonTokenType.StartArray)
                       throw new JsonException();
                     while (true)
@@ -1147,9 +1148,8 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                               itm20.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptEntry.Flag>(ref reader, options);
                               break;
                             case "Properties":
-                              if (reader.TokenType != null)
+                              if (reader.TokenType != JsonTokenType.Null)
                               {
-                                itm20.Properties ??= new();
                                 if (reader.TokenType != JsonTokenType.StartArray)
                                   throw new JsonException();
                                 while (true)
@@ -1216,9 +1216,14 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
           {
             if (reader.TokenType != JsonTokenType.StartObject)
               throw new JsonException();
+            retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.ArmorModel?>(null, null);
             reader.Read();
             while(true)
             {
+              if (reader.TokenType == JsonTokenType.EndObject)
+              {
+                break;
+              }
               var prop24 = reader.GetString();
               reader.Read();
               switch(prop24)
@@ -1254,7 +1259,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                               switch(prop26)
                               {
                                 case "AlternateTextures":
-                                  if (reader.TokenType != null)
+                                  if (reader.TokenType != JsonTokenType.Null)
                                   {
                                     retval.WorldModel.Male.Model.AlternateTextures ??= new();
                                     if (reader.TokenType != JsonTokenType.StartArray)
@@ -1383,7 +1388,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                               switch(prop31)
                               {
                                 case "AlternateTextures":
-                                  if (reader.TokenType != null)
+                                  if (reader.TokenType != JsonTokenType.Null)
                                   {
                                     retval.WorldModel.Female.Model.AlternateTextures ??= new();
                                     if (reader.TokenType != JsonTokenType.StartArray)

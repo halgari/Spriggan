@@ -107,7 +107,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     {
         cfile.Code($"case \"{p.Name}\":");
         using var _ = cfile.WithIndent();
-        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}");
+        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}", CFile.IsSettable(p));
         cfile.Code("break;");
     }
     cfile.Code("default:");
