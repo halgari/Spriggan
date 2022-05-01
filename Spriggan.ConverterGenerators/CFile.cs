@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Reactive.Disposables;
 using System.Reflection;
 using System.Text.Json;
@@ -49,7 +50,8 @@ public class CFile
             {typeof(Enum), EnumWriter},
             {typeof(Nullable<>), NullableWriter},
             {typeof(ReadOnlyMemorySlice<byte>), MemorySliceWriter},
-            {typeof(ITranslatedStringGetter), TranslatedStringWriter}
+            {typeof(ITranslatedStringGetter), TranslatedStringWriter},
+            {typeof(Color), PrimitiveWriter<Color>}
         };
 
         _readerEmitters = new()
@@ -67,6 +69,7 @@ public class CFile
             {typeof(bool), PrimitiveReader<bool>},
             {typeof(string), PrimitiveReader<string>},
             {typeof(P3Int16), PrimitiveReader<P3Int16>},
+            {typeof(Color), PrimitiveReader<Color>},
             {typeof(ILoquiObject), LoquiObjectReader},
             {typeof(Enum), EnumReader},
             {typeof(Nullable<>), NullableReader},
@@ -234,6 +237,10 @@ public class CFile
         {
             Code($"writer.WriteStringValue({getter});");
         }
+        else if (typeof(T) == typeof(Color))
+        {
+            Code($"writer.WriteStringValue({getter}.Value.ToArgb().ToString(\"x8\"));");
+        }
         else if (typeof(T) == typeof(P3Int16))
         {
             Code($"writer.WriteP3Int16({getter}, options);");
@@ -273,6 +280,10 @@ public class CFile
         else if (typeof(T) == typeof(bool))
         {
             Code($"{getter} = reader.GetBoolean();");
+        }
+        else if (typeof(T) == typeof(Color))
+        {
+            Code($"{getter} = Color.FromArgb(int.Parse(reader.GetString()));");
         }
         else if (typeof(T) == typeof(string))
         {

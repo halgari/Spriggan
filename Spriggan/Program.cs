@@ -30,7 +30,7 @@ soptions.WriteIndented = true;
 soptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
 using var env = GameEnvironment.Typical.Skyrim(SkyrimRelease.SkyrimSE);
-foreach (var armor in env.LoadOrder.PriorityOrder.Armor().WinningOverrides())
+foreach (var armor in env.LoadOrder.PriorityOrder.ActionRecord().WinningOverrides())
 {
     
     Console.WriteLine($"{armor.FormKey} - {armor.EditorID ?? ""}");
@@ -40,6 +40,6 @@ foreach (var armor in env.LoadOrder.PriorityOrder.Armor().WinningOverrides())
     //File.WriteAllText($@"c:\tmp\armor\{(armor.FormKey.ID.ToString("x8"))}.json", str);
 
     stream.Position = 0;
-    var value = JsonSerializer.Deserialize<Armor>(stream, soptions);
+    var value = JsonSerializer.Deserialize<ActionRecord>(stream, soptions);
 
 }
