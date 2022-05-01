@@ -35,12 +35,16 @@ public class CFile
             {typeof(IFormLinkNullableGetter<>), IFormLinkNullableWriter},
             {typeof(IFormLinkGetter<>), IFormLinkWriter},
             {typeof(IReadOnlyList<>), IReadOnlyListWriter},
+            {typeof(IGenderedItemGetter<>), GenderedItemGetterWriter},
             {typeof(float), PrimitiveWriter<float>},
             {typeof(int), PrimitiveWriter<int>},
+            {typeof(uint), PrimitiveWriter<uint>},
             {typeof(short), PrimitiveWriter<short>},
+            {typeof(ushort), PrimitiveWriter<ushort>},
             {typeof(byte), PrimitiveWriter<byte>},
             {typeof(bool), PrimitiveWriter<bool>},
             {typeof(string), PrimitiveWriter<string>},
+            {typeof(P3Int16), PrimitiveWriter<P3Int16>},
             {typeof(ILoquiObject), LoquiObjectWriter},
             {typeof(Enum), EnumWriter},
             {typeof(Nullable<>), NullableWriter},
@@ -53,12 +57,16 @@ public class CFile
             {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
             {typeof(IFormLink<>), IFormLinkReader},
             {typeof(ExtendedList<>), ExtendedListReader},
+            {typeof(IGenderedItem<>), GenderedItemReader},
             {typeof(float), PrimitiveReader<float>},
             {typeof(int), PrimitiveReader<int>},
+            {typeof(uint), PrimitiveReader<uint>},
             {typeof(short), PrimitiveReader<short>},
+            {typeof(ushort), PrimitiveReader<ushort>},
             {typeof(byte), PrimitiveReader<byte>},
             {typeof(bool), PrimitiveReader<bool>},
             {typeof(string), PrimitiveReader<string>},
+            {typeof(P3Int16), PrimitiveReader<P3Int16>},
             {typeof(ILoquiObject), LoquiObjectReader},
             {typeof(Enum), EnumReader},
             {typeof(Nullable<>), NullableReader},
@@ -79,6 +87,65 @@ public class CFile
         Code("using Mutagen.Bethesda;");
         Code("using Microsoft.Extensions.DependencyInjection;");
         Code("");
+    }
+
+    private void GenderedItemReader(Type type, string gettter)
+    {
+        var itype = type.GetGenericArguments()[0];
+        Code("if (reader.TokenType != JsonTokenType.Null)");
+        Code("{");
+        Code("if (reader.TokenType != JsonTokenType.StartObject)");
+        using (var _ = WithIndent())
+            Code("throw new JsonException();");
+        Code("reader.Read();");
+        Code("while(true)");
+        Code("{");
+        var prop = GetProp();
+        Code($"var {prop} = reader.GetString();");
+        Code("reader.Read();");
+        Code($"switch({prop})");
+        Code("{");
+        Code("case \"Male\":");
+        using (var _male = WithIndent())
+        {
+            EmitReader(itype, $"{gettter}.Male");
+        }
+        Code("break;");
+        
+        Code("case \"Female\":");
+        using (var _female = WithIndent())
+        {
+            EmitReader(itype, $"{gettter}.Female");
+        }
+        Code("break;");
+        
+        Code("}");
+        
+        Code("}");
+        Code("}");
+        Code("else");
+        Code("{");
+        Code("reader.Skip();");
+        Code("}");
+    }
+
+    private void GenderedItemGetterWriter(Type type, string getter)
+    {
+        var itype = type.GetGenericArguments()[0];
+        
+        Code($"if ({getter} == null)");
+        Code("{");
+        Code("writer.WriteNullValue();");
+        Code("}");
+        Code("else");
+        Code("{");
+        Code("writer.WriteStartObject();");
+        Code("writer.WritePropertyName(\"Male\");");
+        EmitWriter(itype, $"{getter}.Male");
+        Code("writer.WritePropertyName(\"Female\");");
+        EmitWriter(itype, $"{getter}.Female");
+        Code("writer.WriteEndObject();");
+        Code("}");
     }
 
     private void MemorySliceReader(Type type, string getter)
@@ -132,6 +199,38 @@ public class CFile
         genSym++;
         return $"itm{genSym}";
     }
+    
+    private void PrimitiveWriter<T>(Type info, string getter)
+    {
+        if (typeof(T) == typeof(float) || 
+            typeof(T) == typeof(int) || 
+            typeof(T) == typeof(uint) || 
+            typeof(T) == typeof(byte) || 
+            typeof(T) == typeof(short))
+        {
+            Code($"writer.WriteNumberValue((long){getter});");
+        }
+        else if (typeof(T) == typeof(ushort))
+        {
+            Code($"writer.WriteNumberValue((uint){getter});");
+        }
+        else if (typeof(T) == typeof(bool))
+        {
+            Code($"writer.WriteBooleanValue({getter});");
+        }
+        else if (typeof(T) == typeof(string))
+        {
+            Code($"writer.WriteStringValue({getter});");
+        }
+        else if (typeof(T) == typeof(P3Int16))
+        {
+            Code($"writer.WriteP3Int16({getter}, options);");
+        }
+        else
+        {
+            throw new NotImplementedException($"No writer for {info.Name}");
+        }
+    }
 
     private void PrimitiveReader<T>(Type type, string getter)
     {
@@ -143,9 +242,17 @@ public class CFile
         {
             Code($"{getter} = reader.GetInt32();");
         }
+        else if (typeof(T) == typeof(uint))
+        {
+            Code($"{getter} = reader.GetUInt32();");
+        }
         else if (typeof(T) == typeof(short))
         {
             Code($"{getter} = reader.GetInt16();");
+        }
+        else if (typeof(T) == typeof(ushort))
+        {
+            Code($"{getter} = reader.GetUInt16();");
         }
         else if (typeof(T) == typeof(byte))
         {
@@ -158,6 +265,10 @@ public class CFile
         else if (typeof(T) == typeof(string))
         {
             Code($"{getter} = reader.GetString();");
+        }
+        else if (typeof(T) == typeof(P3Int16))
+        {
+            Code($"{getter} = SerializerExtensions.ReadP3Int16(ref reader, options);");
         }
         else
         {
@@ -296,25 +407,7 @@ public class CFile
         return s.Replace("+", ".");
     }
     
-    private void PrimitiveWriter<T>(Type info, string getter)
-    {
-        if (typeof(T) == typeof(float) || typeof(T) == typeof(int) || typeof(T) == typeof(byte) || typeof(T) == typeof(short))
-        {
-            Code($"writer.WriteNumberValue({getter});");
-        }
-        else if (typeof(T) == typeof(bool))
-        {
-            Code($"writer.WriteBooleanValue({getter});");
-        }
-        else if (typeof(T) == typeof(string))
-        {
-            Code($"writer.WriteStringValue({getter});");
-        }
-        else
-        {
-            throw new NotImplementedException($"No writer for {info.Name}");
-        }
-    }
+
 
     private void EnumWriter(Type info, string getter)
     {
@@ -359,6 +452,7 @@ public class CFile
 
         Code("if (reader.TokenType != null)");
         Code("{");
+        Code($"{getter} ??= new();");
 
         Code("if (reader.TokenType != JsonTokenType.StartArray)");
         using (var _ = WithIndent())

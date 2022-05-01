@@ -2,6 +2,7 @@ using System.Text.Json;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Strings;
+using Noggog;
 
 namespace Spriggan.Converters.Base;
 
@@ -106,5 +107,34 @@ public static class SerializerExtensions
             var s = reader.GetString();
             ts.Set(lang, s);
         }
+    }
+
+    public static void WriteP3Int16(this Utf8JsonWriter writer, P3Int16 value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
+        writer.WriteNumberValue(value.Z);
+        writer.WriteEndArray();
+    }
+
+    public static P3Int16 ReadP3Int16(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        var ret = new P3Int16();
+        reader.Read();
+        ret.X = reader.GetInt16();
+        reader.Read();
+        ret.Y = reader.GetInt16();
+        reader.Read();
+        ret.Z = reader.GetInt16();
+        reader.Read();
+        
+        if (reader.TokenType != JsonTokenType.EndArray)
+            throw new JsonException();
+        return ret;
+
     }
 }

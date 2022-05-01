@@ -26,7 +26,7 @@ var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
 
-var propLimit = 8;
+var propLimit = 40;
 
 // Writers
 foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))
@@ -54,7 +54,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.EmitTypeHeader(t.Getter, t.Main.Name);
     
     
-    foreach (var p in props.Where(p => p.Name != "FormKey").Take(propLimit))
+    foreach (var p in props.Where(p => p.Name != "FormKey" && p.Name != "FormVersion").Take(propLimit))
     {
         cfile.Code("");
         cfile.Code($"// {p.Name}");
