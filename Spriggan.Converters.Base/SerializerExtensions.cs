@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
@@ -42,7 +43,7 @@ public static class SerializerExtensions
         else if (split[0].EndsWith(".esl"))
             mt = ModType.LightMaster;
 
-        return new FormKey(new ModKey(split[0], mt), uint.Parse(split[3]));
+        return new FormKey(new ModKey(split[0], mt), uint.Parse(split[3], NumberStyles.HexNumber));
     }
 
 

@@ -33,10 +33,11 @@ using var env = GameEnvironment.Typical.Skyrim(SkyrimRelease.SkyrimSE);
 foreach (var armor in env.LoadOrder.PriorityOrder.Armor().WinningOverrides())
 {
     
+    Console.WriteLine($"{armor.FormKey} - {armor.EditorID ?? ""}");
     var stream = new MemoryStream();
     JsonSerializer.Serialize(stream, armor, soptions);
     var str = Encoding.UTF8.GetString(stream.ToArray());
-    File.WriteAllText($@"c:\tmp\armor\{(armor.FormKey.ID.ToString("x8"))}.json", str);
+    //File.WriteAllText($@"c:\tmp\armor\{(armor.FormKey.ID.ToString("x8"))}.json", str);
 
     stream.Position = 0;
     var value = JsonSerializer.Deserialize<Armor>(stream, soptions);

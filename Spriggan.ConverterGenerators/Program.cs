@@ -13,7 +13,7 @@ using Spriggan.ConverterGenerators;
 using Spriggan.TupleGen;
 
 
-var cfile = new CFile(GameRelease.SkyrimSE);
+
 
 List<string> generatedConverters = new List<string>();
 
@@ -26,11 +26,12 @@ var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
 
-var propLimit = 40;
+var propLimit = 1000;
 
 // Writers
-foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))
+foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Take(2))
 {
+    var cfile = new CFile(GameRelease.SkyrimSE);
     var props = VisitorGenerator.Members(t.Getter).ToArray().OrderBy(t => t.Name);
     var mProps = VisitorGenerator.Members(t.Main)
         .Where(p => p.Name != "FormKey" && p.Name != "TitleString")
@@ -121,29 +122,33 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("}");
     cfile.Code("}");
     
-
+    cfile.Write($"../Spriggan.Converters.Skyrim/{t.Main.Name}.cs");
 }
 
-cfile.Code("public static class GeneratedConvertersExtensions");
-cfile.Code("{");
-cfile.Code("public static IServiceCollection UseConverters(this IServiceCollection services)");
-cfile.Code("{");
-foreach (var converter in generatedConverters)
 {
-    cfile.Code($"services.AddSingleton<JsonConverter, {converter}>();");
-}
+    var cfile = new CFile(GameRelease.SkyrimSE);
+    cfile.Code("public static class GeneratedConvertersExtensions");
+    cfile.Code("{");
+    cfile.Code("public static IServiceCollection UseConverters(this IServiceCollection services)");
+    cfile.Code("{");
+    foreach (var converter in generatedConverters)
+    {
+        cfile.Code($"services.AddSingleton<JsonConverter, {converter}>();");
+    }
 
-foreach (var getter in formLinkGetters)
-{
-    cfile.Code($"services.AddSingleton<JsonConverter, IFormLinkGetter_Converter<{getter.Name}>>();");
-}
+    foreach (var getter in formLinkGetters)
+    {
+        cfile.Code($"services.AddSingleton<JsonConverter, IFormLinkGetter_Converter<{getter.Name}>>();");
+    }
 
-foreach (var getter in nullableFormLinkGetters)
-{
-    cfile.Code($"services.AddSingleton<JsonConverter, IFormLinkNullableGetter_Converter<{getter.Name}>>();");
-}
-cfile.Code("return services;");
-cfile.Code("}");
-cfile.Code("}");
+    foreach (var getter in nullableFormLinkGetters)
+    {
+        cfile.Code($"services.AddSingleton<JsonConverter, IFormLinkNullableGetter_Converter<{getter.Name}>>();");
+    }
 
-cfile.Write("../Spriggan.Converters.Skyrim/Generated.cs");
+    cfile.Code("return services;");
+    cfile.Code("}");
+    cfile.Code("}");
+
+    cfile.Write("../Spriggan.Converters.Skyrim/Generated.cs");
+}
