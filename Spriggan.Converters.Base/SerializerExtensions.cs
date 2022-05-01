@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
+using Mutagen.Bethesda.Strings;
 
 namespace Spriggan.Converters.Base;
 
@@ -71,5 +72,39 @@ public static class SerializerExtensions
         where T : struct, Enum
     {
         return Enum.Parse<T>(reader.GetString()!);
+    }
+
+    public static void WriteTranslatedString(this Utf8JsonWriter writer, ITranslatedStringGetter? ts, JsonSerializerOptions options)
+    {
+        if (ts == null || ts.NumLanguages == 0 || !ts.Any())
+        {
+            writer.WriteNullValue();
+            return;
+        }
+        
+        writer.WriteStartObject();
+        foreach (var (l, s) in ts)
+        {
+            writer.WriteString(l.ToString(), s);
+        }
+        writer.WriteEndObject();
+    }
+    
+    public static void ReadTranslatedString(ref Utf8JsonReader reader, TranslatedString ts, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+            return;
+
+        while (true)
+        {
+            reader.Read();
+            if (reader.TokenType == JsonTokenType.EndObject)
+                return;
+
+            var lang = Enum.Parse<Language>(reader.GetString()!);
+            reader.Read();
+            var s = reader.GetString();
+            ts.Set(lang, s);
+        }
     }
 }

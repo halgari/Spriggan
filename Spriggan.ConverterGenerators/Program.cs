@@ -26,7 +26,7 @@ var formLinkGetters = new HashSet<Type>();
 var nullableFormLinkGetters = new HashSet<Type>();
 var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly).OrderBy(t => t.Main.Name);
 
-var propLimit = 5;
+var propLimit = 8;
 
 // Writers
 foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).Where(a => a.Main.Name == "Armor"))
@@ -88,7 +88,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     cfile.Code("if (reader.TokenType != JsonTokenType.StartObject)");
     cfile.Code("    throw new JsonException();");
     cfile.Code("reader.Read();");
-    cfile.EmitCtor("retval", t.Main);
+    cfile.EmitCtor("retval", t.Main, true);
     cfile.Code("while (true)");
     cfile.Code("{");
     cfile.Code("reader.Read();");

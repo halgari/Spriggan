@@ -6,6 +6,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
+using Mutagen.Bethesda.Strings;
 using Noggog;
 using Spriggan.TupleGen;
 
@@ -35,19 +36,34 @@ public class CFile
             {typeof(IFormLinkGetter<>), IFormLinkWriter},
             {typeof(IReadOnlyList<>), IReadOnlyListWriter},
             {typeof(float), PrimitiveWriter<float>},
+            {typeof(int), PrimitiveWriter<int>},
+            {typeof(short), PrimitiveWriter<short>},
+            {typeof(byte), PrimitiveWriter<byte>},
             {typeof(bool), PrimitiveWriter<bool>},
+            {typeof(string), PrimitiveWriter<string>},
             {typeof(ILoquiObject), LoquiObjectWriter},
             {typeof(Enum), EnumWriter},
+            {typeof(Nullable<>), NullableWriter},
+            {typeof(ReadOnlyMemorySlice<byte>), MemorySliceWriter},
+            {typeof(ITranslatedStringGetter), TranslatedStringWriter}
         };
 
         _readerEmitters = new()
         {
             {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
+            {typeof(IFormLink<>), IFormLinkReader},
             {typeof(ExtendedList<>), ExtendedListReader},
             {typeof(float), PrimitiveReader<float>},
+            {typeof(int), PrimitiveReader<int>},
+            {typeof(short), PrimitiveReader<short>},
+            {typeof(byte), PrimitiveReader<byte>},
             {typeof(bool), PrimitiveReader<bool>},
+            {typeof(string), PrimitiveReader<string>},
             {typeof(ILoquiObject), LoquiObjectReader},
-            {typeof(Enum), EnumReader}
+            {typeof(Enum), EnumReader},
+            {typeof(Nullable<>), NullableReader},
+            {typeof(MemorySlice<>), MemorySliceReader},
+            {typeof(TranslatedString), TranslatedStringReader}
 
         };
 
@@ -65,11 +81,56 @@ public class CFile
         Code("");
     }
 
+    private void MemorySliceReader(Type type, string getter)
+    {
+        Code($"{getter} = reader.GetBytesFromBase64();");
+    }
+
+    private void NullableReader(Type type, string getter)
+    {
+        Code("if (reader.TokenType != JsonTokenType.Null) {");
+        EmitReader(type.GetGenericArguments()[0], getter);
+        Code("}");
+    }
+
+    private void MemorySliceWriter(Type type, string getter)
+    {
+        Code($"writer.WriteBase64StringValue({getter}.Value);");
+    }
+
+    private void NullableWriter(Type type, string getter)
+    {
+        var itype = type.GetGenericArguments()[0];
+        Code($"if ({getter} == null)");
+        using (var _ = WithIndent())
+            Code("writer.WriteNullValue();");
+        Code("else");
+        Code("{");
+        EmitWriter(itype, getter);
+        Code("}");
+    }
+
+    private void TranslatedStringReader(Type type, string getter)
+    {
+        Code($"SerializerExtensions.ReadTranslatedString(ref reader, {getter}, options);");
+    }
+
+    private void TranslatedStringWriter(Type type, string getter)
+    {
+        Code($"writer.WriteTranslatedString({getter}, options);");
+    }
+
 
     private string GetProp()
     {
         genSym++;
         return $"prop{genSym}";
+    }
+    
+    private string GetItem()
+    {
+        genSym++;
+        return $"itm{genSym}";
     }
 
     private void PrimitiveReader<T>(Type type, string getter)
@@ -78,9 +139,25 @@ public class CFile
         {
             Code($"{getter} = reader.GetSingle();");
         }
+        else if (typeof(T) == typeof(int))
+        {
+            Code($"{getter} = reader.GetInt32();");
+        }
+        else if (typeof(T) == typeof(short))
+        {
+            Code($"{getter} = reader.GetInt16();");
+        }
+        else if (typeof(T) == typeof(byte))
+        {
+            Code($"{getter} = reader.GetByte();");
+        }
         else if (typeof(T) == typeof(bool))
         {
             Code($"{getter} = reader.GetBoolean();");
+        }
+        else if (typeof(T) == typeof(string))
+        {
+            Code($"{getter} = reader.GetString();");
         }
         else
         {
@@ -138,6 +215,11 @@ public class CFile
         Code($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
     
+    private void IFormLinkReader(Type info, string getter)
+    {
+        Code($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
+    }
+    
     private void IFormLinkWriter(Type info, string getter)
     {
         Code($"writer.WriteStringValue({getter}.FormKey.ToString());");
@@ -145,6 +227,8 @@ public class CFile
 
     private void LoquiObjectWriter(Type info, string getter)
     {
+        Code($"if ({getter} != null)");
+        Code("{");
         Code("writer.WriteStartObject();");
         foreach (var p in VisitorGenerator.Members(info))
         {
@@ -154,17 +238,24 @@ public class CFile
             EmitWriter(p.PropertyType, getter + "." + p.Name);
         }
         Code("writer.WriteEndObject();");
+        Code("}");
+        Code("else");
+        Code("{");
+        Code("writer.WriteNullValue();");
+        Code("}");
     }
-    
-    
+
+
     private void LoquiObjectReader(Type type, string getter)
     {
         EmitCtor(getter, type);
+        Code("if (reader.TokenType != JsonTokenType.Null)");
+        Code("{");
         Code("if (reader.TokenType != JsonTokenType.StartObject)");
         using (var _ = WithIndent())
             Code("throw new JsonException();");
-        
-        
+
+
         Code("while (true)");
         Code("{");
         Code("reader.Read();");
@@ -175,13 +266,13 @@ public class CFile
         var propName = GetProp();
         Code($"var {propName} = reader.GetString();");
         Code("reader.Read();");
-        
+
         Code($"switch({propName})");
         Code("{");
         foreach (var prop in VisitorGenerator.Members(type))
         {
             Code($"case \"{prop.Name}\":");
-            
+
             using var _ = WithIndent();
             EmitReader(prop.PropertyType, $"{getter}.{prop.Name}");
             Code("break;");
@@ -189,9 +280,15 @@ public class CFile
         }
 
         Code("}");
-        
+
         Code("}");
-    }
+
+        Code("}");
+        Code("else");
+        Code("{");
+        Code("reader.Skip();");
+        Code("}");
+}
 
 
     private string CleanName(string s)
@@ -201,13 +298,17 @@ public class CFile
     
     private void PrimitiveWriter<T>(Type info, string getter)
     {
-        if (typeof(T) == typeof(float))
+        if (typeof(T) == typeof(float) || typeof(T) == typeof(int) || typeof(T) == typeof(byte) || typeof(T) == typeof(short))
         {
             Code($"writer.WriteNumberValue({getter});");
         }
         else if (typeof(T) == typeof(bool))
         {
             Code($"writer.WriteBooleanValue({getter});");
+        }
+        else if (typeof(T) == typeof(string))
+        {
+            Code($"writer.WriteStringValue({getter});");
         }
         else
         {
@@ -234,13 +335,21 @@ public class CFile
 
     private void IReadOnlyListWriter(Type info, string getter)
     {
+        Code($"if ({getter} != null)");
+        Code("{");
         var itype = info.GetGenericArguments()[0];
         Code("writer.WriteStartArray();");
-        Code($"foreach(var itm in {getter})");
+        var sym = GetItem();
+        Code($"foreach(var {sym} in {getter})");
         Code("{");
-        EmitWriter(itype, "itm");
+        EmitWriter(itype, sym);
         Code("}");
         Code("writer.WriteEndArray();");
+        Code("}");
+        Code("else");
+        Code("{");
+        Code("writer.WriteNullValue();");
+        Code("}");
 
     }
 
@@ -248,29 +357,42 @@ public class CFile
     {
         var itype = info.GetGenericArguments()[0];
 
+        Code("if (reader.TokenType != null)");
+        Code("{");
+
         Code("if (reader.TokenType != JsonTokenType.StartArray)");
         using (var _ = WithIndent())
             Code("throw new JsonException();");
-        
-        
+
+
         Code("while (true)");
         Code("{");
         Code("reader.Read();");
         Code("if (reader.TokenType == JsonTokenType.EndArray)");
         using (var _2 = WithIndent())
             Code("break;");
-        
+
         if (itype.InheritsFrom(typeof(IFormLinkGetter<>)))
         {
             EmitExtendedListFormLinkGetterReadOne(info, getter);
         }
         else
         {
-            throw new NotImplementedException();
+            EmitExtendedListOtherReadOne(info, itype, getter);
         }
-        
-        
+
+
         Code("}");
+        Code("}");
+
+}
+
+    private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter)
+    {
+        var sym = GetItem();
+        EmitCtor(sym, itemType, true);
+        EmitReader(itemType, sym);
+        Code($"{getter}.Add({sym});");
     }
 
     private void EmitExtendedListFormLinkGetterReadOne(Type info, string getter)
@@ -297,14 +419,19 @@ public class CFile
         emitter(type, getter);
     }
 
-    public void EmitCtor(string retval, Type tMain)
+    public void EmitCtor(string retval, Type tMain, bool emitVar = false)
     {
+        var prefix = emitVar ? "var " : "";
         if (tMain.InheritsFrom(typeof(IMajorRecord)))
         {
             if (_game == GameRelease.SkyrimLE || _game == GameRelease.SkyrimSE)
             {
                 Code(
-                    $"var {retval} = new {tMain.FullName}(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.{_game});");
+                    $"{prefix}{retval} = new {tMain.FullName}(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.{_game});");
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
             return;
@@ -312,7 +439,7 @@ public class CFile
 
         if (tMain.GetConstructors().Any(t => t.GetParameters().Length == 0))
         {
-            Code($"{retval} = new {tMain.FullName}();");
+            Code($"{prefix}{retval} = new {tMain.FullName}();");
             return;
         }
 
