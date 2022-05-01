@@ -25,6 +25,7 @@ public static class SerializerExtensions
             writer.WriteStringValue(vals);
     }
 
+
     public static FormKey ReadFormKeyHeader(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         var cReader = reader;

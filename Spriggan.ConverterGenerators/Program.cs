@@ -29,7 +29,7 @@ var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly)
 var propLimit = 1000;
 
 // Writers
-foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name).Take(2))
+foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name).Take(3))
 {
     var cfile = new CFile(GameRelease.SkyrimSE);
     var props = VisitorGenerator.Members(t.Getter).ToArray().OrderBy(t => t.Name);
@@ -60,7 +60,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
         cfile.Code("");
         cfile.Code($"// {p.Name}");
         cfile.Code($"writer.WritePropertyName(\"{p.Name}\");");
-        cfile.EmitWriter(p.PropertyType, $"value.{p.Name}");
+        cfile.EmitWriter(p.PropertyType, $"value.{p.Name}", new Context());
 
     }
     
@@ -108,7 +108,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     {
         cfile.Code($"case \"{p.Name}\":");
         using var _ = cfile.WithIndent();
-        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}", CFile.IsSettable(p));
+        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}", new Context(CFile.IsSettable(p), false));
         cfile.Code("break;");
     }
     cfile.Code("default:");

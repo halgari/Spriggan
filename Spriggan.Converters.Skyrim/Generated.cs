@@ -18,6 +18,8 @@ public static class GeneratedConvertersExtensions
     services.AddSingleton<JsonConverter, AcousticSpace_Converter>();
     services.AddSingleton<JsonConverter, IActionRecordGetter_Converter>();
     services.AddSingleton<JsonConverter, ActionRecord_Converter>();
+    services.AddSingleton<JsonConverter, IActivatorGetter_Converter>();
+    services.AddSingleton<JsonConverter, Activator_Converter>();
     return services;
   }
 }

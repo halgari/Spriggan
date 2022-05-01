@@ -13,6 +13,7 @@ using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Spriggan.Converters.Base;
 using Spriggan.TupleGen;
+using Activator = Mutagen.Bethesda.Skyrim.Activator;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((c, s) =>
@@ -30,7 +31,7 @@ soptions.WriteIndented = true;
 soptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
 using var env = GameEnvironment.Typical.Skyrim(SkyrimRelease.SkyrimSE);
-foreach (var armor in env.LoadOrder.PriorityOrder.ActionRecord().WinningOverrides())
+foreach (var armor in env.LoadOrder.PriorityOrder.Activator().WinningOverrides())
 {
     
     Console.WriteLine($"{armor.FormKey} - {armor.EditorID ?? ""}");
@@ -40,6 +41,6 @@ foreach (var armor in env.LoadOrder.PriorityOrder.ActionRecord().WinningOverride
     //File.WriteAllText($@"c:\tmp\armor\{(armor.FormKey.ID.ToString("x8"))}.json", str);
 
     stream.Position = 0;
-    var value = JsonSerializer.Deserialize<ActionRecord>(stream, soptions);
+    var value = JsonSerializer.Deserialize<Activator>(stream, soptions);
 
 }
