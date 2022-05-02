@@ -5,6 +5,7 @@ using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Plugins.RecordTypeMapping;
 using Mutagen.Bethesda.Skyrim;
 using Noggog;
+using Noggog.StructuredStrings.CSharp;
 using Spriggan.ConverterGenerators;
 using Spriggan.TupleGen;
 
@@ -66,7 +67,10 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
     }
 
     generatedConverters.Add($"{t.Main.Name}_Converter");
-    cfile.SB.AppendLine($"public class {t.Main.Name}_Converter : JsonConverter<{t.Main.FullName}>");
+    using (var c = cfile.SB.Class($"{t.Main.Name}_Converter"))
+    {
+        c.BaseClass = $"JsonConverter<{t.Main.FullName}>";
+    }
     using (cfile.SB.CurlyBrace())
     {
         cfile.SB.AppendLine($"private {t.Getter.Name}_Converter _getterConverter;");
@@ -83,8 +87,12 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
             cfile.SB.AppendLine($"_getterConverter.Write(writer, ({t.Getter.Name})value, options);");
         }
 
-        cfile.SB.AppendLine(
-            $"public override {t.Main.FullName} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)");
+        using (var f = cfile.SB.Function($"public override {t.Main.FullName} Read"))
+        {
+            f.Add("ref Utf8JsonReader reader");
+            f.Add("Type typeToConvert");
+            f.Add("JsonSerializerOptions options");
+        }
         using (cfile.SB.CurlyBrace())
         {
             cfile.SB.AppendLine("if (reader.TokenType != JsonTokenType.StartObject)");
@@ -136,7 +144,10 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
 
 {
     var cfile = new CFile(GameRelease.SkyrimSE);
-    cfile.SB.AppendLine("public static class GeneratedConvertersExtensions");
+    using (var c = cfile.SB.Class("GeneratedConvertersExtensions"))
+    {
+        c.Static = true;
+    }
     using (cfile.SB.CurlyBrace())
     {
         cfile.SB.AppendLine("public static IServiceCollection UseConverters(this IServiceCollection services)");

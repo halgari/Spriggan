@@ -99,7 +99,10 @@ public class AcousticSpace_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Aco
     {
         _getterConverter.Write(writer, (IAcousticSpaceGetter)value, options);
     }
-    public override Mutagen.Bethesda.Skyrim.AcousticSpace Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Mutagen.Bethesda.Skyrim.AcousticSpace Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();

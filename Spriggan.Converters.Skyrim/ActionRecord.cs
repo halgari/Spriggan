@@ -67,7 +67,10 @@ public class ActionRecord_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Acti
     {
         _getterConverter.Write(writer, (IActionRecordGetter)value, options);
     }
-    public override Mutagen.Bethesda.Skyrim.ActionRecord Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Mutagen.Bethesda.Skyrim.ActionRecord Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();

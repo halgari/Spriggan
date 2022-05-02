@@ -466,7 +466,10 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
     {
         _getterConverter.Write(writer, (IActivatorGetter)value, options);
     }
-    public override Mutagen.Bethesda.Skyrim.Activator Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override Mutagen.Bethesda.Skyrim.Activator Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
