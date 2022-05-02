@@ -50,6 +50,8 @@ public class CFile
             {typeof(bool), PrimitiveWriter<bool>},
             {typeof(string), PrimitiveWriter<string>},
             {typeof(P3Int16), PrimitiveWriter<P3Int16>},
+            {typeof(P2Int), PrimitiveWriter<P2Int>},
+            {typeof(P3Float), PrimitiveWriter<P3Float>},
             {typeof(ILoquiObject), LoquiObjectWriter},
             {typeof(Enum), EnumWriter},
             {typeof(Nullable<>), NullableWriter},
@@ -73,6 +75,8 @@ public class CFile
             {typeof(bool), PrimitiveReader<bool>},
             {typeof(string), PrimitiveReader<string>},
             {typeof(P3Int16), PrimitiveReader<P3Int16>},
+            {typeof(P2Int), PrimitiveReader<P2Int>},
+            {typeof(P3Float), PrimitiveReader<P3Float>},
             {typeof(Color), PrimitiveReader<Color>},
             {typeof(ILoquiObject), LoquiObjectReader},
             {typeof(Enum), EnumReader},
@@ -337,6 +341,14 @@ public class CFile
         {
             SB.AppendLine($"writer.WriteP3Int16({getter}, options);");
         }
+        else if (typeof(T) == typeof(P3Float))
+        {
+            SB.AppendLine($"writer.WriteP3Float({getter}, options);");
+        }
+        else if (typeof(T) == typeof(P2Int))
+        {
+            SB.AppendLine($"writer.WriteP2Int({getter}, options);");
+        }
         else
         {
             throw new NotImplementedException($"No writer for {info.Name}");
@@ -381,9 +393,17 @@ public class CFile
         {
             SB.AppendLine($"{getter} = reader.GetString();");
         }
+        else if (typeof(T) == typeof(P3Float))
+        {
+            SB.AppendLine($"{getter} = SerializerExtensions.ReadP3Float(ref reader, options);");
+        }
         else if (typeof(T) == typeof(P3Int16))
         {
             SB.AppendLine($"{getter} = SerializerExtensions.ReadP3Int16(ref reader, options);");
+        }
+        else if (typeof(T) == typeof(P2Int))
+        {
+            SB.AppendLine($"{getter} = SerializerExtensions.ReadP2Int(ref reader, options);");
         }
         else
         {

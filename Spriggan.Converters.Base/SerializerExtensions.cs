@@ -139,4 +139,59 @@ public static class SerializerExtensions
         return ret;
 
     }
+    
+    public static void WriteP3Float(this Utf8JsonWriter writer, P3Float value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
+        writer.WriteNumberValue(value.Z);
+        writer.WriteEndArray();
+    }
+
+    public static P3Float ReadP3Float(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        var ret = new P3Float();
+        reader.Read();
+        ret.X = reader.GetSingle();
+        reader.Read();
+        ret.Y = reader.GetSingle();
+        reader.Read();
+        ret.Z = reader.GetSingle();
+        reader.Read();
+        
+        if (reader.TokenType != JsonTokenType.EndArray)
+            throw new JsonException();
+        return ret;
+
+    }
+    
+    public static void WriteP2Int(this Utf8JsonWriter writer, P2Int value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
+        writer.WriteEndArray();
+    }
+
+    public static P2Int ReadP2Int(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        var ret = new P2Int();
+        reader.Read();
+        ret.X = reader.GetInt32();
+        reader.Read();
+        ret.Y = reader.GetInt32();
+        reader.Read();
+        
+        if (reader.TokenType != JsonTokenType.EndArray)
+            throw new JsonException();
+        return ret;
+
+    }
 }

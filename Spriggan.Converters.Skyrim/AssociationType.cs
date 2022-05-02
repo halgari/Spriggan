@@ -10,6 +10,7 @@ using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
+using Mutagen.Bethesda.Plugins;
 
 public class IAssociationTypeGetter_Converter : JsonConverter<IAssociationTypeGetter>
 {
@@ -139,7 +140,7 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.ParentTitle = new GenderedItem<System.String?>(null, null);
+                        retval.ParentTitle = new GenderedItem<System.String>(default, default);
                         reader.Read();
                         while(true)
                         {
@@ -173,7 +174,7 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.Title = new GenderedItem<System.String?>(null, null);
+                        retval.Title = new GenderedItem<System.String>(default, default);
                         reader.Read();
                         while(true)
                         {

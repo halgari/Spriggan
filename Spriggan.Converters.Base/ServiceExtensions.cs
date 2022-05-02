@@ -7,7 +7,7 @@ public static class ServiceExtensions
 {
     public static IServiceCollection UseBaseConverters(this IServiceCollection services)
     {
-        services.AddSingleton<JsonConverter, P3Int16_Converter>();
+
         return services;
     }
     

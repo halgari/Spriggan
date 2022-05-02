@@ -36,6 +36,12 @@ public static class GeneratedConvertersExtensions
         services.AddSingleton<JsonConverter, Armor_Converter>();
         services.AddSingleton<JsonConverter, IArmorAddonGetter_Converter>();
         services.AddSingleton<JsonConverter, ArmorAddon_Converter>();
+        services.AddSingleton<JsonConverter, IArtObjectGetter_Converter>();
+        services.AddSingleton<JsonConverter, ArtObject_Converter>();
+        services.AddSingleton<JsonConverter, IAssociationTypeGetter_Converter>();
+        services.AddSingleton<JsonConverter, AssociationType_Converter>();
+        services.AddSingleton<JsonConverter, IBodyPartDataGetter_Converter>();
+        services.AddSingleton<JsonConverter, BodyPartData_Converter>();
         return services;
     }
     public static Type[] SupportedRecords = new[]
@@ -50,5 +56,8 @@ public static class GeneratedConvertersExtensions
         typeof(Mutagen.Bethesda.Skyrim.AnimatedObject),
         typeof(Mutagen.Bethesda.Skyrim.Armor),
         typeof(Mutagen.Bethesda.Skyrim.ArmorAddon),
+        typeof(Mutagen.Bethesda.Skyrim.ArtObject),
+        typeof(Mutagen.Bethesda.Skyrim.AssociationType),
+        typeof(Mutagen.Bethesda.Skyrim.BodyPartData),
     };
 }
