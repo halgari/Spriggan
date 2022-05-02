@@ -15,7 +15,7 @@ namespace Spriggan.ConverterGenerators;
 using System.IO;
 using System.Text;
 
-public record struct Context(bool IsSettable, bool IsNullable)
+public record struct Context(bool IsSettable, bool IsNullable, bool IsConstructed)
 {
     
 }
@@ -392,7 +392,13 @@ public class CFile
 
     private void LoquiObjectReader(Type type, string getter, Context ctx)
     {
-        EmitCtor(getter, type);
+        if (!ctx.IsConstructed)
+        {
+            EmitCtor(getter, type);
+        }
+
+        ctx = ctx with {IsConstructed = false};
+
         SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
         using (SB.CurlyBrace())
         {
@@ -521,8 +527,17 @@ public class CFile
     private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter, Context ctx)
     {
         var sym = GetItem();
-        EmitCtor(sym, itemType, true);
-        EmitReader(itemType, sym, ctx with {IsSettable = false});
+        if (itemType.IsPrimitive)
+        {
+            SB.AppendLine($"{itemType.Name} {sym};");
+            EmitReader(itemType, sym, ctx with {IsSettable = false});
+        }
+        else
+        {
+            EmitCtor(sym, itemType, true);
+            EmitReader(itemType, sym, ctx with {IsSettable = false, IsConstructed = true});
+        }
+
         SB.AppendLine($"{getter}.Add({sym});");
     }
 

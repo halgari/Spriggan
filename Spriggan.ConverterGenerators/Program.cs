@@ -22,9 +22,12 @@ var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly)
 
 var propLimit = 1000;
 
+var majorTypes = allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name)
+    .Take(6);
 // Writers
-foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name).Take(3))
+foreach (var t in majorTypes)
 {
+    Console.WriteLine($"Emitting {t.Main.Name}.cs");
     var cfile = new CFile(GameRelease.SkyrimSE);
     var props = VisitorGenerator.Members(t.Getter).ToArray().OrderBy(t => t.Name);
     var mProps = VisitorGenerator.Members(t.Main)
@@ -122,7 +125,7 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
                     {
                         cfile.SB.AppendLine($"case \"{p.Name}\":");
                         using var _ = cfile.SB.IncreaseDepth();
-                        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}", new Context(CFile.IsSettable(p), false));
+                        cfile.EmitReader(p.PropertyType, $"retval.{p.Name}", new Context(CFile.IsSettable(p), false, false));
                         cfile.SB.AppendLine("break;");
                     }
 
@@ -171,6 +174,15 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
             }
 
             cfile.SB.AppendLine("return services;");
+        }
+    
+        cfile.SB.AppendLine("public static Type[] SupportedRecords = new[]");
+        using (cfile.SB.CurlyBrace())
+        {
+            foreach (var type in majorTypes)
+            {
+                cfile.SB.AppendLine($"typeof({type.Main.FullName}),");
+            }
         }
     }
 
