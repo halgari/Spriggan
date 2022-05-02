@@ -553,7 +553,6 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                       if (reader.TokenType == JsonTokenType.EndArray)
                         break;
                       var itm9 = new Mutagen.Bethesda.Skyrim.DestructionStage();
-                      itm9 = new Mutagen.Bethesda.Skyrim.DestructionStage();
                       if (reader.TokenType != JsonTokenType.Null)
                       {
                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -641,7 +640,6 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                                           if (reader.TokenType == JsonTokenType.EndArray)
                                             break;
                                           var itm13 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
-                                          itm13 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                           if (reader.TokenType != JsonTokenType.Null)
                                           {
                                             if (reader.TokenType != JsonTokenType.StartObject)
@@ -788,7 +786,6 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                       if (reader.TokenType == JsonTokenType.EndArray)
                         break;
                       var itm16 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
-                      itm16 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                       if (reader.TokenType != JsonTokenType.Null)
                       {
                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -912,7 +909,6 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                       if (reader.TokenType == JsonTokenType.EndArray)
                         break;
                       var itm20 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
-                      itm20 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
                       if (reader.TokenType != JsonTokenType.Null)
                       {
                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -943,7 +939,6 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                                   if (reader.TokenType == JsonTokenType.EndArray)
                                     break;
                                   var itm22 = new Mutagen.Bethesda.Skyrim.ScriptProperty();
-                                  itm22 = new Mutagen.Bethesda.Skyrim.ScriptProperty();
                                   if (reader.TokenType != JsonTokenType.Null)
                                   {
                                     if (reader.TokenType != JsonTokenType.StartObject)

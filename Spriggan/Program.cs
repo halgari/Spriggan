@@ -40,6 +40,7 @@ foreach (var armor in env.LoadOrder.PriorityOrder.Activator().WinningOverrides()
     var str = Encoding.UTF8.GetString(stream.ToArray());
     //File.WriteAllText($@"c:\tmp\armor\{(armor.FormKey.ID.ToString("x8"))}.json", str);
 
+
     stream.Position = 0;
     var value = JsonSerializer.Deserialize<Activator>(stream, soptions);
 
