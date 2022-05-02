@@ -9,6 +9,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
+using System.Globalization;
 
 public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
 {
@@ -91,7 +92,7 @@ public class ActionRecord_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Acti
                 case "Color":
                     if (reader.TokenType != JsonTokenType.Null)
                     {
-                        retval.Color = Color.FromArgb(int.Parse(reader.GetString()));
+                        retval.Color = Color.FromArgb(int.Parse(reader.GetString(), NumberStyles.HexNumber));
                     }
                     break;
                 case "EditorID":

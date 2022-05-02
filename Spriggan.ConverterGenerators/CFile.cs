@@ -93,6 +93,7 @@ public class CFile
         SB.AppendLine("using Mutagen.Bethesda.Strings;");
         SB.AppendLine("using Microsoft.Extensions.DependencyInjection;");
         SB.AppendLine("using Mutagen.Bethesda.Plugins.Records;");
+        SB.AppendLine("using System.Globalization;");
         SB.AppendLine();
     }
 
@@ -298,7 +299,7 @@ public class CFile
         }
         else if (typeof(T) == typeof(Color))
         {
-            SB.AppendLine($"{getter} = Color.FromArgb(int.Parse(reader.GetString()));");
+            SB.AppendLine($"{getter} = Color.FromArgb(int.Parse(reader.GetString(), NumberStyles.HexNumber));");
         }
         else if (typeof(T) == typeof(string))
         {

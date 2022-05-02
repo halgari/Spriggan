@@ -9,6 +9,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
+using System.Globalization;
 
 public class IActivatorGetter_Converter : JsonConverter<IActivatorGetter>
 {
@@ -762,7 +763,7 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                 case "MarkerColor":
                     if (reader.TokenType != JsonTokenType.Null)
                     {
-                        retval.MarkerColor = Color.FromArgb(int.Parse(reader.GetString()));
+                        retval.MarkerColor = Color.FromArgb(int.Parse(reader.GetString(), NumberStyles.HexNumber));
                     }
                     break;
                 case "Model":
