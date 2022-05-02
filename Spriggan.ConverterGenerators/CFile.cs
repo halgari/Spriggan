@@ -78,7 +78,8 @@ public class CFile
             {typeof(Enum), EnumReader},
             {typeof(Nullable<>), NullableReader},
             {typeof(MemorySlice<>), MemorySliceReader},
-            {typeof(TranslatedString), TranslatedStringReader}
+            {typeof(TranslatedString), TranslatedStringReader},
+            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableReader}
 
         };
 
@@ -355,7 +356,7 @@ public class CFile
         using var _ = SB.IncreaseDepth();
         SB.AppendLine($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
-    
+
     private void IFormLinkReader(Type info, string getter, Context ctx)
     {
         SB.AppendLine($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");

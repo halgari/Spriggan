@@ -27,6 +27,14 @@ public static class GeneratedConvertersExtensions
         services.AddSingleton<JsonConverter, AddonNode_Converter>();
         services.AddSingleton<JsonConverter, IAlchemicalApparatusGetter_Converter>();
         services.AddSingleton<JsonConverter, AlchemicalApparatus_Converter>();
+        services.AddSingleton<JsonConverter, IAmmunitionGetter_Converter>();
+        services.AddSingleton<JsonConverter, Ammunition_Converter>();
+        services.AddSingleton<JsonConverter, IAnimatedObjectGetter_Converter>();
+        services.AddSingleton<JsonConverter, AnimatedObject_Converter>();
+        services.AddSingleton<JsonConverter, IArmorGetter_Converter>();
+        services.AddSingleton<JsonConverter, Armor_Converter>();
+        services.AddSingleton<JsonConverter, IArmorAddonGetter_Converter>();
+        services.AddSingleton<JsonConverter, ArmorAddon_Converter>();
         return services;
     }
     public static Type[] SupportedRecords = new[]
@@ -37,5 +45,9 @@ public static class GeneratedConvertersExtensions
         typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation),
         typeof(Mutagen.Bethesda.Skyrim.AddonNode),
         typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus),
+        typeof(Mutagen.Bethesda.Skyrim.Ammunition),
+        typeof(Mutagen.Bethesda.Skyrim.AnimatedObject),
+        typeof(Mutagen.Bethesda.Skyrim.Armor),
+        typeof(Mutagen.Bethesda.Skyrim.ArmorAddon),
     };
 }
