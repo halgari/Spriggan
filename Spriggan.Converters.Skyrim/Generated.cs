@@ -12,14 +12,14 @@ using Mutagen.Bethesda.Plugins.Records;
 
 public static class GeneratedConvertersExtensions
 {
-  public static IServiceCollection UseConverters(this IServiceCollection services)
-  {
-    services.AddSingleton<JsonConverter, IAcousticSpaceGetter_Converter>();
-    services.AddSingleton<JsonConverter, AcousticSpace_Converter>();
-    services.AddSingleton<JsonConverter, IActionRecordGetter_Converter>();
-    services.AddSingleton<JsonConverter, ActionRecord_Converter>();
-    services.AddSingleton<JsonConverter, IActivatorGetter_Converter>();
-    services.AddSingleton<JsonConverter, Activator_Converter>();
-    return services;
-  }
+    public static IServiceCollection UseConverters(this IServiceCollection services)
+    {
+        services.AddSingleton<JsonConverter, IAcousticSpaceGetter_Converter>();
+        services.AddSingleton<JsonConverter, AcousticSpace_Converter>();
+        services.AddSingleton<JsonConverter, IActionRecordGetter_Converter>();
+        services.AddSingleton<JsonConverter, ActionRecord_Converter>();
+        services.AddSingleton<JsonConverter, IActivatorGetter_Converter>();
+        services.AddSingleton<JsonConverter, Activator_Converter>();
+        return services;
+    }
 }
