@@ -10,6 +10,7 @@ using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
+using Mutagen.Bethesda.Plugins;
 
 public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
 {

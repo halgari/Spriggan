@@ -79,7 +79,7 @@ public class CFile
             {typeof(Nullable<>), NullableReader},
             {typeof(MemorySlice<>), MemorySliceReader},
             {typeof(TranslatedString), TranslatedStringReader},
-            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableReader}
+            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableGetterReader}
 
         };
 
@@ -95,12 +95,19 @@ public class CFile
         SB.AppendLine("using Microsoft.Extensions.DependencyInjection;");
         SB.AppendLine("using Mutagen.Bethesda.Plugins.Records;");
         SB.AppendLine("using System.Globalization;");
+        SB.AppendLine("using Mutagen.Bethesda.Plugins;");
         SB.AppendLine();
     }
 
-    private void GenderedItemReader(Type type, string gettter, Context ctx)
+    private void GenderedItemReader(Type type, string getter, Context ctx)
     {
         var itype = type.GetGenericArguments()[0];
+        if (itype.InheritsFrom(typeof(IFormLinkNullableGetter<>)))
+        {
+            GenderedFormLinkNullableGetterReader(type, getter, ctx);
+            return;
+        }
+            
         SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
         using (SB.CurlyBrace())
         {
@@ -109,7 +116,7 @@ public class CFile
                 SB.AppendLine("throw new JsonException();");
 
             if (ctx.IsSettable)
-                SB.AppendLine($"{gettter} = new GenderedItem<{itype.FullName}?>(null, null);");
+                SB.AppendLine($"{getter} = new GenderedItem<{TypeToCS(itype)}>(default, default);");
 
             SB.AppendLine("reader.Read();");
             SB.AppendLine("while(true)");
@@ -130,7 +137,7 @@ public class CFile
                     SB.AppendLine("case \"Male\":");
                     using (SB.IncreaseDepth())
                     {
-                        EmitReader(itype, $"{gettter}.Male", ctx with { IsSettable = true });
+                        EmitReader(itype, $"{getter}.Male", ctx with { IsSettable = true });
                     }
 
                     SB.AppendLine("break;");
@@ -138,12 +145,80 @@ public class CFile
                     SB.AppendLine("case \"Female\":");
                     using (SB.IncreaseDepth())
                     {
-                        EmitReader(itype, $"{gettter}.Female", ctx with { IsSettable = true });
+                        EmitReader(itype, $"{getter}.Female", ctx with { IsSettable = true });
                     }
 
                     SB.AppendLine("break;");
                 }
             }
+        }
+
+        SB.AppendLine("else");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("reader.Skip();");
+        }
+    }
+
+    private void GenderedFormLinkNullableGetterReader(Type type, string gettter, Context ctx)
+    {
+        var itype = type.GetGenericArguments()[0];
+        if (!itype.InheritsFrom(typeof(IFormLinkNullableGetter<>)))
+        {
+            throw new Exception("Not a valid type parameter");
+        }
+            
+        SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("if (reader.TokenType != JsonTokenType.StartObject)");
+            using (var _ = SB.IncreaseDepth())
+                SB.AppendLine("throw new JsonException();");
+
+            if (!ctx.IsSettable)
+                throw new Exception("No way to set this value!");
+            
+            var maleName = GetItem();
+            var femaleName = GetItem();
+            var itypeCS = TypeToCS(itype.GetGenericArguments()[0]);
+            SB.AppendLine($"var {maleName} = FormLinkNullable<{itypeCS}>.Null;");
+            SB.AppendLine($"var {femaleName} = FormLinkNullable<{itypeCS}>.Null;");
+
+            SB.AppendLine("reader.Read();");
+            SB.AppendLine("while(true)");
+            using (SB.CurlyBrace())
+            {
+                SB.AppendLine("if (reader.TokenType == JsonTokenType.EndObject)");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("break;");
+                }
+
+                var prop = GetProp();
+                SB.AppendLine($"var {prop} = reader.GetString();");
+                SB.AppendLine("reader.Read();");
+                SB.AppendLine($"switch({prop})");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("case \"Male\":");
+                    using (SB.IncreaseDepth())
+                    {
+                        SB.AppendLine($"{maleName} = new FormLinkNullable<{itypeCS}>(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
+                        SB.AppendLine("break;");
+                    }
+
+
+
+                    SB.AppendLine("case \"Female\":");
+                    using (SB.IncreaseDepth())
+                    {
+                        SB.AppendLine($"{femaleName} =  new FormLinkNullable<{itypeCS}>(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
+                        SB.AppendLine("break;");
+                    }
+
+                }
+            }
+            SB.AppendLine($"{gettter} = new GenderedItem<{TypeToCS(itype)}>({maleName}, {femaleName});");
         }
 
         SB.AppendLine("else");
@@ -356,6 +431,13 @@ public class CFile
         using var _ = SB.IncreaseDepth();
         SB.AppendLine($"{getter}.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
     }
+    
+    private void IFormLinkNullableGetterReader(Type info, string getter, Context ctx)
+    {
+        SB.AppendLine($"if (reader.TokenType != JsonTokenType.Null)");
+        using var _ = SB.IncreaseDepth();
+        SB.AppendLine($"{getter}.FormKey.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));");
+    }
 
     private void IFormLinkReader(Type info, string getter, Context ctx)
     {
@@ -446,6 +528,23 @@ public class CFile
     private string CleanName(string s)
     {
         return s.Replace("+", ".");
+    }
+
+    /// <summary>
+    /// Gets the CS representation of the type.
+    /// </summary>
+    /// <returns></returns>
+    private string TypeToCS(Type t)
+    {
+        if (t.IsPrimitive)
+            return t.Name;
+        if (t.IsGenericType)
+        {
+            var fname = t.GetGenericTypeDefinition().FullName!.Split("`").First();
+            return $"{fname}<" + string.Join(",", t.GetGenericArguments().Select(TypeToCS)) + ">";
+        }
+
+        return t.FullName!.Replace("+", ".");
     }
     
     private void EnumWriter(Type info, string getter, Context ctx)

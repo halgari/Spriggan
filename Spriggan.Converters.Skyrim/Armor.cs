@@ -10,6 +10,7 @@ using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
+using Mutagen.Bethesda.Plugins;
 
 public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
 {
@@ -1218,7 +1219,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.ArmorModel?>(null, null);
+                        retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.ArmorModel>(default, default);
                         reader.Read();
                         while(true)
                         {

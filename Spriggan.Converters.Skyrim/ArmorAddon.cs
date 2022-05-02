@@ -10,6 +10,7 @@ using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
+using Mutagen.Bethesda.Plugins;
 
 public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
 {
@@ -568,7 +569,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.FirstPersonModel = new GenderedItem<Mutagen.Bethesda.Skyrim.Model?>(null, null);
+                        retval.FirstPersonModel = new GenderedItem<Mutagen.Bethesda.Skyrim.Model>(default, default);
                         reader.Read();
                         while(true)
                         {
@@ -763,7 +764,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.Priority = new GenderedItem<System.Byte?>(null, null);
+                        retval.Priority = new GenderedItem<Byte>(default, default);
                         reader.Read();
                         while(true)
                         {
@@ -798,7 +799,8 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.SkinTexture = new GenderedItem<Mutagen.Bethesda.Plugins.IFormLinkNullableGetter`1[[Mutagen.Bethesda.Skyrim.ITextureSetGetter, Mutagen.Bethesda.Skyrim, Version=0.37.0.0, Culture=neutral, PublicKeyToken=null]]?>(null, null);
+                        var itm15 = FormLinkNullable<Mutagen.Bethesda.Skyrim.ITextureSetGetter>.Null;
+                        var itm16 = FormLinkNullable<Mutagen.Bethesda.Skyrim.ITextureSetGetter>.Null;
                         reader.Read();
                         while(true)
                         {
@@ -806,20 +808,19 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                             {
                                 break;
                             }
-                            var prop15 = reader.GetString();
+                            var prop17 = reader.GetString();
                             reader.Read();
-                            switch(prop15)
+                            switch(prop17)
                             {
                                 case "Male":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                        retval.SkinTexture.Male.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                break;
+                                    itm15 = new FormLinkNullable<Mutagen.Bethesda.Skyrim.ITextureSetGetter>(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                    break;
                                 case "Female":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                        retval.SkinTexture.Female.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                break;
+                                    itm16 =  new FormLinkNullable<Mutagen.Bethesda.Skyrim.ITextureSetGetter>(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                    break;
                             }
                         }
+                        retval.SkinTexture = new GenderedItem<Mutagen.Bethesda.Plugins.IFormLinkNullableGetter<Mutagen.Bethesda.Skyrim.ITextureSetGetter>>(itm15, itm16);
                     }
                     else
                     {
@@ -834,7 +835,8 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.TextureSwapList = new GenderedItem<Mutagen.Bethesda.Plugins.IFormLinkNullableGetter`1[[Mutagen.Bethesda.Skyrim.IFormListGetter, Mutagen.Bethesda.Skyrim, Version=0.37.0.0, Culture=neutral, PublicKeyToken=null]]?>(null, null);
+                        var itm18 = FormLinkNullable<Mutagen.Bethesda.Skyrim.IFormListGetter>.Null;
+                        var itm19 = FormLinkNullable<Mutagen.Bethesda.Skyrim.IFormListGetter>.Null;
                         reader.Read();
                         while(true)
                         {
@@ -842,20 +844,19 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                             {
                                 break;
                             }
-                            var prop16 = reader.GetString();
+                            var prop20 = reader.GetString();
                             reader.Read();
-                            switch(prop16)
+                            switch(prop20)
                             {
                                 case "Male":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                        retval.TextureSwapList.Male.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                break;
+                                    itm18 = new FormLinkNullable<Mutagen.Bethesda.Skyrim.IFormListGetter>(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                    break;
                                 case "Female":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                        retval.TextureSwapList.Female.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                break;
+                                    itm19 =  new FormLinkNullable<Mutagen.Bethesda.Skyrim.IFormListGetter>(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                    break;
                             }
                         }
+                        retval.TextureSwapList = new GenderedItem<Mutagen.Bethesda.Plugins.IFormLinkNullableGetter<Mutagen.Bethesda.Skyrim.IFormListGetter>>(itm18, itm19);
                     }
                     else
                     {
@@ -882,7 +883,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.WeightSliderEnabled = new GenderedItem<System.Boolean?>(null, null);
+                        retval.WeightSliderEnabled = new GenderedItem<Boolean>(default, default);
                         reader.Read();
                         while(true)
                         {
@@ -890,9 +891,9 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                             {
                                 break;
                             }
-                            var prop17 = reader.GetString();
+                            var prop21 = reader.GetString();
                             reader.Read();
-                            switch(prop17)
+                            switch(prop21)
                             {
                                 case "Male":
                                     retval.WeightSliderEnabled.Male = reader.GetBoolean();
@@ -913,7 +914,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                     {
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
-                        retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.Model?>(null, null);
+                        retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.Model>(default, default);
                         reader.Read();
                         while(true)
                         {
@@ -921,9 +922,9 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                             {
                                 break;
                             }
-                            var prop18 = reader.GetString();
+                            var prop22 = reader.GetString();
                             reader.Read();
-                            switch(prop18)
+                            switch(prop22)
                             {
                                 case "Male":
                                     retval.WorldModel.Male = new Mutagen.Bethesda.Skyrim.Model();
@@ -936,9 +937,9 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop19 = reader.GetString();
+                                            var prop23 = reader.GetString();
                                             reader.Read();
-                                            switch(prop19)
+                                            switch(prop23)
                                             {
                                                 case "AlternateTextures":
                                                     if (reader.TokenType != JsonTokenType.Null)
@@ -951,7 +952,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm20 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            var itm24 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -961,18 +962,18 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop21 = reader.GetString();
+                                                                    var prop25 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop21)
+                                                                    switch(prop25)
                                                                     {
                                                                         case "Name":
-                                                                            itm20.Name = reader.GetString();
+                                                                            itm24.Name = reader.GetString();
                                                                             break;
                                                                         case "NewTexture":
-                                                                            itm20.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm24.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "Index":
-                                                                            itm20.Index = reader.GetInt32();
+                                                                            itm24.Index = reader.GetInt32();
                                                                             break;
                                                                     }
                                                                 }
@@ -981,7 +982,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             {
                                                                 reader.Skip();
                                                             }
-                                                            retval.WorldModel.Male.AlternateTextures.Add(itm20);
+                                                            retval.WorldModel.Male.AlternateTextures.Add(itm24);
                                                         }
                                                     }
                                                     break;
@@ -1013,9 +1014,9 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop22 = reader.GetString();
+                                            var prop26 = reader.GetString();
                                             reader.Read();
-                                            switch(prop22)
+                                            switch(prop26)
                                             {
                                                 case "AlternateTextures":
                                                     if (reader.TokenType != JsonTokenType.Null)
@@ -1028,7 +1029,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm23 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            var itm27 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1038,18 +1039,18 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop24 = reader.GetString();
+                                                                    var prop28 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop24)
+                                                                    switch(prop28)
                                                                     {
                                                                         case "Name":
-                                                                            itm23.Name = reader.GetString();
+                                                                            itm27.Name = reader.GetString();
                                                                             break;
                                                                         case "NewTexture":
-                                                                            itm23.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm27.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "Index":
-                                                                            itm23.Index = reader.GetInt32();
+                                                                            itm27.Index = reader.GetInt32();
                                                                             break;
                                                                     }
                                                                 }
@@ -1058,7 +1059,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             {
                                                                 reader.Skip();
                                                             }
-                                                            retval.WorldModel.Female.AlternateTextures.Add(itm23);
+                                                            retval.WorldModel.Female.AlternateTextures.Add(itm27);
                                                         }
                                                     }
                                                     break;

@@ -10,6 +10,7 @@ using Mutagen.Bethesda.Strings;
 using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
+using Mutagen.Bethesda.Plugins;
 
 public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter>
 {
