@@ -12,392 +12,402 @@ using Mutagen.Bethesda.Plugins.Records;
 
 public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueInformationGetter>
 {
-  public override IActorValueInformationGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-  {
-    throw new NotImplementedException();
-  }
-  public override void Write(Utf8JsonWriter writer, IActorValueInformationGetter value, JsonSerializerOptions options)
-  {
-    writer.WriteStartObject();
-    writer.WriteFormKeyHeader(value, options);
-    
-    // Abbreviation
-    writer.WritePropertyName("Abbreviation");
-    writer.WriteStringValue(value.Abbreviation);
-    
-    // CNAM
-    writer.WritePropertyName("CNAM");
-    if (value.CNAM == null)
-      writer.WriteNullValue();
-    else
+    public override IActorValueInformationGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-      writer.WriteBase64StringValue(value.CNAM.Value);
+        throw new NotImplementedException();
     }
-    
-    // Description
-    writer.WritePropertyName("Description");
-    writer.WriteTranslatedString(value.Description, options);
-    
-    // EditorID
-    writer.WritePropertyName("EditorID");
-    writer.WriteStringValue(value.EditorID);
-    
-    // IsCompressed
-    writer.WritePropertyName("IsCompressed");
-    writer.WriteBooleanValue(value.IsCompressed);
-    
-    // IsDeleted
-    writer.WritePropertyName("IsDeleted");
-    writer.WriteBooleanValue(value.IsDeleted);
-    
-    // MajorRecordFlagsRaw
-    writer.WritePropertyName("MajorRecordFlagsRaw");
-    writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
-    
-    // Name
-    writer.WritePropertyName("Name");
-    writer.WriteTranslatedString(value.Name, options);
-    
-    // PerkTree
-    writer.WritePropertyName("PerkTree");
-    if (value.PerkTree != null)
+    public override void Write(Utf8JsonWriter writer, IActorValueInformationGetter value, JsonSerializerOptions options)
     {
-      writer.WriteStartArray();
-      foreach(var itm1 in value.PerkTree)
-      {
-        if (itm1 != null)
+        writer.WriteStartObject();
+        writer.WriteFormKeyHeader(value, options);
+        
+        // Abbreviation
+        writer.WritePropertyName("Abbreviation");
+        writer.WriteStringValue(value.Abbreviation);
+        
+        // CNAM
+        writer.WritePropertyName("CNAM");
+        if (value.CNAM == null)
+            writer.WriteNullValue();
+        else
         {
-          writer.WriteStartObject();
-          
-          // Perk
-          writer.WritePropertyName("Perk");
-          writer.WriteStringValue(itm1.Perk.FormKey.ToString());
-          
-          // FNAM
-          writer.WritePropertyName("FNAM");
-          if (itm1.FNAM == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteBase64StringValue(itm1.FNAM.Value);
-          }
-          
-          // PerkGridX
-          writer.WritePropertyName("PerkGridX");
-          if (itm1.PerkGridX == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteNumberValue((long)itm1.PerkGridX);
-          }
-          
-          // PerkGridY
-          writer.WritePropertyName("PerkGridY");
-          if (itm1.PerkGridY == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteNumberValue((long)itm1.PerkGridY);
-          }
-          
-          // HorizontalPosition
-          writer.WritePropertyName("HorizontalPosition");
-          if (itm1.HorizontalPosition == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteNumberValue((long)itm1.HorizontalPosition);
-          }
-          
-          // VerticalPosition
-          writer.WritePropertyName("VerticalPosition");
-          if (itm1.VerticalPosition == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteNumberValue((long)itm1.VerticalPosition);
-          }
-          
-          // AssociatedSkill
-          writer.WritePropertyName("AssociatedSkill");
-          if (itm1.AssociatedSkill.IsNull)
-            writer.WriteNullValue();
-          else
-            writer.WriteStringValue(itm1.AssociatedSkill.FormKey.ToString());
-          
-          // ConnectionLineToIndices
-          writer.WritePropertyName("ConnectionLineToIndices");
-          if (itm1.ConnectionLineToIndices != null)
-          {
+            writer.WriteBase64StringValue(value.CNAM.Value);
+        }
+        
+        // Description
+        writer.WritePropertyName("Description");
+        writer.WriteTranslatedString(value.Description, options);
+        
+        // EditorID
+        writer.WritePropertyName("EditorID");
+        writer.WriteStringValue(value.EditorID);
+        
+        // IsCompressed
+        writer.WritePropertyName("IsCompressed");
+        writer.WriteBooleanValue(value.IsCompressed);
+        
+        // IsDeleted
+        writer.WritePropertyName("IsDeleted");
+        writer.WriteBooleanValue(value.IsDeleted);
+        
+        // MajorRecordFlagsRaw
+        writer.WritePropertyName("MajorRecordFlagsRaw");
+        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        
+        // Name
+        writer.WritePropertyName("Name");
+        writer.WriteTranslatedString(value.Name, options);
+        
+        // PerkTree
+        writer.WritePropertyName("PerkTree");
+        if (value.PerkTree != null)
+        {
             writer.WriteStartArray();
-            foreach(var itm2 in itm1.ConnectionLineToIndices)
+            foreach(var itm1 in value.PerkTree)
             {
-              writer.WriteNumberValue((long)itm2);
+                if (itm1 != null)
+                {
+                    writer.WriteStartObject();
+                    
+                    // Perk
+                    writer.WritePropertyName("Perk");
+                    writer.WriteStringValue(itm1.Perk.FormKey.ToString());
+                    
+                    // FNAM
+                    writer.WritePropertyName("FNAM");
+                    if (itm1.FNAM == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteBase64StringValue(itm1.FNAM.Value);
+                    }
+                    
+                    // PerkGridX
+                    writer.WritePropertyName("PerkGridX");
+                    if (itm1.PerkGridX == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteNumberValue((long)itm1.PerkGridX);
+                    }
+                    
+                    // PerkGridY
+                    writer.WritePropertyName("PerkGridY");
+                    if (itm1.PerkGridY == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteNumberValue((long)itm1.PerkGridY);
+                    }
+                    
+                    // HorizontalPosition
+                    writer.WritePropertyName("HorizontalPosition");
+                    if (itm1.HorizontalPosition == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteNumberValue((long)itm1.HorizontalPosition);
+                    }
+                    
+                    // VerticalPosition
+                    writer.WritePropertyName("VerticalPosition");
+                    if (itm1.VerticalPosition == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteNumberValue((long)itm1.VerticalPosition);
+                    }
+                    
+                    // AssociatedSkill
+                    writer.WritePropertyName("AssociatedSkill");
+                    if (itm1.AssociatedSkill.IsNull)
+                        writer.WriteNullValue();
+                    else
+                        writer.WriteStringValue(itm1.AssociatedSkill.FormKey.ToString());
+                    
+                    // ConnectionLineToIndices
+                    writer.WritePropertyName("ConnectionLineToIndices");
+                    if (itm1.ConnectionLineToIndices != null)
+                    {
+                        writer.WriteStartArray();
+                        foreach(var itm2 in itm1.ConnectionLineToIndices)
+                        {
+                            writer.WriteNumberValue((long)itm2);
+                        }
+                        writer.WriteEndArray();
+                    }
+                    else
+                    {
+                        writer.WriteNullValue();
+                    }
+                    
+                    // Index
+                    writer.WritePropertyName("Index");
+                    if (itm1.Index == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteNumberValue((long)itm1.Index);
+                    }
+                    writer.WriteEndObject();
+                }
+                else
+                {
+                    writer.WriteNullValue();
+                }
             }
             writer.WriteEndArray();
-          }
-          else
-          {
-            writer.WriteNullValue();
-          }
-          
-          // Index
-          writer.WritePropertyName("Index");
-          if (itm1.Index == null)
-            writer.WriteNullValue();
-          else
-          {
-            writer.WriteNumberValue((long)itm1.Index);
-          }
-          writer.WriteEndObject();
         }
         else
         {
-          writer.WriteNullValue();
+            writer.WriteNullValue();
         }
-      }
-      writer.WriteEndArray();
+        
+        // Skill
+        writer.WritePropertyName("Skill");
+        if (value.Skill != null)
+        {
+            writer.WriteStartObject();
+            
+            // UseMult
+            writer.WritePropertyName("UseMult");
+            writer.WriteNumberValue((long)value.Skill.UseMult);
+            
+            // OffsetMult
+            writer.WritePropertyName("OffsetMult");
+            writer.WriteNumberValue((long)value.Skill.OffsetMult);
+            
+            // ImproveMult
+            writer.WritePropertyName("ImproveMult");
+            writer.WriteNumberValue((long)value.Skill.ImproveMult);
+            
+            // ImproveOffset
+            writer.WritePropertyName("ImproveOffset");
+            writer.WriteNumberValue((long)value.Skill.ImproveOffset);
+            writer.WriteEndObject();
+        }
+        else
+        {
+            writer.WriteNullValue();
+        }
+        
+        // Version2
+        writer.WritePropertyName("Version2");
+        writer.WriteNumberValue((uint)value.Version2);
+        
+        // VersionControl
+        writer.WritePropertyName("VersionControl");
+        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteEndObject();
     }
-    else
-    {
-      writer.WriteNullValue();
-    }
-    
-    // Skill
-    writer.WritePropertyName("Skill");
-    if (value.Skill != null)
-    {
-      writer.WriteStartObject();
-      
-      // UseMult
-      writer.WritePropertyName("UseMult");
-      writer.WriteNumberValue((long)value.Skill.UseMult);
-      
-      // OffsetMult
-      writer.WritePropertyName("OffsetMult");
-      writer.WriteNumberValue((long)value.Skill.OffsetMult);
-      
-      // ImproveMult
-      writer.WritePropertyName("ImproveMult");
-      writer.WriteNumberValue((long)value.Skill.ImproveMult);
-      
-      // ImproveOffset
-      writer.WritePropertyName("ImproveOffset");
-      writer.WriteNumberValue((long)value.Skill.ImproveOffset);
-      writer.WriteEndObject();
-    }
-    else
-    {
-      writer.WriteNullValue();
-    }
-    
-    // Version2
-    writer.WritePropertyName("Version2");
-    writer.WriteNumberValue((uint)value.Version2);
-    
-    // VersionControl
-    writer.WritePropertyName("VersionControl");
-    writer.WriteNumberValue((long)value.VersionControl);
-    writer.WriteEndObject();
-  }
 }
 public class ActorValueInformation_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ActorValueInformation>
 {
-  private IActorValueInformationGetter_Converter _getterConverter;
-  public ActorValueInformation_Converter()
-  {
-    _getterConverter = new IActorValueInformationGetter_Converter();
-  }
-  public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ActorValueInformation value, JsonSerializerOptions options)
-  {
-    _getterConverter.Write(writer, (IActorValueInformationGetter)value, options);
-  }
-  public override Mutagen.Bethesda.Skyrim.ActorValueInformation Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-  {
-    if (reader.TokenType != JsonTokenType.StartObject)
-        throw new JsonException();
-    reader.Read();
-    var retval = new Mutagen.Bethesda.Skyrim.ActorValueInformation(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
-    while (true)
+    private IActorValueInformationGetter_Converter _getterConverter;
+    public ActorValueInformation_Converter()
     {
-      reader.Read();
-      if (reader.TokenType == JsonTokenType.EndObject)
-      {
+        _getterConverter = new IActorValueInformationGetter_Converter();
+    }
+    public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ActorValueInformation value, JsonSerializerOptions options)
+    {
+        _getterConverter.Write(writer, (IActorValueInformationGetter)value, options);
+    }
+    public override Mutagen.Bethesda.Skyrim.ActorValueInformation Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartObject)
+            throw new JsonException();
         reader.Read();
-        break;
-      }
-      var prop = reader.GetString();
-      reader.Read();
-      switch (prop)
-      {
-        case "Abbreviation":
-          retval.Abbreviation = reader.GetString();
-          break;
-        case "CNAM":
-          if (reader.TokenType != JsonTokenType.Null) {
-            retval.CNAM = reader.GetBytesFromBase64();
-          }
-          break;
-        case "Description":
-          retval.Description ??= new TranslatedString(Language.English);
-          SerializerExtensions.ReadTranslatedString(ref reader, retval.Description, options);
-          break;
-        case "EditorID":
-          retval.EditorID = reader.GetString();
-          break;
-        case "FormVersion":
-          retval.FormVersion = reader.GetUInt16();
-          break;
-        case "IsCompressed":
-          retval.IsCompressed = reader.GetBoolean();
-          break;
-        case "IsDeleted":
-          retval.IsDeleted = reader.GetBoolean();
-          break;
-        case "MajorRecordFlagsRaw":
-          retval.MajorRecordFlagsRaw = reader.GetInt32();
-          break;
-        case "Name":
-          retval.Name ??= new TranslatedString(Language.English);
-          SerializerExtensions.ReadTranslatedString(ref reader, retval.Name, options);
-          break;
-        case "PerkTree":
-          if (reader.TokenType != JsonTokenType.Null)
-          {
-            if (reader.TokenType != JsonTokenType.StartArray)
-              throw new JsonException();
-            while (true)
+        var retval = new Mutagen.Bethesda.Skyrim.ActorValueInformation(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        while (true)
+        {
+            reader.Read();
+            if (reader.TokenType == JsonTokenType.EndObject)
             {
-              reader.Read();
-              if (reader.TokenType == JsonTokenType.EndArray)
+                reader.Read();
                 break;
-              var itm3 = new Mutagen.Bethesda.Skyrim.ActorValuePerkNode();
-              if (reader.TokenType != JsonTokenType.Null)
-              {
-                if (reader.TokenType != JsonTokenType.StartObject)
-                  throw new JsonException();
-                while (true)
-                {
-                  reader.Read();
-                  if (reader.TokenType == JsonTokenType.EndObject)
+            }
+            var prop = reader.GetString();
+            reader.Read();
+            switch (prop)
+            {
+                case "Abbreviation":
+                    retval.Abbreviation = reader.GetString();
                     break;
-                  var prop4 = reader.GetString();
-                  reader.Read();
-                  switch(prop4)
-                  {
-                    case "Perk":
-                      itm3.Perk.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                      break;
-                    case "FNAM":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.FNAM = reader.GetBytesFromBase64();
-                      }
-                      break;
-                    case "PerkGridX":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.PerkGridX = reader.GetUInt32();
-                      }
-                      break;
-                    case "PerkGridY":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.PerkGridY = reader.GetUInt32();
-                      }
-                      break;
-                    case "HorizontalPosition":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.HorizontalPosition = reader.GetSingle();
-                      }
-                      break;
-                    case "VerticalPosition":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.VerticalPosition = reader.GetSingle();
-                      }
-                      break;
-                    case "AssociatedSkill":
-                      if (reader.TokenType != JsonTokenType.Null)
-                        itm3.AssociatedSkill.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                      break;
-                    case "ConnectionLineToIndices":
-                      if (reader.TokenType != JsonTokenType.Null)
-                      {
+                case "CNAM":
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
+                        retval.CNAM = reader.GetBytesFromBase64();
+                    }
+                    break;
+                case "Description":
+                    retval.Description ??= new TranslatedString(Language.English);
+                    SerializerExtensions.ReadTranslatedString(ref reader, retval.Description, options);
+                    break;
+                case "EditorID":
+                    retval.EditorID = reader.GetString();
+                    break;
+                case "FormVersion":
+                    retval.FormVersion = reader.GetUInt16();
+                    break;
+                case "IsCompressed":
+                    retval.IsCompressed = reader.GetBoolean();
+                    break;
+                case "IsDeleted":
+                    retval.IsDeleted = reader.GetBoolean();
+                    break;
+                case "MajorRecordFlagsRaw":
+                    retval.MajorRecordFlagsRaw = reader.GetInt32();
+                    break;
+                case "Name":
+                    retval.Name ??= new TranslatedString(Language.English);
+                    SerializerExtensions.ReadTranslatedString(ref reader, retval.Name, options);
+                    break;
+                case "PerkTree":
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
                         if (reader.TokenType != JsonTokenType.StartArray)
-                          throw new JsonException();
+                            throw new JsonException();
                         while (true)
                         {
-                          reader.Read();
-                          if (reader.TokenType == JsonTokenType.EndArray)
-                            break;
-                          UInt32 itm5;
-                          itm5 = reader.GetUInt32();
-                          itm3.ConnectionLineToIndices.Add(itm5);
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndArray)
+                                break;
+                            var itm3 = new Mutagen.Bethesda.Skyrim.ActorValuePerkNode();
+                            if (reader.TokenType != JsonTokenType.Null)
+                            {
+                                if (reader.TokenType != JsonTokenType.StartObject)
+                                    throw new JsonException();
+                                while (true)
+                                {
+                                    reader.Read();
+                                    if (reader.TokenType == JsonTokenType.EndObject)
+                                        break;
+                                    var prop4 = reader.GetString();
+                                    reader.Read();
+                                    switch(prop4)
+                                    {
+                                        case "Perk":
+                                            itm3.Perk.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                            break;
+                                        case "FNAM":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.FNAM = reader.GetBytesFromBase64();
+                                            }
+                                            break;
+                                        case "PerkGridX":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.PerkGridX = reader.GetUInt32();
+                                            }
+                                            break;
+                                        case "PerkGridY":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.PerkGridY = reader.GetUInt32();
+                                            }
+                                            break;
+                                        case "HorizontalPosition":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.HorizontalPosition = reader.GetSingle();
+                                            }
+                                            break;
+                                        case "VerticalPosition":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.VerticalPosition = reader.GetSingle();
+                                            }
+                                            break;
+                                        case "AssociatedSkill":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                                itm3.AssociatedSkill.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                            break;
+                                        case "ConnectionLineToIndices":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                if (reader.TokenType != JsonTokenType.StartArray)
+                                                    throw new JsonException();
+                                                while (true)
+                                                {
+                                                    reader.Read();
+                                                    if (reader.TokenType == JsonTokenType.EndArray)
+                                                        break;
+                                                    UInt32 itm5;
+                                                    itm5 = reader.GetUInt32();
+                                                    itm3.ConnectionLineToIndices.Add(itm5);
+                                                }
+                                            }
+                                            break;
+                                        case "Index":
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                itm3.Index = reader.GetUInt32();
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                reader.Skip();
+                            }
+                            retval.PerkTree.Add(itm3);
                         }
-                      }
-                      break;
-                    case "Index":
-                      if (reader.TokenType != JsonTokenType.Null) {
-                        itm3.Index = reader.GetUInt32();
-                      }
-                      break;
-                  }
-                }
-              }
-              else
-              {
-                reader.Skip();
-              }
-              retval.PerkTree.Add(itm3);
+                    }
+                    break;
+                case "Skill":
+                    retval.Skill = new Mutagen.Bethesda.Skyrim.ActorValueSkill();
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
+                        if (reader.TokenType != JsonTokenType.StartObject)
+                            throw new JsonException();
+                        while (true)
+                        {
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndObject)
+                                break;
+                            var prop6 = reader.GetString();
+                            reader.Read();
+                            switch(prop6)
+                            {
+                                case "UseMult":
+                                    retval.Skill.UseMult = reader.GetSingle();
+                                    break;
+                                case "OffsetMult":
+                                    retval.Skill.OffsetMult = reader.GetSingle();
+                                    break;
+                                case "ImproveMult":
+                                    retval.Skill.ImproveMult = reader.GetSingle();
+                                    break;
+                                case "ImproveOffset":
+                                    retval.Skill.ImproveOffset = reader.GetSingle();
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                    break;
+                case "SkyrimMajorRecordFlags":
+                    retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
+                    break;
+                case "Version2":
+                    retval.Version2 = reader.GetUInt16();
+                    break;
+                case "VersionControl":
+                    retval.VersionControl = reader.GetUInt32();
+                    break;
+                default:
+                    reader.Skip();
+                    break;
             }
-          }
-          break;
-        case "Skill":
-          retval.Skill = new Mutagen.Bethesda.Skyrim.ActorValueSkill();
-          if (reader.TokenType != JsonTokenType.Null)
-          {
-            if (reader.TokenType != JsonTokenType.StartObject)
-              throw new JsonException();
-            while (true)
-            {
-              reader.Read();
-              if (reader.TokenType == JsonTokenType.EndObject)
-                break;
-              var prop6 = reader.GetString();
-              reader.Read();
-              switch(prop6)
-              {
-                case "UseMult":
-                  retval.Skill.UseMult = reader.GetSingle();
-                  break;
-                case "OffsetMult":
-                  retval.Skill.OffsetMult = reader.GetSingle();
-                  break;
-                case "ImproveMult":
-                  retval.Skill.ImproveMult = reader.GetSingle();
-                  break;
-                case "ImproveOffset":
-                  retval.Skill.ImproveOffset = reader.GetSingle();
-                  break;
-              }
-            }
-          }
-          else
-          {
-            reader.Skip();
-          }
-          break;
-        case "SkyrimMajorRecordFlags":
-          retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
-          break;
-        case "Version2":
-          retval.Version2 = reader.GetUInt16();
-          break;
-        case "VersionControl":
-          retval.VersionControl = reader.GetUInt32();
-          break;
-        default:
-            reader.Skip();
-            break;
-      }
+        }
+        return retval;
     }
-    return retval;
-  }
 }

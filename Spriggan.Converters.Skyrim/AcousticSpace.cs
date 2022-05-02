@@ -12,181 +12,184 @@ using Mutagen.Bethesda.Plugins.Records;
 
 public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter>
 {
-  public override IAcousticSpaceGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-  {
-    throw new NotImplementedException();
-  }
-  public override void Write(Utf8JsonWriter writer, IAcousticSpaceGetter value, JsonSerializerOptions options)
-  {
-    writer.WriteStartObject();
-    writer.WriteFormKeyHeader(value, options);
-    
-    // AmbientSound
-    writer.WritePropertyName("AmbientSound");
-    if (value.AmbientSound.IsNull)
-      writer.WriteNullValue();
-    else
-      writer.WriteStringValue(value.AmbientSound.FormKey.ToString());
-    
-    // EditorID
-    writer.WritePropertyName("EditorID");
-    writer.WriteStringValue(value.EditorID);
-    
-    // EnvironmentType
-    writer.WritePropertyName("EnvironmentType");
-    if (value.EnvironmentType.IsNull)
-      writer.WriteNullValue();
-    else
-      writer.WriteStringValue(value.EnvironmentType.FormKey.ToString());
-    
-    // IsCompressed
-    writer.WritePropertyName("IsCompressed");
-    writer.WriteBooleanValue(value.IsCompressed);
-    
-    // IsDeleted
-    writer.WritePropertyName("IsDeleted");
-    writer.WriteBooleanValue(value.IsDeleted);
-    
-    // MajorRecordFlagsRaw
-    writer.WritePropertyName("MajorRecordFlagsRaw");
-    writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
-    
-    // ObjectBounds
-    writer.WritePropertyName("ObjectBounds");
-    if (value.ObjectBounds != null)
+    public override IAcousticSpaceGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-      writer.WriteStartObject();
-      
-      // First
-      writer.WritePropertyName("First");
-      writer.WriteP3Int16(value.ObjectBounds.First, options);
-      
-      // Second
-      writer.WritePropertyName("Second");
-      writer.WriteP3Int16(value.ObjectBounds.Second, options);
-      writer.WriteEndObject();
+        throw new NotImplementedException();
     }
-    else
+    public override void Write(Utf8JsonWriter writer, IAcousticSpaceGetter value, JsonSerializerOptions options)
     {
-      writer.WriteNullValue();
+        writer.WriteStartObject();
+        writer.WriteFormKeyHeader(value, options);
+        
+        // AmbientSound
+        writer.WritePropertyName("AmbientSound");
+        if (value.AmbientSound.IsNull)
+            writer.WriteNullValue();
+        else
+            writer.WriteStringValue(value.AmbientSound.FormKey.ToString());
+        
+        // EditorID
+        writer.WritePropertyName("EditorID");
+        writer.WriteStringValue(value.EditorID);
+        
+        // EnvironmentType
+        writer.WritePropertyName("EnvironmentType");
+        if (value.EnvironmentType.IsNull)
+            writer.WriteNullValue();
+        else
+            writer.WriteStringValue(value.EnvironmentType.FormKey.ToString());
+        
+        // IsCompressed
+        writer.WritePropertyName("IsCompressed");
+        writer.WriteBooleanValue(value.IsCompressed);
+        
+        // IsDeleted
+        writer.WritePropertyName("IsDeleted");
+        writer.WriteBooleanValue(value.IsDeleted);
+        
+        // MajorRecordFlagsRaw
+        writer.WritePropertyName("MajorRecordFlagsRaw");
+        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        
+        // ObjectBounds
+        writer.WritePropertyName("ObjectBounds");
+        if (value.ObjectBounds != null)
+        {
+            writer.WriteStartObject();
+            
+            // First
+            writer.WritePropertyName("First");
+            writer.WriteP3Int16(value.ObjectBounds.First, options);
+            
+            // Second
+            writer.WritePropertyName("Second");
+            writer.WriteP3Int16(value.ObjectBounds.Second, options);
+            writer.WriteEndObject();
+        }
+        else
+        {
+            writer.WriteNullValue();
+        }
+        
+        // UseSoundFromRegion
+        writer.WritePropertyName("UseSoundFromRegion");
+        if (value.UseSoundFromRegion.IsNull)
+            writer.WriteNullValue();
+        else
+            writer.WriteStringValue(value.UseSoundFromRegion.FormKey.ToString());
+        
+        // Version2
+        writer.WritePropertyName("Version2");
+        writer.WriteNumberValue((uint)value.Version2);
+        
+        // VersionControl
+        writer.WritePropertyName("VersionControl");
+        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteEndObject();
     }
-    
-    // UseSoundFromRegion
-    writer.WritePropertyName("UseSoundFromRegion");
-    if (value.UseSoundFromRegion.IsNull)
-      writer.WriteNullValue();
-    else
-      writer.WriteStringValue(value.UseSoundFromRegion.FormKey.ToString());
-    
-    // Version2
-    writer.WritePropertyName("Version2");
-    writer.WriteNumberValue((uint)value.Version2);
-    
-    // VersionControl
-    writer.WritePropertyName("VersionControl");
-    writer.WriteNumberValue((long)value.VersionControl);
-    writer.WriteEndObject();
-  }
 }
 public class AcousticSpace_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.AcousticSpace>
 {
-  private IAcousticSpaceGetter_Converter _getterConverter;
-  public AcousticSpace_Converter()
-  {
-    _getterConverter = new IAcousticSpaceGetter_Converter();
-  }
-  public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AcousticSpace value, JsonSerializerOptions options)
-  {
-    _getterConverter.Write(writer, (IAcousticSpaceGetter)value, options);
-  }
-  public override Mutagen.Bethesda.Skyrim.AcousticSpace Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-  {
-    if (reader.TokenType != JsonTokenType.StartObject)
-        throw new JsonException();
-    reader.Read();
-    var retval = new Mutagen.Bethesda.Skyrim.AcousticSpace(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
-    while (true)
+    private IAcousticSpaceGetter_Converter _getterConverter;
+    public AcousticSpace_Converter()
     {
-      reader.Read();
-      if (reader.TokenType == JsonTokenType.EndObject)
-      {
-        reader.Read();
-        break;
-      }
-      var prop = reader.GetString();
-      reader.Read();
-      switch (prop)
-      {
-        case "AmbientSound":
-          if (reader.TokenType != JsonTokenType.Null)
-            retval.AmbientSound.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-          break;
-        case "EditorID":
-          retval.EditorID = reader.GetString();
-          break;
-        case "EnvironmentType":
-          if (reader.TokenType != JsonTokenType.Null)
-            retval.EnvironmentType.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-          break;
-        case "FormVersion":
-          retval.FormVersion = reader.GetUInt16();
-          break;
-        case "IsCompressed":
-          retval.IsCompressed = reader.GetBoolean();
-          break;
-        case "IsDeleted":
-          retval.IsDeleted = reader.GetBoolean();
-          break;
-        case "MajorRecordFlagsRaw":
-          retval.MajorRecordFlagsRaw = reader.GetInt32();
-          break;
-        case "ObjectBounds":
-          retval.ObjectBounds = new Mutagen.Bethesda.Skyrim.ObjectBounds();
-          if (reader.TokenType != JsonTokenType.Null)
-          {
-            if (reader.TokenType != JsonTokenType.StartObject)
-              throw new JsonException();
-            while (true)
-            {
-              reader.Read();
-              if (reader.TokenType == JsonTokenType.EndObject)
-                break;
-              var prop1 = reader.GetString();
-              reader.Read();
-              switch(prop1)
-              {
-                case "First":
-                  retval.ObjectBounds.First = SerializerExtensions.ReadP3Int16(ref reader, options);
-                  break;
-                case "Second":
-                  retval.ObjectBounds.Second = SerializerExtensions.ReadP3Int16(ref reader, options);
-                  break;
-              }
-            }
-          }
-          else
-          {
-            reader.Skip();
-          }
-          break;
-        case "SkyrimMajorRecordFlags":
-          retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
-          break;
-        case "UseSoundFromRegion":
-          if (reader.TokenType != JsonTokenType.Null)
-            retval.UseSoundFromRegion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-          break;
-        case "Version2":
-          retval.Version2 = reader.GetUInt16();
-          break;
-        case "VersionControl":
-          retval.VersionControl = reader.GetUInt32();
-          break;
-        default:
-            reader.Skip();
-            break;
-      }
+        _getterConverter = new IAcousticSpaceGetter_Converter();
     }
-    return retval;
-  }
+    public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AcousticSpace value, JsonSerializerOptions options)
+    {
+        _getterConverter.Write(writer, (IAcousticSpaceGetter)value, options);
+    }
+    public override Mutagen.Bethesda.Skyrim.AcousticSpace Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartObject)
+            throw new JsonException();
+        reader.Read();
+        var retval = new Mutagen.Bethesda.Skyrim.AcousticSpace(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        while (true)
+        {
+            reader.Read();
+            if (reader.TokenType == JsonTokenType.EndObject)
+            {
+                reader.Read();
+                break;
+            }
+            var prop = reader.GetString();
+            reader.Read();
+            switch (prop)
+            {
+                case "AmbientSound":
+                    if (reader.TokenType != JsonTokenType.Null)
+                        retval.AmbientSound.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                    break;
+                case "EditorID":
+                    retval.EditorID = reader.GetString();
+                    break;
+                case "EnvironmentType":
+                    if (reader.TokenType != JsonTokenType.Null)
+                        retval.EnvironmentType.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                    break;
+                case "FormVersion":
+                    retval.FormVersion = reader.GetUInt16();
+                    break;
+                case "IsCompressed":
+                    retval.IsCompressed = reader.GetBoolean();
+                    break;
+                case "IsDeleted":
+                    retval.IsDeleted = reader.GetBoolean();
+                    break;
+                case "MajorRecordFlagsRaw":
+                    retval.MajorRecordFlagsRaw = reader.GetInt32();
+                    break;
+                case "ObjectBounds":
+                    retval.ObjectBounds = new Mutagen.Bethesda.Skyrim.ObjectBounds();
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
+                        if (reader.TokenType != JsonTokenType.StartObject)
+                            throw new JsonException();
+                        while (true)
+                        {
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndObject)
+                                break;
+                            var prop1 = reader.GetString();
+                            reader.Read();
+                            switch(prop1)
+                            {
+                                case "First":
+                                    retval.ObjectBounds.First = SerializerExtensions.ReadP3Int16(ref reader, options);
+                                    break;
+                                case "Second":
+                                    retval.ObjectBounds.Second = SerializerExtensions.ReadP3Int16(ref reader, options);
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                    break;
+                case "SkyrimMajorRecordFlags":
+                    retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
+                    break;
+                case "UseSoundFromRegion":
+                    if (reader.TokenType != JsonTokenType.Null)
+                        retval.UseSoundFromRegion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                    break;
+                case "Version2":
+                    retval.Version2 = reader.GetUInt16();
+                    break;
+                case "VersionControl":
+                    retval.VersionControl = reader.GetUInt32();
+                    break;
+                default:
+                    reader.Skip();
+                    break;
+            }
+        }
+        return retval;
+    }
 }
