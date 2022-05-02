@@ -177,7 +177,7 @@ foreach (var t in majorTypes)
         }
     
         cfile.SB.AppendLine("public static Type[] SupportedRecords = new[]");
-        using (cfile.SB.CurlyBrace())
+        using (cfile.SB.CurlyBrace(appendSemiColon:true))
         {
             foreach (var type in majorTypes)
             {

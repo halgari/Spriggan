@@ -36,5 +36,5 @@ public static class GeneratedConvertersExtensions
         typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation),
         typeof(Mutagen.Bethesda.Skyrim.AddonNode),
         typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus),
-    }
+    };
 }
