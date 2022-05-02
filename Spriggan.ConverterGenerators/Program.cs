@@ -28,8 +28,10 @@ var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly)
 
 var propLimit = 1000;
 
+var majorTypes = allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name)
+    .Take(6);
 // Writers
-foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name).Take(4))
+foreach (var t in majorTypes)
 {
     Console.WriteLine($"Emitting {t.Main.Name}.cs");
     var cfile = new CFile(GameRelease.SkyrimSE);
@@ -149,6 +151,14 @@ foreach (var t in allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordG
 
     cfile.Code("return services;");
     cfile.Code("}");
+    
+    cfile.Code("public static Type[] SupportedRecords = new[] {");
+    foreach (var type in majorTypes)
+    {
+        cfile.Code($"typeof({type.Main.FullName}),");
+    }
+    cfile.Code("};");
+    
     cfile.Code("}");
 
     cfile.Write("../Spriggan.Converters.Skyrim/Generated.cs");
