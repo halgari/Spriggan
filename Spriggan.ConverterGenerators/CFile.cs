@@ -276,7 +276,10 @@ public class CFile
 
     private void MemorySliceWriter(Type type, string getter, Context ctx)
     {
-        SB.AppendLine($"writer.WriteBase64StringValue({getter}.Value);");
+        if (ctx.IsNullable) 
+            SB.AppendLine($"writer.WriteBase64StringValue({getter}.Value);");
+        else
+            SB.AppendLine($"writer.WriteBase64StringValue({getter});");
     }
 
     private void NullableWriter(Type type, string getter, Context ctx)
@@ -525,8 +528,9 @@ public class CFile
                 {
                     
                     var ifaceType = t.Assembly.GetTypes().First(ti => ti.Name == "I" + t.Name + "Getter");
+                    var itm = GetItem();
                     
-                    SB.AppendLine($"case {ifaceType.FullName} i:");
+                    SB.AppendLine($"case {ifaceType.FullName} {itm}:");
                     using (SB.IncreaseDepth())
                     {
 
@@ -537,7 +541,7 @@ public class CFile
                             SB.AppendLine("");
                             SB.AppendLine($"// {p.Name}");
                             SB.AppendLine($"writer.WritePropertyName(\"{p.Name}\");");
-                            EmitWriter(p.PropertyType,  "i." + p.Name, ctx);
+                            EmitWriter(p.PropertyType,  $"{itm}." + p.Name, ctx);
                         }
                         SB.AppendLine("break;");
                     }
@@ -626,9 +630,7 @@ public class CFile
         var allTypes = Inheritors(type);
         if (allTypes.Length <= 1) return false;
 
-        // We want only the leaf classes
-        allTypes = allTypes.Where(a => !allTypes.Where(ai => ai != a).Any(ai => ai.InheritsFrom(a))).ToArray();
-        
+
         ctx = ctx with {IsConstructed = false};
 
         SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
@@ -802,9 +804,9 @@ public class CFile
     private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter, Context ctx)
     {
         var sym = GetItem();
-        if (itemType.IsPrimitive || itemType == typeof(string))
+        if (itemType.IsPrimitive || itemType == typeof(string) || Inheritors(itemType).Length > 1)
         {
-            SB.AppendLine($"{itemType.Name} {sym};");
+            SB.AppendLine($"{itemType.Name} {sym} = default;");
             EmitReader(itemType, sym, ctx with {IsSettable = false});
         }
         else

@@ -347,7 +347,7 @@ public class ActorValueInformation_Converter : JsonConverter<Mutagen.Bethesda.Sk
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                         break;
-                                                    UInt32 itm5;
+                                                    UInt32 itm5 = default;
                                                     itm5 = reader.GetUInt32();
                                                     itm3.ConnectionLineToIndices.Add(itm5);
                                                 }
