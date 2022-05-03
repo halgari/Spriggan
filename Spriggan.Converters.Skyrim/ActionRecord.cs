@@ -17,7 +17,7 @@ public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActionRecordGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActionRecordGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ActionRecord));
     }
     public override IActionRecordGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -17,7 +17,7 @@ public class IAlchemicalApparatusGetter_Converter : JsonConverter<IAlchemicalApp
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAlchemicalApparatusGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAlchemicalApparatusGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus));
     }
     public override IAlchemicalApparatusGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -17,7 +17,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAmmunitionGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAmmunitionGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Ammunition));
     }
     public override IAmmunitionGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

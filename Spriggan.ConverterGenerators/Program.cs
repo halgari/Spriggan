@@ -45,7 +45,7 @@ foreach (var t in majorTypes)
         cfile.SB.AppendLine("public override bool CanConvert(Type t)");
         using (cfile.SB.CurlyBrace())
         {
-            cfile.SB.AppendLine($"return t.InheritsFrom(typeof({t.Getter.FullName}));");
+            cfile.SB.AppendLine($"return t.InheritsFrom(typeof({t.Getter.FullName})) && !t.InheritsFrom(typeof({t.Main.FullName}));");
         }
         
         cfile.SB.AppendLine(

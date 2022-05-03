@@ -17,7 +17,7 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArmorGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArmorGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Armor));
     }
     public override IArmorGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

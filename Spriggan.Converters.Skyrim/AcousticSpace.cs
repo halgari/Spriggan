@@ -17,7 +17,7 @@ public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAcousticSpaceGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAcousticSpaceGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AcousticSpace));
     }
     public override IAcousticSpaceGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

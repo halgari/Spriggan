@@ -17,7 +17,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IBodyPartDataGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IBodyPartDataGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.BodyPartData));
     }
     public override IBodyPartDataGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

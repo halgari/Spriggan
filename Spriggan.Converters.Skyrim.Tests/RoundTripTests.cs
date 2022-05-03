@@ -34,16 +34,23 @@ public class RoundTripTests
     [MemberData(nameof(RecordTypes))]
     public void AllRecordTypes(Type mainType, Type getterType)
     {
+        var enumFunction = typeof(RoundTripTests).GetMethod("RunTests").MakeGenericMethod(mainType, getterType);
+        enumFunction.Invoke(this, new object?[]{});
+    }
+
+    public void RunTests<TMain, TGetter>()
+        where TMain : class, IMajorRecord
+        where TGetter : class, IMajorRecordGetter
+    {
         using var env = GameEnvironment.Typical.Skyrim(SkyrimRelease.SkyrimSE);
-
-        var enumFunction = typeof(RoundTripTests).GetMethod("GetRecords").MakeGenericMethod(getterType);
-        var records = (IEnumerable<object>)enumFunction.Invoke(this, new object?[]{env});
-
-        foreach (var record in records)
+        
+        foreach (var record in GetRecords<TGetter>(env))
         {
             var stream = new MemoryStream();
             JsonSerializer.Serialize(stream, record, _soptions);
+            stream.Position = 0;
             var str = Encoding.UTF8.GetString(stream.ToArray());
+            var value = JsonSerializer.Deserialize<TMain>(stream, _soptions);
         }
     }
 

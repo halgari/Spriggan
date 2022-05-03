@@ -17,7 +17,7 @@ public class IAnimatedObjectGetter_Converter : JsonConverter<IAnimatedObjectGett
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAnimatedObjectGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAnimatedObjectGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AnimatedObject));
     }
     public override IAnimatedObjectGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -17,7 +17,7 @@ public class IArtObjectGetter_Converter : JsonConverter<IArtObjectGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArtObjectGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArtObjectGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ArtObject));
     }
     public override IArtObjectGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

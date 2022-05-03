@@ -17,7 +17,7 @@ public class IAssociationTypeGetter_Converter : JsonConverter<IAssociationTypeGe
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAssociationTypeGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAssociationTypeGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AssociationType));
     }
     public override IAssociationTypeGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

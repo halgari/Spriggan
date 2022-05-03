@@ -17,7 +17,7 @@ public class IActivatorGetter_Converter : JsonConverter<IActivatorGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActivatorGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActivatorGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Activator));
     }
     public override IActivatorGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -17,7 +17,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActorValueInformationGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActorValueInformationGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation));
     }
     public override IActorValueInformationGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

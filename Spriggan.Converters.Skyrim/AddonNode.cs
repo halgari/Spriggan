@@ -17,7 +17,7 @@ public class IAddonNodeGetter_Converter : JsonConverter<IAddonNodeGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAddonNodeGetter));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAddonNodeGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AddonNode));
     }
     public override IAddonNodeGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
