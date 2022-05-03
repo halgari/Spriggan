@@ -56,7 +56,7 @@ public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // ObjectBounds
         writer.WritePropertyName("ObjectBounds");
@@ -91,7 +91,7 @@ public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

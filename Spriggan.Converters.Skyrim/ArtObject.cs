@@ -42,7 +42,7 @@ public class IArtObjectGetter_Converter : JsonConverter<IArtObjectGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Model
         writer.WritePropertyName("Model");
@@ -71,7 +71,7 @@ public class IArtObjectGetter_Converter : JsonConverter<IArtObjectGetter>
                         
                         // Index
                         writer.WritePropertyName("Index");
-                        writer.WriteNumberValue((long)itm1.Index);
+                        writer.WriteNumberValue(itm1.Index);
                         writer.WriteEndObject();
                     }
                     else
@@ -140,7 +140,7 @@ public class IArtObjectGetter_Converter : JsonConverter<IArtObjectGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

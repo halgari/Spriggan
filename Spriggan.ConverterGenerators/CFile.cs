@@ -5,6 +5,7 @@ using Loqui;
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
+using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Strings;
 using Noggog;
 using Noggog.StructuredStrings;
@@ -324,7 +325,7 @@ public class CFile
             typeof(T) == typeof(byte) || 
             typeof(T) == typeof(short))
         {
-            SB.AppendLine($"writer.WriteNumberValue((long){getter});");
+            SB.AppendLine($"writer.WriteNumberValue({getter});");
         }
         else if (typeof(T) == typeof(ushort))
         {
@@ -476,6 +477,10 @@ public class CFile
 
     private void LoquiObjectWriter(Type info, string getter, Context ctx)
     {
+        if (info.IsAbstract && AbstractLoquiObjectWriter(info, getter, ctx))
+        {
+            return;
+        }
         SB.AppendLine($"if ({getter} != null)");
         using (SB.CurlyBrace())
         {
@@ -496,6 +501,57 @@ public class CFile
         {
             SB.AppendLine("writer.WriteNullValue();");
         }
+    }
+
+    private bool AbstractLoquiObjectWriter(Type info, string getter, Context ctx)
+    {
+        var allTypes = info.Assembly.GetTypes().Where(t => t.InheritsFrom(info) && !t.IsAbstract && t.IsPublic).ToArray();
+        if (allTypes.Length <= 1) return false;
+
+        // We want only the leaf classes
+        allTypes = allTypes.Where(a => !allTypes.Where(ai => ai != a).Any(ai => ai.InheritsFrom(a))).ToArray();
+        
+        SB.AppendLine($"if ({getter} != null)");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("writer.WriteStartObject();");
+            SB.AppendLine($"switch ({getter})");
+            using (SB.CurlyBrace())
+            {
+
+                foreach (var t in allTypes)
+                {
+                    
+                    var ifaceType = t.Assembly.GetTypes().First(ti => ti.Name == "I" + t.Name + "Getter");
+                    
+                    SB.AppendLine($"case {ifaceType.FullName} i:");
+                    using (SB.IncreaseDepth())
+                    {
+
+                        SB.AppendLine($"writer.WriteString(\"$type\", \"{t.Name}\");");
+
+                        foreach (var p in VisitorGenerator.Members(ifaceType))
+                        {
+                            SB.AppendLine("");
+                            SB.AppendLine($"// {p.Name}");
+                            SB.AppendLine($"writer.WritePropertyName(\"{p.Name}\");");
+                            EmitWriter(p.PropertyType,  "i." + p.Name, ctx);
+                        }
+                        SB.AppendLine("break;");
+                    }
+                }
+            }
+
+            SB.AppendLine("writer.WriteEndObject();");
+        }
+
+        SB.AppendLine("else");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("writer.WriteNullValue();");
+        }
+
+        return true;
     }
 
 

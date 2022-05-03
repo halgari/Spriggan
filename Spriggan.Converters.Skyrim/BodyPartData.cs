@@ -42,7 +42,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Model
         writer.WritePropertyName("Model");
@@ -71,7 +71,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                         
                         // Index
                         writer.WritePropertyName("Index");
-                        writer.WriteNumberValue((long)itm1.Index);
+                        writer.WriteNumberValue(itm1.Index);
                         writer.WriteEndObject();
                     }
                     else
@@ -138,7 +138,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // DamageMult
                     writer.WritePropertyName("DamageMult");
-                    writer.WriteNumberValue((long)itm2.DamageMult);
+                    writer.WriteNumberValue(itm2.DamageMult);
                     
                     // Flags
                     writer.WritePropertyName("Flags");
@@ -150,7 +150,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // HealthPercent
                     writer.WritePropertyName("HealthPercent");
-                    writer.WriteNumberValue((long)itm2.HealthPercent);
+                    writer.WriteNumberValue(itm2.HealthPercent);
                     
                     // ActorValue
                     writer.WritePropertyName("ActorValue");
@@ -158,11 +158,11 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // ToHitChance
                     writer.WritePropertyName("ToHitChance");
-                    writer.WriteNumberValue((long)itm2.ToHitChance);
+                    writer.WriteNumberValue(itm2.ToHitChance);
                     
                     // ExplodableExplosionChance
                     writer.WritePropertyName("ExplodableExplosionChance");
-                    writer.WriteNumberValue((long)itm2.ExplodableExplosionChance);
+                    writer.WriteNumberValue(itm2.ExplodableExplosionChance);
                     
                     // ExplodableDebrisCount
                     writer.WritePropertyName("ExplodableDebrisCount");
@@ -178,15 +178,15 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // TrackingMaxAngle
                     writer.WritePropertyName("TrackingMaxAngle");
-                    writer.WriteNumberValue((long)itm2.TrackingMaxAngle);
+                    writer.WriteNumberValue(itm2.TrackingMaxAngle);
                     
                     // ExplodableDebrisScale
                     writer.WritePropertyName("ExplodableDebrisScale");
-                    writer.WriteNumberValue((long)itm2.ExplodableDebrisScale);
+                    writer.WriteNumberValue(itm2.ExplodableDebrisScale);
                     
                     // SeverableDebrisCount
                     writer.WritePropertyName("SeverableDebrisCount");
-                    writer.WriteNumberValue((long)itm2.SeverableDebrisCount);
+                    writer.WriteNumberValue(itm2.SeverableDebrisCount);
                     
                     // SeverableDebris
                     writer.WritePropertyName("SeverableDebris");
@@ -198,7 +198,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // SeverableDebrisScale
                     writer.WritePropertyName("SeverableDebrisScale");
-                    writer.WriteNumberValue((long)itm2.SeverableDebrisScale);
+                    writer.WriteNumberValue(itm2.SeverableDebrisScale);
                     
                     // GorePositioning
                     writer.WritePropertyName("GorePositioning");
@@ -218,11 +218,11 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // SeverableDecalCount
                     writer.WritePropertyName("SeverableDecalCount");
-                    writer.WriteNumberValue((long)itm2.SeverableDecalCount);
+                    writer.WriteNumberValue(itm2.SeverableDecalCount);
                     
                     // ExplodableDecalCount
                     writer.WritePropertyName("ExplodableDecalCount");
-                    writer.WriteNumberValue((long)itm2.ExplodableDecalCount);
+                    writer.WriteNumberValue(itm2.ExplodableDecalCount);
                     
                     // Unknown
                     writer.WritePropertyName("Unknown");
@@ -230,7 +230,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
                     
                     // LimbReplacementScale
                     writer.WritePropertyName("LimbReplacementScale");
-                    writer.WriteNumberValue((long)itm2.LimbReplacementScale);
+                    writer.WriteNumberValue(itm2.LimbReplacementScale);
                     
                     // LimbReplacementModel
                     writer.WritePropertyName("LimbReplacementModel");
@@ -272,7 +272,7 @@ public class IBodyPartDataGetter_Converter : JsonConverter<IBodyPartDataGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

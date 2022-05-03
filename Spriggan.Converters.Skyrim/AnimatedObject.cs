@@ -42,7 +42,7 @@ public class IAnimatedObjectGetter_Converter : JsonConverter<IAnimatedObjectGett
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Model
         writer.WritePropertyName("Model");
@@ -71,7 +71,7 @@ public class IAnimatedObjectGetter_Converter : JsonConverter<IAnimatedObjectGett
                         
                         // Index
                         writer.WritePropertyName("Index");
-                        writer.WriteNumberValue((long)itm1.Index);
+                        writer.WriteNumberValue(itm1.Index);
                         writer.WriteEndObject();
                     }
                     else
@@ -115,7 +115,7 @@ public class IAnimatedObjectGetter_Converter : JsonConverter<IAnimatedObjectGett
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

@@ -50,7 +50,7 @@ public class IAddonNodeGetter_Converter : JsonConverter<IAddonNodeGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // MasterParticleSystemCap
         writer.WritePropertyName("MasterParticleSystemCap");
@@ -83,7 +83,7 @@ public class IAddonNodeGetter_Converter : JsonConverter<IAddonNodeGetter>
                         
                         // Index
                         writer.WritePropertyName("Index");
-                        writer.WriteNumberValue((long)itm1.Index);
+                        writer.WriteNumberValue(itm1.Index);
                         writer.WriteEndObject();
                     }
                     else
@@ -119,7 +119,7 @@ public class IAddonNodeGetter_Converter : JsonConverter<IAddonNodeGetter>
         
         // NodeIndex
         writer.WritePropertyName("NodeIndex");
-        writer.WriteNumberValue((long)value.NodeIndex);
+        writer.WriteNumberValue(value.NodeIndex);
         
         // ObjectBounds
         writer.WritePropertyName("ObjectBounds");
@@ -154,7 +154,7 @@ public class IAddonNodeGetter_Converter : JsonConverter<IAddonNodeGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

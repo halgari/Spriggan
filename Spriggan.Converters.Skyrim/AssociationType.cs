@@ -46,7 +46,7 @@ public class IAssociationTypeGetter_Converter : JsonConverter<IAssociationTypeGe
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // ParentTitle
         writer.WritePropertyName("ParentTitle");
@@ -86,7 +86,7 @@ public class IAssociationTypeGetter_Converter : JsonConverter<IAssociationTypeGe
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

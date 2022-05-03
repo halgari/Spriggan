@@ -43,6 +43,8 @@ public static class GeneratedConvertersExtensions
         services.AddSingleton<JsonConverter, AssociationType_Converter>();
         services.AddSingleton<JsonConverter, IBodyPartDataGetter_Converter>();
         services.AddSingleton<JsonConverter, BodyPartData_Converter>();
+        services.AddSingleton<JsonConverter, IBookGetter_Converter>();
+        services.AddSingleton<JsonConverter, Book_Converter>();
         return services;
     }
     public static (Type Main, Type Getter)[] SupportedRecords = new[]
@@ -60,5 +62,6 @@ public static class GeneratedConvertersExtensions
         (typeof(Mutagen.Bethesda.Skyrim.ArtObject), typeof(Mutagen.Bethesda.Skyrim.IArtObjectGetter)),
         (typeof(Mutagen.Bethesda.Skyrim.AssociationType), typeof(Mutagen.Bethesda.Skyrim.IAssociationTypeGetter)),
         (typeof(Mutagen.Bethesda.Skyrim.BodyPartData), typeof(Mutagen.Bethesda.Skyrim.IBodyPartDataGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.Book), typeof(Mutagen.Bethesda.Skyrim.IBookGetter)),
     };
 }

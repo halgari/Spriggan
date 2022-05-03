@@ -81,7 +81,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
         
         // DetectionSoundValue
         writer.WritePropertyName("DetectionSoundValue");
-        writer.WriteNumberValue((long)value.DetectionSoundValue);
+        writer.WriteNumberValue(value.DetectionSoundValue);
         
         // DNAMDataTypeState
         writer.WritePropertyName("DNAMDataTypeState");
@@ -126,7 +126,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue((long)itm2.Index);
+                            writer.WriteNumberValue(itm2.Index);
                             writer.WriteEndObject();
                         }
                         else
@@ -185,7 +185,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue((long)itm3.Index);
+                            writer.WriteNumberValue(itm3.Index);
                             writer.WriteEndObject();
                         }
                         else
@@ -238,7 +238,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Priority
         writer.WritePropertyName("Priority");
@@ -250,9 +250,9 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
         {
             writer.WriteStartObject();
             writer.WritePropertyName("Male");
-            writer.WriteNumberValue((long)value.Priority.Male);
+            writer.WriteNumberValue(value.Priority.Male);
             writer.WritePropertyName("Female");
-            writer.WriteNumberValue((long)value.Priority.Female);
+            writer.WriteNumberValue(value.Priority.Female);
             writer.WriteEndObject();
         }
         
@@ -313,7 +313,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
         
         // Unknown2
         writer.WritePropertyName("Unknown2");
-        writer.WriteNumberValue((long)value.Unknown2);
+        writer.WriteNumberValue(value.Unknown2);
         
         // Version2
         writer.WritePropertyName("Version2");
@@ -321,11 +321,11 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         
         // WeaponAdjust
         writer.WritePropertyName("WeaponAdjust");
-        writer.WriteNumberValue((long)value.WeaponAdjust);
+        writer.WriteNumberValue(value.WeaponAdjust);
         
         // WeightSliderEnabled
         writer.WritePropertyName("WeightSliderEnabled");
@@ -378,7 +378,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue((long)itm4.Index);
+                            writer.WriteNumberValue(itm4.Index);
                             writer.WriteEndObject();
                         }
                         else
@@ -437,7 +437,7 @@ public class IArmorAddonGetter_Converter : JsonConverter<IArmorAddonGetter>
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue((long)itm5.Index);
+                            writer.WriteNumberValue(itm5.Index);
                             writer.WriteEndObject();
                         }
                         else

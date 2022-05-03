@@ -47,6 +47,37 @@ public static class SerializerExtensions
         return new FormKey(new ModKey(split[0], mt), uint.Parse(split[3], NumberStyles.HexNumber));
     }
 
+    /// <summary>
+    /// Gets the value for the given property as a string, will not advance the reader, so use this
+    /// to parse the type of an object before parsing the rest of the object
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    public static string ReadTag(ref Utf8JsonReader reader, string property, JsonSerializerOptions options)
+    {
+        var cReader = reader;
+        while (true)
+        {
+            cReader.Read();
+            if (cReader.TokenType == JsonTokenType.EndObject)
+            {
+                throw new JsonException($"End of object before property {property} was found");
+            }
+            var prop = cReader.GetString();
+            if (prop == property)
+            {
+                cReader.Read();
+                return cReader.GetString()!;
+            }
+            else
+            {
+                cReader.Read();
+            }
+        }
+
+    }
+
 
     public static FormKey ReadFormKeyValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {

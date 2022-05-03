@@ -13,82 +13,24 @@ using System.Globalization;
 using Mutagen.Bethesda.Plugins;
 using Noggog;
 
-public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
+public class IBookGetter_Converter : JsonConverter<IBookGetter>
 {
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArmorGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Armor));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IBookGetter)) && !t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Book));
     }
-    public override IArmorGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override IBookGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }
-    public override void Write(Utf8JsonWriter writer, IArmorGetter value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, IBookGetter value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
         writer.WriteFormKeyHeader(value, options);
         
-        // AlternateBlockMaterial
-        writer.WritePropertyName("AlternateBlockMaterial");
-        if (value.AlternateBlockMaterial.IsNull)
-            writer.WriteNullValue();
-        else
-            writer.WriteStringValue(value.AlternateBlockMaterial.FormKey.ToString());
-        
-        // Armature
-        writer.WritePropertyName("Armature");
-        if (value.Armature != null)
-        {
-            writer.WriteStartArray();
-            foreach(var itm1 in value.Armature)
-            {
-                writer.WriteStringValue(itm1.FormKey.ToString());
-            }
-            writer.WriteEndArray();
-        }
-        else
-        {
-            writer.WriteNullValue();
-        }
-        
-        // ArmorRating
-        writer.WritePropertyName("ArmorRating");
-        writer.WriteNumberValue(value.ArmorRating);
-        
-        // BashImpactDataSet
-        writer.WritePropertyName("BashImpactDataSet");
-        if (value.BashImpactDataSet.IsNull)
-            writer.WriteNullValue();
-        else
-            writer.WriteStringValue(value.BashImpactDataSet.FormKey.ToString());
-        
-        // BodyTemplate
-        writer.WritePropertyName("BodyTemplate");
-        if (value.BodyTemplate != null)
-        {
-            writer.WriteStartObject();
-            
-            // FirstPersonFlags
-            writer.WritePropertyName("FirstPersonFlags");
-            writer.WriteFlags(value.BodyTemplate.FirstPersonFlags);
-            
-            // Flags
-            writer.WritePropertyName("Flags");
-            writer.WriteFlags(value.BodyTemplate.Flags);
-            
-            // ArmorType
-            writer.WritePropertyName("ArmorType");
-            writer.WriteEnum(value.BodyTemplate.ArmorType);
-            
-            // ActsLike44
-            writer.WritePropertyName("ActsLike44");
-            writer.WriteBooleanValue(value.BodyTemplate.ActsLike44);
-            writer.WriteEndObject();
-        }
-        else
-        {
-            writer.WriteNullValue();
-        }
+        // BookText
+        writer.WritePropertyName("BookText");
+        writer.WriteTranslatedString(value.BookText, options);
         
         // DATADataTypeState
         writer.WritePropertyName("DATADataTypeState");
@@ -137,49 +79,49 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
             if (value.Destructible.Stages != null)
             {
                 writer.WriteStartArray();
-                foreach(var itm2 in value.Destructible.Stages)
+                foreach(var itm1 in value.Destructible.Stages)
                 {
-                    if (itm2 != null)
+                    if (itm1 != null)
                     {
                         writer.WriteStartObject();
                         
                         // Data
                         writer.WritePropertyName("Data");
-                        if (itm2.Data != null)
+                        if (itm1.Data != null)
                         {
                             writer.WriteStartObject();
                             
                             // HealthPercent
                             writer.WritePropertyName("HealthPercent");
-                            writer.WriteNumberValue(itm2.Data.HealthPercent);
+                            writer.WriteNumberValue(itm1.Data.HealthPercent);
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue(itm2.Data.Index);
+                            writer.WriteNumberValue(itm1.Data.Index);
                             
                             // ModelDamageStage
                             writer.WritePropertyName("ModelDamageStage");
-                            writer.WriteNumberValue(itm2.Data.ModelDamageStage);
+                            writer.WriteNumberValue(itm1.Data.ModelDamageStage);
                             
                             // Flags
                             writer.WritePropertyName("Flags");
-                            writer.WriteEnum(itm2.Data.Flags);
+                            writer.WriteEnum(itm1.Data.Flags);
                             
                             // SelfDamagePerSecond
                             writer.WritePropertyName("SelfDamagePerSecond");
-                            writer.WriteNumberValue(itm2.Data.SelfDamagePerSecond);
+                            writer.WriteNumberValue(itm1.Data.SelfDamagePerSecond);
                             
                             // Explosion
                             writer.WritePropertyName("Explosion");
-                            writer.WriteStringValue(itm2.Data.Explosion.FormKey.ToString());
+                            writer.WriteStringValue(itm1.Data.Explosion.FormKey.ToString());
                             
                             // Debris
                             writer.WritePropertyName("Debris");
-                            writer.WriteStringValue(itm2.Data.Debris.FormKey.ToString());
+                            writer.WriteStringValue(itm1.Data.Debris.FormKey.ToString());
                             
                             // DebrisCount
                             writer.WritePropertyName("DebrisCount");
-                            writer.WriteNumberValue(itm2.Data.DebrisCount);
+                            writer.WriteNumberValue(itm1.Data.DebrisCount);
                             writer.WriteEndObject();
                         }
                         else
@@ -189,32 +131,32 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
                         
                         // Model
                         writer.WritePropertyName("Model");
-                        if (itm2.Model != null)
+                        if (itm1.Model != null)
                         {
                             writer.WriteStartObject();
                             
                             // AlternateTextures
                             writer.WritePropertyName("AlternateTextures");
-                            if (itm2.Model.AlternateTextures != null)
+                            if (itm1.Model.AlternateTextures != null)
                             {
                                 writer.WriteStartArray();
-                                foreach(var itm3 in itm2.Model.AlternateTextures)
+                                foreach(var itm2 in itm1.Model.AlternateTextures)
                                 {
-                                    if (itm3 != null)
+                                    if (itm2 != null)
                                     {
                                         writer.WriteStartObject();
                                         
                                         // Name
                                         writer.WritePropertyName("Name");
-                                        writer.WriteStringValue(itm3.Name);
+                                        writer.WriteStringValue(itm2.Name);
                                         
                                         // NewTexture
                                         writer.WritePropertyName("NewTexture");
-                                        writer.WriteStringValue(itm3.NewTexture.FormKey.ToString());
+                                        writer.WriteStringValue(itm2.NewTexture.FormKey.ToString());
                                         
                                         // Index
                                         writer.WritePropertyName("Index");
-                                        writer.WriteNumberValue(itm3.Index);
+                                        writer.WriteNumberValue(itm2.Index);
                                         writer.WriteEndObject();
                                     }
                                     else
@@ -231,15 +173,15 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
                             
                             // File
                             writer.WritePropertyName("File");
-                            writer.WriteStringValue(itm2.Model.File);
+                            writer.WriteStringValue(itm1.Model.File);
                             
                             // Data
                             writer.WritePropertyName("Data");
-                            if (itm2.Model.Data == null)
+                            if (itm1.Model.Data == null)
                                 writer.WriteNullValue();
                             else
                             {
-                                writer.WriteBase64StringValue(itm2.Model.Data.Value);
+                                writer.WriteBase64StringValue(itm1.Model.Data.Value);
                             }
                             writer.WriteEndObject();
                         }
@@ -271,21 +213,36 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
         writer.WritePropertyName("EditorID");
         writer.WriteStringValue(value.EditorID);
         
-        // EnchantmentAmount
-        writer.WritePropertyName("EnchantmentAmount");
-        if (value.EnchantmentAmount == null)
-            writer.WriteNullValue();
+        // Flags
+        writer.WritePropertyName("Flags");
+        writer.WriteFlags(value.Flags);
+        
+        // Icons
+        writer.WritePropertyName("Icons");
+        if (value.Icons != null)
+        {
+            writer.WriteStartObject();
+            
+            // LargeIconFilename
+            writer.WritePropertyName("LargeIconFilename");
+            writer.WriteStringValue(value.Icons.LargeIconFilename);
+            
+            // SmallIconFilename
+            writer.WritePropertyName("SmallIconFilename");
+            writer.WriteStringValue(value.Icons.SmallIconFilename);
+            writer.WriteEndObject();
+        }
         else
         {
-            writer.WriteNumberValue((uint)value.EnchantmentAmount);
+            writer.WriteNullValue();
         }
         
-        // EquipmentType
-        writer.WritePropertyName("EquipmentType");
-        if (value.EquipmentType.IsNull)
+        // InventoryArt
+        writer.WritePropertyName("InventoryArt");
+        if (value.InventoryArt.IsNull)
             writer.WriteNullValue();
         else
-            writer.WriteStringValue(value.EquipmentType.FormKey.ToString());
+            writer.WriteStringValue(value.InventoryArt.FormKey.ToString());
         
         // IsCompressed
         writer.WritePropertyName("IsCompressed");
@@ -300,9 +257,9 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
         if (value.Keywords != null)
         {
             writer.WriteStartArray();
-            foreach(var itm4 in value.Keywords)
+            foreach(var itm3 in value.Keywords)
             {
-                writer.WriteStringValue(itm4.FormKey.ToString());
+                writer.WriteStringValue(itm3.FormKey.ToString());
             }
             writer.WriteEndArray();
         }
@@ -311,13 +268,70 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
             writer.WriteNullValue();
         }
         
-        // MajorFlags
-        writer.WritePropertyName("MajorFlags");
-        writer.WriteFlags(value.MajorFlags);
-        
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
         writer.WriteNumberValue(value.MajorRecordFlagsRaw);
+        
+        // Model
+        writer.WritePropertyName("Model");
+        if (value.Model != null)
+        {
+            writer.WriteStartObject();
+            
+            // AlternateTextures
+            writer.WritePropertyName("AlternateTextures");
+            if (value.Model.AlternateTextures != null)
+            {
+                writer.WriteStartArray();
+                foreach(var itm4 in value.Model.AlternateTextures)
+                {
+                    if (itm4 != null)
+                    {
+                        writer.WriteStartObject();
+                        
+                        // Name
+                        writer.WritePropertyName("Name");
+                        writer.WriteStringValue(itm4.Name);
+                        
+                        // NewTexture
+                        writer.WritePropertyName("NewTexture");
+                        writer.WriteStringValue(itm4.NewTexture.FormKey.ToString());
+                        
+                        // Index
+                        writer.WritePropertyName("Index");
+                        writer.WriteNumberValue(itm4.Index);
+                        writer.WriteEndObject();
+                    }
+                    else
+                    {
+                        writer.WriteNullValue();
+                    }
+                }
+                writer.WriteEndArray();
+            }
+            else
+            {
+                writer.WriteNullValue();
+            }
+            
+            // File
+            writer.WritePropertyName("File");
+            writer.WriteStringValue(value.Model.File);
+            
+            // Data
+            writer.WritePropertyName("Data");
+            if (value.Model.Data == null)
+                writer.WriteNullValue();
+            else
+            {
+                writer.WriteBase64StringValue(value.Model.Data.Value);
+            }
+            writer.WriteEndObject();
+        }
+        else
+        {
+            writer.WriteNullValue();
+        }
         
         // Name
         writer.WritePropertyName("Name");
@@ -343,13 +357,6 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
             writer.WriteNullValue();
         }
         
-        // ObjectEffect
-        writer.WritePropertyName("ObjectEffect");
-        if (value.ObjectEffect.IsNull)
-            writer.WriteNullValue();
-        else
-            writer.WriteStringValue(value.ObjectEffect.FormKey.ToString());
-        
         // PickUpSound
         writer.WritePropertyName("PickUpSound");
         if (value.PickUpSound.IsNull)
@@ -364,23 +371,54 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
         else
             writer.WriteStringValue(value.PutDownSound.FormKey.ToString());
         
-        // Race
-        writer.WritePropertyName("Race");
-        if (value.Race.IsNull)
-            writer.WriteNullValue();
+        // Teaches
+        writer.WritePropertyName("Teaches");
+        if (value.Teaches != null)
+        {
+            writer.WriteStartObject();
+            switch (value.Teaches)
+            {
+                case Mutagen.Bethesda.Skyrim.IBookSkillGetter i:
+                    writer.WriteString("$type", "BookSkill");
+                    
+                    // Skill
+                    writer.WritePropertyName("Skill");
+                    if (i.Skill == null)
+                        writer.WriteNullValue();
+                    else
+                    {
+                        writer.WriteEnum(i.Skill.Value);
+                    }
+                    break;
+                case Mutagen.Bethesda.Skyrim.IBookSpellGetter i:
+                    writer.WriteString("$type", "BookSpell");
+                    
+                    // Spell
+                    writer.WritePropertyName("Spell");
+                    writer.WriteStringValue(i.Spell.FormKey.ToString());
+                    break;
+                case Mutagen.Bethesda.Skyrim.IBookTeachesNothingGetter i:
+                    writer.WriteString("$type", "BookTeachesNothing");
+                    
+                    // RawContent
+                    writer.WritePropertyName("RawContent");
+                    writer.WriteNumberValue(i.RawContent);
+                    break;
+            }
+            writer.WriteEndObject();
+        }
         else
-            writer.WriteStringValue(value.Race.FormKey.ToString());
-        
-        // RagdollConstraintTemplate
-        writer.WritePropertyName("RagdollConstraintTemplate");
-        writer.WriteStringValue(value.RagdollConstraintTemplate);
-        
-        // TemplateArmor
-        writer.WritePropertyName("TemplateArmor");
-        if (value.TemplateArmor.IsNull)
+        {
             writer.WriteNullValue();
-        else
-            writer.WriteStringValue(value.TemplateArmor.FormKey.ToString());
+        }
+        
+        // Type
+        writer.WritePropertyName("Type");
+        writer.WriteEnum(value.Type);
+        
+        // Unused
+        writer.WritePropertyName("Unused");
+        writer.WriteNumberValue((uint)value.Unused);
         
         // Value
         writer.WritePropertyName("Value");
@@ -722,219 +760,25 @@ public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
         // Weight
         writer.WritePropertyName("Weight");
         writer.WriteNumberValue(value.Weight);
-        
-        // WorldModel
-        writer.WritePropertyName("WorldModel");
-        if (value.WorldModel == null)
-        {
-            writer.WriteNullValue();
-        }
-        else
-        {
-            writer.WriteStartObject();
-            writer.WritePropertyName("Male");
-            if (value.WorldModel.Male != null)
-            {
-                writer.WriteStartObject();
-                
-                // Model
-                writer.WritePropertyName("Model");
-                if (value.WorldModel.Male.Model != null)
-                {
-                    writer.WriteStartObject();
-                    
-                    // AlternateTextures
-                    writer.WritePropertyName("AlternateTextures");
-                    if (value.WorldModel.Male.Model.AlternateTextures != null)
-                    {
-                        writer.WriteStartArray();
-                        foreach(var itm12 in value.WorldModel.Male.Model.AlternateTextures)
-                        {
-                            if (itm12 != null)
-                            {
-                                writer.WriteStartObject();
-                                
-                                // Name
-                                writer.WritePropertyName("Name");
-                                writer.WriteStringValue(itm12.Name);
-                                
-                                // NewTexture
-                                writer.WritePropertyName("NewTexture");
-                                writer.WriteStringValue(itm12.NewTexture.FormKey.ToString());
-                                
-                                // Index
-                                writer.WritePropertyName("Index");
-                                writer.WriteNumberValue(itm12.Index);
-                                writer.WriteEndObject();
-                            }
-                            else
-                            {
-                                writer.WriteNullValue();
-                            }
-                        }
-                        writer.WriteEndArray();
-                    }
-                    else
-                    {
-                        writer.WriteNullValue();
-                    }
-                    
-                    // File
-                    writer.WritePropertyName("File");
-                    writer.WriteStringValue(value.WorldModel.Male.Model.File);
-                    
-                    // Data
-                    writer.WritePropertyName("Data");
-                    if (value.WorldModel.Male.Model.Data == null)
-                        writer.WriteNullValue();
-                    else
-                    {
-                        writer.WriteBase64StringValue(value.WorldModel.Male.Model.Data.Value);
-                    }
-                    writer.WriteEndObject();
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                }
-                
-                // Icons
-                writer.WritePropertyName("Icons");
-                if (value.WorldModel.Male.Icons != null)
-                {
-                    writer.WriteStartObject();
-                    
-                    // LargeIconFilename
-                    writer.WritePropertyName("LargeIconFilename");
-                    writer.WriteStringValue(value.WorldModel.Male.Icons.LargeIconFilename);
-                    
-                    // SmallIconFilename
-                    writer.WritePropertyName("SmallIconFilename");
-                    writer.WriteStringValue(value.WorldModel.Male.Icons.SmallIconFilename);
-                    writer.WriteEndObject();
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                }
-                writer.WriteEndObject();
-            }
-            else
-            {
-                writer.WriteNullValue();
-            }
-            writer.WritePropertyName("Female");
-            if (value.WorldModel.Female != null)
-            {
-                writer.WriteStartObject();
-                
-                // Model
-                writer.WritePropertyName("Model");
-                if (value.WorldModel.Female.Model != null)
-                {
-                    writer.WriteStartObject();
-                    
-                    // AlternateTextures
-                    writer.WritePropertyName("AlternateTextures");
-                    if (value.WorldModel.Female.Model.AlternateTextures != null)
-                    {
-                        writer.WriteStartArray();
-                        foreach(var itm13 in value.WorldModel.Female.Model.AlternateTextures)
-                        {
-                            if (itm13 != null)
-                            {
-                                writer.WriteStartObject();
-                                
-                                // Name
-                                writer.WritePropertyName("Name");
-                                writer.WriteStringValue(itm13.Name);
-                                
-                                // NewTexture
-                                writer.WritePropertyName("NewTexture");
-                                writer.WriteStringValue(itm13.NewTexture.FormKey.ToString());
-                                
-                                // Index
-                                writer.WritePropertyName("Index");
-                                writer.WriteNumberValue(itm13.Index);
-                                writer.WriteEndObject();
-                            }
-                            else
-                            {
-                                writer.WriteNullValue();
-                            }
-                        }
-                        writer.WriteEndArray();
-                    }
-                    else
-                    {
-                        writer.WriteNullValue();
-                    }
-                    
-                    // File
-                    writer.WritePropertyName("File");
-                    writer.WriteStringValue(value.WorldModel.Female.Model.File);
-                    
-                    // Data
-                    writer.WritePropertyName("Data");
-                    if (value.WorldModel.Female.Model.Data == null)
-                        writer.WriteNullValue();
-                    else
-                    {
-                        writer.WriteBase64StringValue(value.WorldModel.Female.Model.Data.Value);
-                    }
-                    writer.WriteEndObject();
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                }
-                
-                // Icons
-                writer.WritePropertyName("Icons");
-                if (value.WorldModel.Female.Icons != null)
-                {
-                    writer.WriteStartObject();
-                    
-                    // LargeIconFilename
-                    writer.WritePropertyName("LargeIconFilename");
-                    writer.WriteStringValue(value.WorldModel.Female.Icons.LargeIconFilename);
-                    
-                    // SmallIconFilename
-                    writer.WritePropertyName("SmallIconFilename");
-                    writer.WriteStringValue(value.WorldModel.Female.Icons.SmallIconFilename);
-                    writer.WriteEndObject();
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                }
-                writer.WriteEndObject();
-            }
-            else
-            {
-                writer.WriteNullValue();
-            }
-            writer.WriteEndObject();
-        }
         writer.WriteEndObject();
     }
 }
-public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
+public class Book_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Book>
 {
-    private IArmorGetter_Converter _getterConverter;
-    public Armor_Converter()
+    private IBookGetter_Converter _getterConverter;
+    public Book_Converter()
     {
-        _getterConverter = new IArmorGetter_Converter();
+        _getterConverter = new IBookGetter_Converter();
     }
     public override bool CanConvert(Type t)
     {
-        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Armor));
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Book));
     }
-    public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Armor value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Book value, JsonSerializerOptions options)
     {
-        _getterConverter.Write(writer, (IArmorGetter)value, options);
+        _getterConverter.Write(writer, (IBookGetter)value, options);
     }
-    public override Mutagen.Bethesda.Skyrim.Armor Read(
+    public override Mutagen.Bethesda.Skyrim.Book Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options)
@@ -942,7 +786,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.Armor(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        var retval = new Mutagen.Bethesda.Skyrim.Book(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -955,68 +799,12 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
             reader.Read();
             switch (prop)
             {
-                case "AlternateBlockMaterial":
-                    if (reader.TokenType != JsonTokenType.Null)
-                        retval.AlternateBlockMaterial.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
-                case "Armature":
-                    if (reader.TokenType != JsonTokenType.Null)
-                    {
-                        if (reader.TokenType != JsonTokenType.StartArray)
-                            throw new JsonException();
-                        while (true)
-                        {
-                            reader.Read();
-                            if (reader.TokenType == JsonTokenType.EndArray)
-                                break;
-                            retval.Armature.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                        }
-                    }
-                    break;
-                case "ArmorRating":
-                    retval.ArmorRating = reader.GetSingle();
-                    break;
-                case "BashImpactDataSet":
-                    if (reader.TokenType != JsonTokenType.Null)
-                        retval.BashImpactDataSet.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
-                case "BodyTemplate":
-                    retval.BodyTemplate = new Mutagen.Bethesda.Skyrim.BodyTemplate();
-                    if (reader.TokenType != JsonTokenType.Null)
-                    {
-                        if (reader.TokenType != JsonTokenType.StartObject)
-                            throw new JsonException();
-                        while (true)
-                        {
-                            reader.Read();
-                            if (reader.TokenType == JsonTokenType.EndObject)
-                                break;
-                            var prop14 = reader.GetString();
-                            reader.Read();
-                            switch(prop14)
-                            {
-                                case "FirstPersonFlags":
-                                    retval.BodyTemplate.FirstPersonFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.BipedObjectFlag>(ref reader, options);
-                                    break;
-                                case "Flags":
-                                    retval.BodyTemplate.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.BodyTemplate.Flag>(ref reader, options);
-                                    break;
-                                case "ArmorType":
-                                    retval.BodyTemplate.ArmorType = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ArmorType>(ref reader, options);
-                                    break;
-                                case "ActsLike44":
-                                    retval.BodyTemplate.ActsLike44 = reader.GetBoolean();
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        reader.Skip();
-                    }
+                case "BookText":
+                    retval.BookText ??= new TranslatedString(Language.English);
+                    SerializerExtensions.ReadTranslatedString(ref reader, retval.BookText, options);
                     break;
                 case "DATADataTypeState":
-                    retval.DATADataTypeState = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Armor.DATADataType>(ref reader, options);
+                    retval.DATADataTypeState = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Book.DATADataType>(ref reader, options);
                     break;
                 case "Description":
                     retval.Description ??= new TranslatedString(Language.English);
@@ -1033,9 +821,9 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop15 = reader.GetString();
+                            var prop12 = reader.GetString();
                             reader.Read();
-                            switch(prop15)
+                            switch(prop12)
                             {
                                 case "Data":
                                     retval.Destructible.Data = new Mutagen.Bethesda.Skyrim.DestructableData();
@@ -1048,9 +836,9 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop16 = reader.GetString();
+                                            var prop13 = reader.GetString();
                                             reader.Read();
-                                            switch(prop16)
+                                            switch(prop13)
                                             {
                                                 case "Health":
                                                     retval.Destructible.Data.Health = reader.GetInt32();
@@ -1082,7 +870,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm17 = new Mutagen.Bethesda.Skyrim.DestructionStage();
+                                            var itm14 = new Mutagen.Bethesda.Skyrim.DestructionStage();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1092,12 +880,12 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                         break;
-                                                    var prop18 = reader.GetString();
+                                                    var prop15 = reader.GetString();
                                                     reader.Read();
-                                                    switch(prop18)
+                                                    switch(prop15)
                                                     {
                                                         case "Data":
-                                                            itm17.Data = new Mutagen.Bethesda.Skyrim.DestructionStageData();
+                                                            itm14.Data = new Mutagen.Bethesda.Skyrim.DestructionStageData();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1107,33 +895,33 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop19 = reader.GetString();
+                                                                    var prop16 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop19)
+                                                                    switch(prop16)
                                                                     {
                                                                         case "HealthPercent":
-                                                                            itm17.Data.HealthPercent = reader.GetByte();
+                                                                            itm14.Data.HealthPercent = reader.GetByte();
                                                                             break;
                                                                         case "Index":
-                                                                            itm17.Data.Index = reader.GetByte();
+                                                                            itm14.Data.Index = reader.GetByte();
                                                                             break;
                                                                         case "ModelDamageStage":
-                                                                            itm17.Data.ModelDamageStage = reader.GetByte();
+                                                                            itm14.Data.ModelDamageStage = reader.GetByte();
                                                                             break;
                                                                         case "Flags":
-                                                                            itm17.Data.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.DestructionStageData.Flag>(ref reader, options);
+                                                                            itm14.Data.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.DestructionStageData.Flag>(ref reader, options);
                                                                             break;
                                                                         case "SelfDamagePerSecond":
-                                                                            itm17.Data.SelfDamagePerSecond = reader.GetInt32();
+                                                                            itm14.Data.SelfDamagePerSecond = reader.GetInt32();
                                                                             break;
                                                                         case "Explosion":
-                                                                            itm17.Data.Explosion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm14.Data.Explosion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "Debris":
-                                                                            itm17.Data.Debris.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm14.Data.Debris.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "DebrisCount":
-                                                                            itm17.Data.DebrisCount = reader.GetInt32();
+                                                                            itm14.Data.DebrisCount = reader.GetInt32();
                                                                             break;
                                                                     }
                                                                 }
@@ -1144,7 +932,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                             }
                                                             break;
                                                         case "Model":
-                                                            itm17.Model = new Mutagen.Bethesda.Skyrim.Model();
+                                                            itm14.Model = new Mutagen.Bethesda.Skyrim.Model();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1154,14 +942,14 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop20 = reader.GetString();
+                                                                    var prop17 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop20)
+                                                                    switch(prop17)
                                                                     {
                                                                         case "AlternateTextures":
                                                                             if (reader.TokenType != JsonTokenType.Null)
                                                                             {
-                                                                                itm17.Model.AlternateTextures ??= new();
+                                                                                itm14.Model.AlternateTextures ??= new();
                                                                                 if (reader.TokenType != JsonTokenType.StartArray)
                                                                                     throw new JsonException();
                                                                                 while (true)
@@ -1169,7 +957,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                                     reader.Read();
                                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                                         break;
-                                                                                    var itm21 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                                                    var itm18 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                                                     if (reader.TokenType != JsonTokenType.Null)
                                                                                     {
                                                                                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -1179,18 +967,18 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                                             reader.Read();
                                                                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                                                                 break;
-                                                                                            var prop22 = reader.GetString();
+                                                                                            var prop19 = reader.GetString();
                                                                                             reader.Read();
-                                                                                            switch(prop22)
+                                                                                            switch(prop19)
                                                                                             {
                                                                                                 case "Name":
-                                                                                                    itm21.Name = reader.GetString();
+                                                                                                    itm18.Name = reader.GetString();
                                                                                                     break;
                                                                                                 case "NewTexture":
-                                                                                                    itm21.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                                                    itm18.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                                                     break;
                                                                                                 case "Index":
-                                                                                                    itm21.Index = reader.GetInt32();
+                                                                                                    itm18.Index = reader.GetInt32();
                                                                                                     break;
                                                                                             }
                                                                                         }
@@ -1199,17 +987,17 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                                     {
                                                                                         reader.Skip();
                                                                                     }
-                                                                                    itm17.Model.AlternateTextures.Add(itm21);
+                                                                                    itm14.Model.AlternateTextures.Add(itm18);
                                                                                 }
                                                                             }
                                                                             break;
                                                                         case "File":
-                                                                            itm17.Model.File = reader.GetString();
+                                                                            itm14.Model.File = reader.GetString();
                                                                             break;
                                                                         case "Data":
                                                                             if (reader.TokenType != JsonTokenType.Null)
                                                                             {
-                                                                                itm17.Model.Data = reader.GetBytesFromBase64();
+                                                                                itm14.Model.Data = reader.GetBytesFromBase64();
                                                                             }
                                                                             break;
                                                                     }
@@ -1227,7 +1015,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                             {
                                                 reader.Skip();
                                             }
-                                            retval.Destructible.Stages.Add(itm17);
+                                            retval.Destructible.Stages.Add(itm14);
                                         }
                                     }
                                     break;
@@ -1242,18 +1030,44 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                 case "EditorID":
                     retval.EditorID = reader.GetString();
                     break;
-                case "EnchantmentAmount":
-                    if (reader.TokenType != JsonTokenType.Null)
-                    {
-                        retval.EnchantmentAmount = reader.GetUInt16();
-                    }
-                    break;
-                case "EquipmentType":
-                    if (reader.TokenType != JsonTokenType.Null)
-                        retval.EquipmentType.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                case "Flags":
+                    retval.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Book.Flag>(ref reader, options);
                     break;
                 case "FormVersion":
                     retval.FormVersion = reader.GetUInt16();
+                    break;
+                case "Icons":
+                    retval.Icons = new Mutagen.Bethesda.Skyrim.Icons();
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
+                        if (reader.TokenType != JsonTokenType.StartObject)
+                            throw new JsonException();
+                        while (true)
+                        {
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndObject)
+                                break;
+                            var prop20 = reader.GetString();
+                            reader.Read();
+                            switch(prop20)
+                            {
+                                case "LargeIconFilename":
+                                    retval.Icons.LargeIconFilename = reader.GetString();
+                                    break;
+                                case "SmallIconFilename":
+                                    retval.Icons.SmallIconFilename = reader.GetString();
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                    break;
+                case "InventoryArt":
+                    if (reader.TokenType != JsonTokenType.Null)
+                        retval.InventoryArt.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                     break;
                 case "IsCompressed":
                     retval.IsCompressed = reader.GetBoolean();
@@ -1276,11 +1090,85 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                         }
                     }
                     break;
-                case "MajorFlags":
-                    retval.MajorFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Armor.MajorFlag>(ref reader, options);
-                    break;
                 case "MajorRecordFlagsRaw":
                     retval.MajorRecordFlagsRaw = reader.GetInt32();
+                    break;
+                case "Model":
+                    retval.Model = new Mutagen.Bethesda.Skyrim.Model();
+                    if (reader.TokenType != JsonTokenType.Null)
+                    {
+                        if (reader.TokenType != JsonTokenType.StartObject)
+                            throw new JsonException();
+                        while (true)
+                        {
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndObject)
+                                break;
+                            var prop21 = reader.GetString();
+                            reader.Read();
+                            switch(prop21)
+                            {
+                                case "AlternateTextures":
+                                    if (reader.TokenType != JsonTokenType.Null)
+                                    {
+                                        retval.Model.AlternateTextures ??= new();
+                                        if (reader.TokenType != JsonTokenType.StartArray)
+                                            throw new JsonException();
+                                        while (true)
+                                        {
+                                            reader.Read();
+                                            if (reader.TokenType == JsonTokenType.EndArray)
+                                                break;
+                                            var itm22 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                            if (reader.TokenType != JsonTokenType.Null)
+                                            {
+                                                if (reader.TokenType != JsonTokenType.StartObject)
+                                                    throw new JsonException();
+                                                while (true)
+                                                {
+                                                    reader.Read();
+                                                    if (reader.TokenType == JsonTokenType.EndObject)
+                                                        break;
+                                                    var prop23 = reader.GetString();
+                                                    reader.Read();
+                                                    switch(prop23)
+                                                    {
+                                                        case "Name":
+                                                            itm22.Name = reader.GetString();
+                                                            break;
+                                                        case "NewTexture":
+                                                            itm22.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                            break;
+                                                        case "Index":
+                                                            itm22.Index = reader.GetInt32();
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                reader.Skip();
+                                            }
+                                            retval.Model.AlternateTextures.Add(itm22);
+                                        }
+                                    }
+                                    break;
+                                case "File":
+                                    retval.Model.File = reader.GetString();
+                                    break;
+                                case "Data":
+                                    if (reader.TokenType != JsonTokenType.Null)
+                                    {
+                                        retval.Model.Data = reader.GetBytesFromBase64();
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
                     break;
                 case "Name":
                     retval.Name ??= new TranslatedString(Language.English);
@@ -1297,9 +1185,9 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop23 = reader.GetString();
+                            var prop24 = reader.GetString();
                             reader.Read();
-                            switch(prop23)
+                            switch(prop24)
                             {
                                 case "First":
                                     retval.ObjectBounds.First = SerializerExtensions.ReadP3Int16(ref reader, options);
@@ -1315,10 +1203,6 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                         reader.Skip();
                     }
                     break;
-                case "ObjectEffect":
-                    if (reader.TokenType != JsonTokenType.Null)
-                        retval.ObjectEffect.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
                 case "PickUpSound":
                     if (reader.TokenType != JsonTokenType.Null)
                         retval.PickUpSound.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
@@ -1327,19 +1211,37 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                     if (reader.TokenType != JsonTokenType.Null)
                         retval.PutDownSound.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                     break;
-                case "Race":
-                    if (reader.TokenType != JsonTokenType.Null)
-                        retval.Race.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
-                case "RagdollConstraintTemplate":
-                    retval.RagdollConstraintTemplate = reader.GetString();
-                    break;
                 case "SkyrimMajorRecordFlags":
                     retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
                     break;
-                case "TemplateArmor":
+                case "Teaches":
+                    retval.Teaches = new Mutagen.Bethesda.Skyrim.BookTeachTarget();
                     if (reader.TokenType != JsonTokenType.Null)
-                        retval.TemplateArmor.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                    {
+                        if (reader.TokenType != JsonTokenType.StartObject)
+                            throw new JsonException();
+                        while (true)
+                        {
+                            reader.Read();
+                            if (reader.TokenType == JsonTokenType.EndObject)
+                                break;
+                            var prop25 = reader.GetString();
+                            reader.Read();
+                            switch(prop25)
+                            {
+                            }
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                    break;
+                case "Type":
+                    retval.Type = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.Book.BookType>(ref reader, options);
+                    break;
+                case "Unused":
+                    retval.Unused = reader.GetUInt16();
                     break;
                 case "Value":
                     retval.Value = reader.GetUInt32();
@@ -1361,9 +1263,9 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop24 = reader.GetString();
+                            var prop26 = reader.GetString();
                             reader.Read();
-                            switch(prop24)
+                            switch(prop26)
                             {
                                 case "Version":
                                     retval.VirtualMachineAdapter.Version = reader.GetInt16();
@@ -1381,7 +1283,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm25 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
+                                            var itm27 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1391,15 +1293,15 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                         break;
-                                                    var prop26 = reader.GetString();
+                                                    var prop28 = reader.GetString();
                                                     reader.Read();
-                                                    switch(prop26)
+                                                    switch(prop28)
                                                     {
                                                         case "Name":
-                                                            itm25.Name = reader.GetString();
+                                                            itm27.Name = reader.GetString();
                                                             break;
                                                         case "Flags":
-                                                            itm25.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptEntry.Flag>(ref reader, options);
+                                                            itm27.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptEntry.Flag>(ref reader, options);
                                                             break;
                                                         case "Properties":
                                                             if (reader.TokenType != JsonTokenType.Null)
@@ -1411,7 +1313,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                         break;
-                                                                    var itm27 = new Mutagen.Bethesda.Skyrim.ScriptProperty();
+                                                                    var itm29 = new Mutagen.Bethesda.Skyrim.ScriptProperty();
                                                                     if (reader.TokenType != JsonTokenType.Null)
                                                                     {
                                                                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -1421,15 +1323,15 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                             reader.Read();
                                                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                                                 break;
-                                                                            var prop28 = reader.GetString();
+                                                                            var prop30 = reader.GetString();
                                                                             reader.Read();
-                                                                            switch(prop28)
+                                                                            switch(prop30)
                                                                             {
                                                                                 case "Name":
-                                                                                    itm27.Name = reader.GetString();
+                                                                                    itm29.Name = reader.GetString();
                                                                                     break;
                                                                                 case "Flags":
-                                                                                    itm27.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
+                                                                                    itm29.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
                                                                                     break;
                                                                             }
                                                                         }
@@ -1438,7 +1340,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                     {
                                                                         reader.Skip();
                                                                     }
-                                                                    itm25.Properties.Add(itm27);
+                                                                    itm27.Properties.Add(itm29);
                                                                 }
                                                             }
                                                             break;
@@ -1449,7 +1351,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                             {
                                                 reader.Skip();
                                             }
-                                            retval.VirtualMachineAdapter.Scripts.Add(itm25);
+                                            retval.VirtualMachineAdapter.Scripts.Add(itm27);
                                         }
                                     }
                                     break;
@@ -1463,289 +1365,6 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                     break;
                 case "Weight":
                     retval.Weight = reader.GetSingle();
-                    break;
-                case "WorldModel":
-                    if (reader.TokenType != JsonTokenType.Null)
-                    {
-                        if (reader.TokenType != JsonTokenType.StartObject)
-                            throw new JsonException();
-                        retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.ArmorModel>(default, default);
-                        while(true)
-                        {
-                            reader.Read();
-                            if (reader.TokenType == JsonTokenType.EndObject)
-                            {
-                                break;
-                            }
-                            var prop29 = reader.GetString();
-                            reader.Read();
-                            switch(prop29)
-                            {
-                                case "Male":
-                                    retval.WorldModel.Male = new Mutagen.Bethesda.Skyrim.ArmorModel();
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                            throw new JsonException();
-                                        while (true)
-                                        {
-                                            reader.Read();
-                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                break;
-                                            var prop30 = reader.GetString();
-                                            reader.Read();
-                                            switch(prop30)
-                                            {
-                                                case "Model":
-                                                    retval.WorldModel.Male.Model = new Mutagen.Bethesda.Skyrim.Model();
-                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                    {
-                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                            throw new JsonException();
-                                                        while (true)
-                                                        {
-                                                            reader.Read();
-                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                break;
-                                                            var prop31 = reader.GetString();
-                                                            reader.Read();
-                                                            switch(prop31)
-                                                            {
-                                                                case "AlternateTextures":
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        retval.WorldModel.Male.Model.AlternateTextures ??= new();
-                                                                        if (reader.TokenType != JsonTokenType.StartArray)
-                                                                            throw new JsonException();
-                                                                        while (true)
-                                                                        {
-                                                                            reader.Read();
-                                                                            if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                break;
-                                                                            var itm32 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
-                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                            {
-                                                                                if (reader.TokenType != JsonTokenType.StartObject)
-                                                                                    throw new JsonException();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop33 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop33)
-                                                                                    {
-                                                                                        case "Name":
-                                                                                            itm32.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "NewTexture":
-                                                                                            itm32.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                            break;
-                                                                                        case "Index":
-                                                                                            itm32.Index = reader.GetInt32();
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                reader.Skip();
-                                                                            }
-                                                                            retval.WorldModel.Male.Model.AlternateTextures.Add(itm32);
-                                                                        }
-                                                                    }
-                                                                    break;
-                                                                case "File":
-                                                                    retval.WorldModel.Male.Model.File = reader.GetString();
-                                                                    break;
-                                                                case "Data":
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        retval.WorldModel.Male.Model.Data = reader.GetBytesFromBase64();
-                                                                    }
-                                                                    break;
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        reader.Skip();
-                                                    }
-                                                    break;
-                                                case "Icons":
-                                                    retval.WorldModel.Male.Icons = new Mutagen.Bethesda.Skyrim.Icons();
-                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                    {
-                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                            throw new JsonException();
-                                                        while (true)
-                                                        {
-                                                            reader.Read();
-                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                break;
-                                                            var prop34 = reader.GetString();
-                                                            reader.Read();
-                                                            switch(prop34)
-                                                            {
-                                                                case "LargeIconFilename":
-                                                                    retval.WorldModel.Male.Icons.LargeIconFilename = reader.GetString();
-                                                                    break;
-                                                                case "SmallIconFilename":
-                                                                    retval.WorldModel.Male.Icons.SmallIconFilename = reader.GetString();
-                                                                    break;
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        reader.Skip();
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        reader.Skip();
-                                    }
-                                    break;
-                                case "Female":
-                                    retval.WorldModel.Female = new Mutagen.Bethesda.Skyrim.ArmorModel();
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                            throw new JsonException();
-                                        while (true)
-                                        {
-                                            reader.Read();
-                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                break;
-                                            var prop35 = reader.GetString();
-                                            reader.Read();
-                                            switch(prop35)
-                                            {
-                                                case "Model":
-                                                    retval.WorldModel.Female.Model = new Mutagen.Bethesda.Skyrim.Model();
-                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                    {
-                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                            throw new JsonException();
-                                                        while (true)
-                                                        {
-                                                            reader.Read();
-                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                break;
-                                                            var prop36 = reader.GetString();
-                                                            reader.Read();
-                                                            switch(prop36)
-                                                            {
-                                                                case "AlternateTextures":
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        retval.WorldModel.Female.Model.AlternateTextures ??= new();
-                                                                        if (reader.TokenType != JsonTokenType.StartArray)
-                                                                            throw new JsonException();
-                                                                        while (true)
-                                                                        {
-                                                                            reader.Read();
-                                                                            if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                break;
-                                                                            var itm37 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
-                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                            {
-                                                                                if (reader.TokenType != JsonTokenType.StartObject)
-                                                                                    throw new JsonException();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop38 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop38)
-                                                                                    {
-                                                                                        case "Name":
-                                                                                            itm37.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "NewTexture":
-                                                                                            itm37.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                            break;
-                                                                                        case "Index":
-                                                                                            itm37.Index = reader.GetInt32();
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                reader.Skip();
-                                                                            }
-                                                                            retval.WorldModel.Female.Model.AlternateTextures.Add(itm37);
-                                                                        }
-                                                                    }
-                                                                    break;
-                                                                case "File":
-                                                                    retval.WorldModel.Female.Model.File = reader.GetString();
-                                                                    break;
-                                                                case "Data":
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        retval.WorldModel.Female.Model.Data = reader.GetBytesFromBase64();
-                                                                    }
-                                                                    break;
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        reader.Skip();
-                                                    }
-                                                    break;
-                                                case "Icons":
-                                                    retval.WorldModel.Female.Icons = new Mutagen.Bethesda.Skyrim.Icons();
-                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                    {
-                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                            throw new JsonException();
-                                                        while (true)
-                                                        {
-                                                            reader.Read();
-                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                break;
-                                                            var prop39 = reader.GetString();
-                                                            reader.Read();
-                                                            switch(prop39)
-                                                            {
-                                                                case "LargeIconFilename":
-                                                                    retval.WorldModel.Female.Icons.LargeIconFilename = reader.GetString();
-                                                                    break;
-                                                                case "SmallIconFilename":
-                                                                    retval.WorldModel.Female.Icons.SmallIconFilename = reader.GetString();
-                                                                    break;
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        reader.Skip();
-                                                    }
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        reader.Skip();
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        reader.Skip();
-                    }
                     break;
                 default:
                     reader.Skip();

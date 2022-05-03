@@ -30,7 +30,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
         
         // Damage
         writer.WritePropertyName("Damage");
-        writer.WriteNumberValue((long)value.Damage);
+        writer.WriteNumberValue(value.Damage);
         
         // DATADataTypeState
         writer.WritePropertyName("DATADataTypeState");
@@ -54,11 +54,11 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                 
                 // Health
                 writer.WritePropertyName("Health");
-                writer.WriteNumberValue((long)value.Destructible.Data.Health);
+                writer.WriteNumberValue(value.Destructible.Data.Health);
                 
                 // DESTCount
                 writer.WritePropertyName("DESTCount");
-                writer.WriteNumberValue((long)value.Destructible.Data.DESTCount);
+                writer.WriteNumberValue(value.Destructible.Data.DESTCount);
                 
                 // VATSTargetable
                 writer.WritePropertyName("VATSTargetable");
@@ -66,7 +66,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                 
                 // Unknown
                 writer.WritePropertyName("Unknown");
-                writer.WriteNumberValue((long)value.Destructible.Data.Unknown);
+                writer.WriteNumberValue(value.Destructible.Data.Unknown);
                 writer.WriteEndObject();
             }
             else
@@ -93,15 +93,15 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                             
                             // HealthPercent
                             writer.WritePropertyName("HealthPercent");
-                            writer.WriteNumberValue((long)itm1.Data.HealthPercent);
+                            writer.WriteNumberValue(itm1.Data.HealthPercent);
                             
                             // Index
                             writer.WritePropertyName("Index");
-                            writer.WriteNumberValue((long)itm1.Data.Index);
+                            writer.WriteNumberValue(itm1.Data.Index);
                             
                             // ModelDamageStage
                             writer.WritePropertyName("ModelDamageStage");
-                            writer.WriteNumberValue((long)itm1.Data.ModelDamageStage);
+                            writer.WriteNumberValue(itm1.Data.ModelDamageStage);
                             
                             // Flags
                             writer.WritePropertyName("Flags");
@@ -109,7 +109,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                             
                             // SelfDamagePerSecond
                             writer.WritePropertyName("SelfDamagePerSecond");
-                            writer.WriteNumberValue((long)itm1.Data.SelfDamagePerSecond);
+                            writer.WriteNumberValue(itm1.Data.SelfDamagePerSecond);
                             
                             // Explosion
                             writer.WritePropertyName("Explosion");
@@ -121,7 +121,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                             
                             // DebrisCount
                             writer.WritePropertyName("DebrisCount");
-                            writer.WriteNumberValue((long)itm1.Data.DebrisCount);
+                            writer.WriteNumberValue(itm1.Data.DebrisCount);
                             writer.WriteEndObject();
                         }
                         else
@@ -156,7 +156,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                                         
                                         // Index
                                         writer.WritePropertyName("Index");
-                                        writer.WriteNumberValue((long)itm2.Index);
+                                        writer.WriteNumberValue(itm2.Index);
                                         writer.WriteEndObject();
                                     }
                                     else
@@ -267,7 +267,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Model
         writer.WritePropertyName("Model");
@@ -296,7 +296,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
                         
                         // Index
                         writer.WritePropertyName("Index");
-                        writer.WriteNumberValue((long)itm4.Index);
+                        writer.WriteNumberValue(itm4.Index);
                         writer.WriteEndObject();
                     }
                     else
@@ -378,7 +378,7 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
         
         // Value
         writer.WritePropertyName("Value");
-        writer.WriteNumberValue((long)value.Value);
+        writer.WriteNumberValue(value.Value);
         
         // Version2
         writer.WritePropertyName("Version2");
@@ -386,11 +386,11 @@ public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         
         // Weight
         writer.WritePropertyName("Weight");
-        writer.WriteNumberValue((long)value.Weight);
+        writer.WriteNumberValue(value.Weight);
         writer.WriteEndObject();
     }
 }

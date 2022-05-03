@@ -59,7 +59,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Name
         writer.WritePropertyName("Name");
@@ -95,7 +95,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue((long)itm1.PerkGridX);
+                        writer.WriteNumberValue(itm1.PerkGridX);
                     }
                     
                     // PerkGridY
@@ -104,7 +104,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue((long)itm1.PerkGridY);
+                        writer.WriteNumberValue(itm1.PerkGridY);
                     }
                     
                     // HorizontalPosition
@@ -113,7 +113,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue((long)itm1.HorizontalPosition);
+                        writer.WriteNumberValue(itm1.HorizontalPosition);
                     }
                     
                     // VerticalPosition
@@ -122,7 +122,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue((long)itm1.VerticalPosition);
+                        writer.WriteNumberValue(itm1.VerticalPosition);
                     }
                     
                     // AssociatedSkill
@@ -139,7 +139,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteStartArray();
                         foreach(var itm2 in itm1.ConnectionLineToIndices)
                         {
-                            writer.WriteNumberValue((long)itm2);
+                            writer.WriteNumberValue(itm2);
                         }
                         writer.WriteEndArray();
                     }
@@ -154,7 +154,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue((long)itm1.Index);
+                        writer.WriteNumberValue(itm1.Index);
                     }
                     writer.WriteEndObject();
                 }
@@ -178,19 +178,19 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
             
             // UseMult
             writer.WritePropertyName("UseMult");
-            writer.WriteNumberValue((long)value.Skill.UseMult);
+            writer.WriteNumberValue(value.Skill.UseMult);
             
             // OffsetMult
             writer.WritePropertyName("OffsetMult");
-            writer.WriteNumberValue((long)value.Skill.OffsetMult);
+            writer.WriteNumberValue(value.Skill.OffsetMult);
             
             // ImproveMult
             writer.WritePropertyName("ImproveMult");
-            writer.WriteNumberValue((long)value.Skill.ImproveMult);
+            writer.WriteNumberValue(value.Skill.ImproveMult);
             
             // ImproveOffset
             writer.WritePropertyName("ImproveOffset");
-            writer.WriteNumberValue((long)value.Skill.ImproveOffset);
+            writer.WriteNumberValue(value.Skill.ImproveOffset);
             writer.WriteEndObject();
         }
         else
@@ -204,7 +204,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }

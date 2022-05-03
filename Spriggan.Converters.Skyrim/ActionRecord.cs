@@ -51,7 +51,7 @@ public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
         
         // MajorRecordFlagsRaw
         writer.WritePropertyName("MajorRecordFlagsRaw");
-        writer.WriteNumberValue((long)value.MajorRecordFlagsRaw);
+        writer.WriteNumberValue(value.MajorRecordFlagsRaw);
         
         // Version2
         writer.WritePropertyName("Version2");
@@ -59,7 +59,7 @@ public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
         
         // VersionControl
         writer.WritePropertyName("VersionControl");
-        writer.WriteNumberValue((long)value.VersionControl);
+        writer.WriteNumberValue(value.VersionControl);
         writer.WriteEndObject();
     }
 }
