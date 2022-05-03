@@ -1278,6 +1278,9 @@ public class Book_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Book>
                                 }
                                 retval.Teaches = itm29;
                                 break;
+                            default:
+                                reader.Skip();
+                                break;
                         }
                     }
                     else

@@ -673,6 +673,12 @@ public class CFile
                         SB.AppendLine("break;");
                     }
                 }
+                SB.AppendLine("default:");
+                using (SB.IncreaseDepth())
+                {
+                    SB.AppendLine("reader.Skip();");
+                    SB.AppendLine("break;");
+                }
             }
         }
         SB.AppendLine("else");
