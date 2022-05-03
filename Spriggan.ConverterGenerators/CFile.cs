@@ -123,17 +123,19 @@ public class CFile
             if (ctx.IsSettable)
                 SB.AppendLine($"{getter} = new GenderedItem<{TypeToCS(itype)}>(default, default);");
 
-            SB.AppendLine("reader.Read();");
+
             SB.AppendLine("while(true)");
             using (SB.CurlyBrace())
             {
+
+
+                var prop = GetProp();
+                SB.AppendLine("reader.Read();");
                 SB.AppendLine("if (reader.TokenType == JsonTokenType.EndObject)");
                 using (SB.CurlyBrace())
                 {
                     SB.AppendLine("break;");
                 }
-
-                var prop = GetProp();
                 SB.AppendLine($"var {prop} = reader.GetString();");
                 SB.AppendLine("reader.Read();");
                 SB.AppendLine($"switch({prop})");
@@ -143,17 +145,19 @@ public class CFile
                     using (SB.IncreaseDepth())
                     {
                         EmitReader(itype, $"{getter}.Male", ctx with { IsSettable = true });
+                        SB.AppendLine("break;");
                     }
 
-                    SB.AppendLine("break;");
+
 
                     SB.AppendLine("case \"Female\":");
                     using (SB.IncreaseDepth())
                     {
                         EmitReader(itype, $"{getter}.Female", ctx with { IsSettable = true });
+                        SB.AppendLine("break;");
                     }
 
-                    SB.AppendLine("break;");
+
                 }
             }
         }

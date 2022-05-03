@@ -150,9 +150,9 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
                         retval.ParentTitle = new GenderedItem<System.String>(default, default);
-                        reader.Read();
                         while(true)
                         {
+                            reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                             {
                                 break;
@@ -163,10 +163,10 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                             {
                                 case "Male":
                                     retval.ParentTitle.Male = reader.GetString();
-                                break;
+                                    break;
                                 case "Female":
                                     retval.ParentTitle.Female = reader.GetString();
-                                break;
+                                    break;
                             }
                         }
                     }
@@ -184,9 +184,9 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
                         retval.Title = new GenderedItem<System.String>(default, default);
-                        reader.Read();
                         while(true)
                         {
+                            reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                             {
                                 break;
@@ -197,10 +197,10 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
                             {
                                 case "Male":
                                     retval.Title.Male = reader.GetString();
-                                break;
+                                    break;
                                 case "Female":
                                     retval.Title.Female = reader.GetString();
-                                break;
+                                    break;
                             }
                         }
                     }

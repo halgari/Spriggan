@@ -1229,9 +1229,9 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                         if (reader.TokenType != JsonTokenType.StartObject)
                             throw new JsonException();
                         retval.WorldModel = new GenderedItem<Mutagen.Bethesda.Skyrim.ArmorModel>(default, default);
-                        reader.Read();
                         while(true)
                         {
+                            reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                             {
                                 break;
@@ -1368,7 +1368,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                     {
                                         reader.Skip();
                                     }
-                                break;
+                                    break;
                                 case "Female":
                                     retval.WorldModel.Female = new Mutagen.Bethesda.Skyrim.ArmorModel();
                                     if (reader.TokenType != JsonTokenType.Null)
@@ -1497,7 +1497,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                     {
                                         reader.Skip();
                                     }
-                                break;
+                                    break;
                             }
                         }
                     }
