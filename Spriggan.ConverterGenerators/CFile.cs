@@ -559,7 +559,7 @@ public class CFile
 
     private void LoquiObjectReader(Type type, string getter, Context ctx)
     {
-        if (type.IsAbstract && AbstractLoquiObjectReader(type, getter, ctx))
+        if (Inheritors(type).Length > 1 && AbstractLoquiObjectReader(type, getter, ctx))
         {
             return;
         }
@@ -613,9 +613,17 @@ public class CFile
         }
     }
 
+
+    private Type[] Inheritors(Type type)
+    {
+        var allTypes= type.Assembly.GetTypes().Where(t => t.InheritsFrom(type) && !t.IsAbstract && t.IsPublic).ToArray();
+        allTypes = allTypes.Where(a => !allTypes.Where(ai => ai != a).Any(ai => ai.InheritsFrom(a))).ToArray();
+        return allTypes;
+    }
+
     private bool AbstractLoquiObjectReader(Type type, string getter, Context ctx)
     {
-        var allTypes = type.Assembly.GetTypes().Where(t => t.InheritsFrom(type) && !t.IsAbstract && t.IsPublic).ToArray();
+        var allTypes = Inheritors(type);
         if (allTypes.Length <= 1) return false;
 
         // We want only the leaf classes
@@ -794,7 +802,7 @@ public class CFile
     private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter, Context ctx)
     {
         var sym = GetItem();
-        if (itemType.IsPrimitive)
+        if (itemType.IsPrimitive || itemType == typeof(string))
         {
             SB.AppendLine($"{itemType.Name} {sym};");
             EmitReader(itemType, sym, ctx with {IsSettable = false});
