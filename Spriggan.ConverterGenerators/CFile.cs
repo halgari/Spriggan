@@ -325,7 +325,9 @@ public class CFile
             typeof(T) == typeof(byte) || 
             typeof(T) == typeof(short))
         {
-            SB.AppendLine($"writer.WriteNumberValue({getter});");
+            SB.AppendLine(ctx.IsNullable
+                ? $"writer.WriteNumberValue({getter}.Value);"
+                : $"writer.WriteNumberValue({getter});");
         }
         else if (typeof(T) == typeof(ushort))
         {
@@ -557,6 +559,11 @@ public class CFile
 
     private void LoquiObjectReader(Type type, string getter, Context ctx)
     {
+        if (type.IsAbstract && AbstractLoquiObjectReader(type, getter, ctx))
+        {
+            return;
+        }
+        
         if (!ctx.IsConstructed)
         {
             EmitCtor(getter, type);
@@ -604,6 +611,78 @@ public class CFile
         {
             SB.AppendLine("reader.Skip();");
         }
+    }
+
+    private bool AbstractLoquiObjectReader(Type type, string getter, Context ctx)
+    {
+        var allTypes = type.Assembly.GetTypes().Where(t => t.InheritsFrom(type) && !t.IsAbstract && t.IsPublic).ToArray();
+        if (allTypes.Length <= 1) return false;
+
+        // We want only the leaf classes
+        allTypes = allTypes.Where(a => !allTypes.Where(ai => ai != a).Any(ai => ai.InheritsFrom(a))).ToArray();
+        
+        ctx = ctx with {IsConstructed = false};
+
+        SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("if (reader.TokenType != JsonTokenType.StartObject)");
+            using (SB.IncreaseDepth())
+                SB.AppendLine("throw new JsonException();");
+            
+            
+            SB.AppendLine("switch(SerializerExtensions.ReadTag(ref reader, $\"$type\", options))");
+            using (SB.CurlyBrace())
+            {
+                foreach (var tp in allTypes)
+                {
+                    SB.AppendLine($"case \"{tp.Name}\":");
+
+                    using (SB.IncreaseDepth())
+                    {
+                        var itm = GetItem();
+                        SB.AppendLine($"{TypeToCS(tp)} {itm} = new();");
+                        SB.AppendLine("while (true)");
+                        using (SB.CurlyBrace())
+                        {
+                            SB.AppendLine("reader.Read();");
+                            SB.AppendLine("if (reader.TokenType == JsonTokenType.EndObject)");
+                            using (SB.IncreaseDepth())
+                                SB.AppendLine("break;");
+
+                            var propName = GetProp();
+                            SB.AppendLine($"var {propName} = reader.GetString();");
+                            SB.AppendLine("reader.Read();");
+
+                            SB.AppendLine($"switch({propName})");
+                            using (SB.CurlyBrace())
+                            {
+                                foreach (var prop in VisitorGenerator.Members(tp))
+                                {
+                                    SB.AppendLine($"case \"{prop.Name}\":");
+
+                                    using var _ = SB.IncreaseDepth();
+                                    EmitReader(prop.PropertyType, $"{itm}.{prop.Name}",
+                                        ctx with {IsSettable = IsSettable(prop)});
+                                    SB.AppendLine("break;");
+
+                                }
+                            }
+                        }
+                        SB.AppendLine($"{getter} = {itm};");
+                        SB.AppendLine("break;");
+                    }
+                }
+            }
+        }
+        SB.AppendLine("else");
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine("reader.Skip();");
+        }
+
+        return true;
+
     }
 
     private string CleanName(string s)

@@ -95,7 +95,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue(itm1.PerkGridX);
+                        writer.WriteNumberValue(itm1.PerkGridX.Value);
                     }
                     
                     // PerkGridY
@@ -104,7 +104,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue(itm1.PerkGridY);
+                        writer.WriteNumberValue(itm1.PerkGridY.Value);
                     }
                     
                     // HorizontalPosition
@@ -113,7 +113,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue(itm1.HorizontalPosition);
+                        writer.WriteNumberValue(itm1.HorizontalPosition.Value);
                     }
                     
                     // VerticalPosition
@@ -122,7 +122,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue(itm1.VerticalPosition);
+                        writer.WriteNumberValue(itm1.VerticalPosition.Value);
                     }
                     
                     // AssociatedSkill
@@ -154,7 +154,7 @@ public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueI
                         writer.WriteNullValue();
                     else
                     {
-                        writer.WriteNumberValue(itm1.Index);
+                        writer.WriteNumberValue(itm1.Index.Value);
                     }
                     writer.WriteEndObject();
                 }
