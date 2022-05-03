@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IAnimatedObjectGetter_Converter : JsonConverter<IAnimatedObjectGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAnimatedObjectGetter));
+    }
     public override IAnimatedObjectGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -120,6 +125,10 @@ public class AnimatedObject_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.An
     public AnimatedObject_Converter()
     {
         _getterConverter = new IAnimatedObjectGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AnimatedObject));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AnimatedObject value, JsonSerializerOptions options)
     {

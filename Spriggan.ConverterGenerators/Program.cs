@@ -42,6 +42,12 @@ foreach (var t in majorTypes)
     cfile.SB.AppendLine($"public class {t.Getter.Name}_Converter : JsonConverter<{t.Getter.Name}>");
     using (cfile.SB.CurlyBrace())
     {
+        cfile.SB.AppendLine("public override bool CanConvert(Type t)");
+        using (cfile.SB.CurlyBrace())
+        {
+            cfile.SB.AppendLine($"return t.InheritsFrom(typeof({t.Getter.FullName}));");
+        }
+        
         cfile.SB.AppendLine(
             $"public override {t.Getter.Name} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)");
         using (cfile.SB.CurlyBrace())
@@ -81,6 +87,12 @@ foreach (var t in majorTypes)
         using (cfile.SB.CurlyBrace())
         {
             cfile.SB.AppendLine($"_getterConverter = new {t.Getter.Name}_Converter();");
+        }
+        
+        cfile.SB.AppendLine("public override bool CanConvert(Type t)");
+        using (cfile.SB.CurlyBrace())
+        {
+            cfile.SB.AppendLine($"return t.InheritsFrom(typeof({t.Main.FullName}));");
         }
 
         cfile.SB.AppendLine(
@@ -176,12 +188,12 @@ foreach (var t in majorTypes)
             cfile.SB.AppendLine("return services;");
         }
     
-        cfile.SB.AppendLine("public static Type[] SupportedRecords = new[]");
+        cfile.SB.AppendLine("public static (Type Main, Type Getter)[] SupportedRecords = new[]");
         using (cfile.SB.CurlyBrace(appendSemiColon:true))
         {
             foreach (var type in majorTypes)
             {
-                cfile.SB.AppendLine($"typeof({type.Main.FullName}),");
+                cfile.SB.AppendLine($"(typeof({type.Main.FullName}), typeof({type.Getter.FullName})),");
             }
         }
     }

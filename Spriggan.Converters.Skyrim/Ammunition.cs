@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IAmmunitionGetter_Converter : JsonConverter<IAmmunitionGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAmmunitionGetter));
+    }
     public override IAmmunitionGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -395,6 +400,10 @@ public class Ammunition_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Ammuni
     public Ammunition_Converter()
     {
         _getterConverter = new IAmmunitionGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Ammunition));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Ammunition value, JsonSerializerOptions options)
     {

@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IAcousticSpaceGetter_Converter : JsonConverter<IAcousticSpaceGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAcousticSpaceGetter));
+    }
     public override IAcousticSpaceGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -96,6 +101,10 @@ public class AcousticSpace_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Aco
     public AcousticSpace_Converter()
     {
         _getterConverter = new IAcousticSpaceGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AcousticSpace));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AcousticSpace value, JsonSerializerOptions options)
     {

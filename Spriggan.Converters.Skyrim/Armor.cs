@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IArmorGetter_Converter : JsonConverter<IArmorGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArmorGetter));
+    }
     public override IArmorGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -679,6 +684,10 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
     public Armor_Converter()
     {
         _getterConverter = new IArmorGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Armor));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Armor value, JsonSerializerOptions options)
     {

@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IActivatorGetter_Converter : JsonConverter<IActivatorGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActivatorGetter));
+    }
     public override IActivatorGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -463,6 +468,10 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
     public Activator_Converter()
     {
         _getterConverter = new IActivatorGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.Activator));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.Activator value, JsonSerializerOptions options)
     {

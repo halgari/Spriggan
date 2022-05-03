@@ -100,6 +100,7 @@ public class CFile
         SB.AppendLine("using Mutagen.Bethesda.Plugins.Records;");
         SB.AppendLine("using System.Globalization;");
         SB.AppendLine("using Mutagen.Bethesda.Plugins;");
+        SB.AppendLine("using Noggog;");
         SB.AppendLine();
     }
 

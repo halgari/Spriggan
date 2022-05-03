@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IArtObjectGetter_Converter : JsonConverter<IArtObjectGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IArtObjectGetter));
+    }
     public override IArtObjectGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -145,6 +150,10 @@ public class ArtObject_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArtObje
     public ArtObject_Converter()
     {
         _getterConverter = new IArtObjectGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ArtObject));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ArtObject value, JsonSerializerOptions options)
     {

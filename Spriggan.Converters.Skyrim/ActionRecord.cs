@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IActionRecordGetter_Converter : JsonConverter<IActionRecordGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActionRecordGetter));
+    }
     public override IActionRecordGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -64,6 +69,10 @@ public class ActionRecord_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Acti
     public ActionRecord_Converter()
     {
         _getterConverter = new IActionRecordGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ActionRecord));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ActionRecord value, JsonSerializerOptions options)
     {

@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IAssociationTypeGetter_Converter : JsonConverter<IAssociationTypeGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAssociationTypeGetter));
+    }
     public override IAssociationTypeGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -91,6 +96,10 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
     public AssociationType_Converter()
     {
         _getterConverter = new IAssociationTypeGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AssociationType));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AssociationType value, JsonSerializerOptions options)
     {

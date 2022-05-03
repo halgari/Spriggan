@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IActorValueInformationGetter_Converter : JsonConverter<IActorValueInformationGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IActorValueInformationGetter));
+    }
     public override IActorValueInformationGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -209,6 +214,10 @@ public class ActorValueInformation_Converter : JsonConverter<Mutagen.Bethesda.Sk
     public ActorValueInformation_Converter()
     {
         _getterConverter = new IActorValueInformationGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ActorValueInformation value, JsonSerializerOptions options)
     {

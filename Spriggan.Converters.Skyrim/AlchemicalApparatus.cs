@@ -11,9 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public class IAlchemicalApparatusGetter_Converter : JsonConverter<IAlchemicalApparatusGetter>
 {
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.IAlchemicalApparatusGetter));
+    }
     public override IAlchemicalApparatusGetter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
@@ -452,6 +457,10 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
     public AlchemicalApparatus_Converter()
     {
         _getterConverter = new IAlchemicalApparatusGetter_Converter();
+    }
+    public override bool CanConvert(Type t)
+    {
+        return t.InheritsFrom(typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus));
     }
     public override void Write(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.AlchemicalApparatus value, JsonSerializerOptions options)
     {

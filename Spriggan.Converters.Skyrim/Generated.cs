@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mutagen.Bethesda.Plugins.Records;
 using System.Globalization;
 using Mutagen.Bethesda.Plugins;
+using Noggog;
 
 public static class GeneratedConvertersExtensions
 {
@@ -44,20 +45,20 @@ public static class GeneratedConvertersExtensions
         services.AddSingleton<JsonConverter, BodyPartData_Converter>();
         return services;
     }
-    public static Type[] SupportedRecords = new[]
+    public static (Type Main, Type Getter)[] SupportedRecords = new[]
     {
-        typeof(Mutagen.Bethesda.Skyrim.AcousticSpace),
-        typeof(Mutagen.Bethesda.Skyrim.ActionRecord),
-        typeof(Mutagen.Bethesda.Skyrim.Activator),
-        typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation),
-        typeof(Mutagen.Bethesda.Skyrim.AddonNode),
-        typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus),
-        typeof(Mutagen.Bethesda.Skyrim.Ammunition),
-        typeof(Mutagen.Bethesda.Skyrim.AnimatedObject),
-        typeof(Mutagen.Bethesda.Skyrim.Armor),
-        typeof(Mutagen.Bethesda.Skyrim.ArmorAddon),
-        typeof(Mutagen.Bethesda.Skyrim.ArtObject),
-        typeof(Mutagen.Bethesda.Skyrim.AssociationType),
-        typeof(Mutagen.Bethesda.Skyrim.BodyPartData),
+        (typeof(Mutagen.Bethesda.Skyrim.AcousticSpace), typeof(Mutagen.Bethesda.Skyrim.IAcousticSpaceGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.ActionRecord), typeof(Mutagen.Bethesda.Skyrim.IActionRecordGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.Activator), typeof(Mutagen.Bethesda.Skyrim.IActivatorGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.ActorValueInformation), typeof(Mutagen.Bethesda.Skyrim.IActorValueInformationGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.AddonNode), typeof(Mutagen.Bethesda.Skyrim.IAddonNodeGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.AlchemicalApparatus), typeof(Mutagen.Bethesda.Skyrim.IAlchemicalApparatusGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.Ammunition), typeof(Mutagen.Bethesda.Skyrim.IAmmunitionGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.AnimatedObject), typeof(Mutagen.Bethesda.Skyrim.IAnimatedObjectGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.Armor), typeof(Mutagen.Bethesda.Skyrim.IArmorGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.ArmorAddon), typeof(Mutagen.Bethesda.Skyrim.IArmorAddonGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.ArtObject), typeof(Mutagen.Bethesda.Skyrim.IArtObjectGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.AssociationType), typeof(Mutagen.Bethesda.Skyrim.IAssociationTypeGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.BodyPartData), typeof(Mutagen.Bethesda.Skyrim.IBodyPartDataGetter)),
     };
 }
