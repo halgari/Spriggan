@@ -27,8 +27,8 @@ public class CFile
     private int _indent;
 
 
-    private Dictionary<Type, Action<Type, string, Context>> _writerEmitters;
-    private Dictionary<Type, Action<Type, string, Context>> _readerEmitters;
+    private List<(Type, Action<Type, string, Context>)> _writerEmitters;
+    private List<(Type, Action<Type, string, Context>)> _readerEmitters;
     private readonly GameRelease _game;
     private int genSym = 0;
 
@@ -38,62 +38,62 @@ public class CFile
         _game = game;
         _writerEmitters = new()
         {
-            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableWriter},
-            {typeof(IFormLinkGetter<>), IFormLinkWriter},
-            {typeof(IReadOnlyList<>), IReadOnlyListWriter},
-            {typeof(IGenderedItemGetter<>), GenderedItemGetterWriter},
-            {typeof(float), PrimitiveWriter<float>},
-            {typeof(int), PrimitiveWriter<int>},
-            {typeof(uint), PrimitiveWriter<uint>},
-            {typeof(short), PrimitiveWriter<short>},
-            {typeof(ushort), PrimitiveWriter<ushort>},
-            {typeof(byte), PrimitiveWriter<byte>},
-            {typeof(bool), PrimitiveWriter<bool>},
-            {typeof(string), PrimitiveWriter<string>},
-            {typeof(P3Int16), PrimitiveWriter<P3Int16>},
-            {typeof(P2Int16), PrimitiveWriter<P2Int16>},
-            {typeof(P3UInt8), PrimitiveWriter<P3UInt8>},
-            {typeof(P2Int), PrimitiveWriter<P2Int>},
-            {typeof(P3Float), PrimitiveWriter<P3Float>},
-            {typeof(RecordType), PrimitiveWriter<RecordType>},
-            {typeof(ILoquiObject), LoquiObjectWriter},
-            {typeof(Enum), EnumWriter},
-            {typeof(Nullable<>), NullableWriter},
-            {typeof(ReadOnlyMemorySlice<byte>), MemorySliceWriter},
-            {typeof(ITranslatedStringGetter), TranslatedStringWriter},
-            {typeof(Color), PrimitiveWriter<Color>},
-            {typeof(IReadOnlyArray2d<>), ReadOnlyArray2dWriter}
+            (typeof(IFormLinkNullableGetter<>), IFormLinkNullableWriter),
+            (typeof(IFormLinkGetter<>), IFormLinkWriter),
+            (typeof(IReadOnlyList<>), IReadOnlyListWriter),
+            (typeof(IGenderedItemGetter<>), GenderedItemGetterWriter),
+            (typeof(float), PrimitiveWriter<float>),
+            (typeof(int), PrimitiveWriter<int>),
+            (typeof(uint), PrimitiveWriter<uint>),
+            (typeof(short), PrimitiveWriter<short>),
+            (typeof(ushort), PrimitiveWriter<ushort>),
+            (typeof(byte), PrimitiveWriter<byte>),
+            (typeof(bool), PrimitiveWriter<bool>),
+            (typeof(string), PrimitiveWriter<string>),
+            (typeof(P3Int16), PrimitiveWriter<P3Int16>),
+            (typeof(P2Int16), PrimitiveWriter<P2Int16>),
+            (typeof(P3UInt8), PrimitiveWriter<P3UInt8>),
+            (typeof(P2Int), PrimitiveWriter<P2Int>),
+            (typeof(P3Float), PrimitiveWriter<P3Float>),
+            (typeof(RecordType), PrimitiveWriter<RecordType>),
+            (typeof(ILoquiObject), LoquiObjectWriter),
+            (typeof(Enum), EnumWriter),
+            (typeof(Nullable<>), NullableWriter),
+            (typeof(ITranslatedStringGetter), TranslatedStringWriter),
+            (typeof(Color), PrimitiveWriter<Color>),
+            (typeof(IReadOnlyArray2d<>), ReadOnlyArray2dWriter),
+            (typeof(ReadOnlyMemorySlice<byte>), MemorySliceWriter)
         };
 
         _readerEmitters = new()
         {
-            {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
-            {typeof(IFormLink<>), IFormLinkReader},
-            {typeof(FormKey), FormKeyReader},
-            {typeof(ExtendedList<>), ExtendedListReader},
-            {typeof(IGenderedItem<>), GenderedItemReader},
-            {typeof(float), PrimitiveReader<float>},
-            {typeof(int), PrimitiveReader<int>},
-            {typeof(uint), PrimitiveReader<uint>},
-            {typeof(short), PrimitiveReader<short>},
-            {typeof(ushort), PrimitiveReader<ushort>},
-            {typeof(byte), PrimitiveReader<byte>},
-            {typeof(bool), PrimitiveReader<bool>},
-            {typeof(string), PrimitiveReader<string>},
-            {typeof(P3Int16), PrimitiveReader<P3Int16>},
-            {typeof(P3UInt8), PrimitiveReader<P3UInt8>},
-            {typeof(P2Int), PrimitiveReader<P2Int>},
-            {typeof(P2Int16), PrimitiveReader<P2Int16>},
-            {typeof(P3Float), PrimitiveReader<P3Float>},
-            {typeof(Color), PrimitiveReader<Color>},
-            {typeof(ILoquiObject), LoquiObjectReader},
-            {typeof(Enum), EnumReader},
-            {typeof(Nullable<>), NullableReader},
-            {typeof(MemorySlice<>), MemorySliceReader},
-            {typeof(TranslatedString), TranslatedStringReader},
-            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableGetterReader},
-            {typeof(IArray2d<>), Array2dReader},
-            {typeof(RecordType), RecortTypeReader}
+            (typeof(IFormLinkNullable<>), IFormLinkNullableReader),
+            (typeof(IFormLink<>), IFormLinkReader),
+            (typeof(FormKey), FormKeyReader),
+            (typeof(ExtendedList<>), ExtendedListReader),
+            (typeof(IGenderedItem<>), GenderedItemReader),
+            (typeof(float), PrimitiveReader<float>),
+            (typeof(int), PrimitiveReader<int>),
+            (typeof(uint), PrimitiveReader<uint>),
+            (typeof(short), PrimitiveReader<short>),
+            (typeof(ushort), PrimitiveReader<ushort>),
+            (typeof(byte), PrimitiveReader<byte>),
+            (typeof(bool), PrimitiveReader<bool>),
+            (typeof(string), PrimitiveReader<string>),
+            (typeof(P3Int16), PrimitiveReader<P3Int16>),
+            (typeof(P3UInt8), PrimitiveReader<P3UInt8>),
+            (typeof(P2Int), PrimitiveReader<P2Int>),
+            (typeof(P2Int16), PrimitiveReader<P2Int16>),
+            (typeof(P3Float), PrimitiveReader<P3Float>),
+            (typeof(Color), PrimitiveReader<Color>),
+            (typeof(ILoquiObject), LoquiObjectReader),
+            (typeof(Enum), EnumReader),
+            (typeof(Nullable<>), NullableReader),
+            (typeof(MemorySlice<>), MemorySliceReader),
+            (typeof(TranslatedString), TranslatedStringReader),
+            (typeof(IFormLinkNullableGetter<>), IFormLinkNullableGetterReader),
+            (typeof(IArray2d<>), Array2dReader),
+            (typeof(RecordType), RecortTypeReader)
 
         };
 
@@ -393,7 +393,14 @@ public class CFile
         }
         else if (typeof(T) == typeof(Color))
         {
-            SB.AppendLine($"writer.WriteStringValue({getter}.Value.ToArgb().ToString(\"x8\"));");
+            if (ctx.IsNullable)
+            {
+                SB.AppendLine($"writer.WriteStringValue({getter}.Value.ToArgb().ToString(\"x8\"));");
+            }
+            else
+            {
+                SB.AppendLine($"writer.WriteStringValue({getter}.ToArgb().ToString(\"x8\"));");
+            }
         }
         else if (typeof(T) == typeof(P3Int16))
         {
@@ -893,8 +900,8 @@ public class CFile
     public void EmitWriter(Type type, string getter, Context ctx)
     {
         
-        var (_, emitter) = _writerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
-
+        var (_, emitter) = _writerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Item1));
+        
         
         if (emitter == null)
             throw new Exception($"No emitter for property of type {type.FullName}");
@@ -903,7 +910,7 @@ public class CFile
 
     public void EmitReader(Type type, string getter, Context ctx)
     {
-        var (_, emitter) = _readerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Key));
+        var (_, emitter) = _readerEmitters.FirstOrDefault(e => type.InheritsFrom(e.Item1));
         if (emitter == null)
             throw new Exception($"No emitter for property of type {type.FullName}");
         emitter(type, getter, ctx);
