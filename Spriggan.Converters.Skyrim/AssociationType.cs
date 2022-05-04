@@ -113,7 +113,7 @@ public class AssociationType_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.A
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.AssociationType(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.AssociationType retval = new Mutagen.Bethesda.Skyrim.AssociationType(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();

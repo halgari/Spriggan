@@ -200,6 +200,35 @@ public static class SerializerExtensions
 
     }
     
+    public static void WriteP3UInt8(this Utf8JsonWriter writer, P3UInt8 value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
+        writer.WriteNumberValue(value.Z);
+        writer.WriteEndArray();
+    }
+
+    public static P3UInt8 ReadP3UInt8(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        var ret = new P3UInt8();
+        reader.Read();
+        ret.X = reader.GetByte();
+        reader.Read();
+        ret.Y = reader.GetByte();
+        reader.Read();
+        ret.Z = reader.GetByte();
+        reader.Read();
+        
+        if (reader.TokenType != JsonTokenType.EndArray)
+            throw new JsonException();
+        return ret;
+
+    }
+    
     public static void WriteP2Int(this Utf8JsonWriter writer, P2Int value, JsonSerializerOptions options)
     {
         writer.WriteStartArray();
@@ -224,5 +253,44 @@ public static class SerializerExtensions
             throw new JsonException();
         return ret;
 
+    }
+
+    public static void ReadOnlyArray2dWriter<T>(this Utf8JsonWriter writer, IReadOnlyArray2d<T> itms, Action<T> fn)
+    {
+        writer.WriteStartObject();
+        for (var y = 0; y < itms.Height; y++)
+        {
+            for (var x = 0; x < itms.Width; x++)
+            {
+                writer.WritePropertyName($"{x}:{y}");
+                fn(itms[x, y]);
+            }
+        }
+        writer.WriteEndObject();
+    }
+
+    public delegate T ReaderAction<T>(ref Utf8JsonReader item);
+
+    public static Array2d<T> Array2dReader<T>(ref Utf8JsonReader reader, ReaderAction<T> fn)
+    {
+        var storage = new Dictionary<(int, int), T>();
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        while (true)
+        {
+            if (reader.TokenType == JsonTokenType.EndArray)
+                break;
+            reader.Read();
+            var idx = reader.GetString()!.Split(":");
+            reader.Read();
+            var value = fn.Invoke(ref reader);
+            storage.Add((int.Parse(idx[0]), int.Parse(idx[1])), value);
+        }
+
+        var ret = new Array2d<T>(storage.Max(x => x.Key.Item1), storage.Max(x => x.Key.Item2));
+        foreach (var itm in storage) 
+            ret[itm.Key.Item1, itm.Key.Item2] = itm.Value;
+        return ret;
     }
 }

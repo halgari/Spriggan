@@ -51,20 +51,25 @@ public class CFile
             {typeof(bool), PrimitiveWriter<bool>},
             {typeof(string), PrimitiveWriter<string>},
             {typeof(P3Int16), PrimitiveWriter<P3Int16>},
+            {typeof(P2Int16), PrimitiveWriter<P2Int16>},
+            {typeof(P3UInt8), PrimitiveWriter<P3UInt8>},
             {typeof(P2Int), PrimitiveWriter<P2Int>},
             {typeof(P3Float), PrimitiveWriter<P3Float>},
+            {typeof(RecordType), PrimitiveWriter<RecordType>},
             {typeof(ILoquiObject), LoquiObjectWriter},
             {typeof(Enum), EnumWriter},
             {typeof(Nullable<>), NullableWriter},
             {typeof(ReadOnlyMemorySlice<byte>), MemorySliceWriter},
             {typeof(ITranslatedStringGetter), TranslatedStringWriter},
-            {typeof(Color), PrimitiveWriter<Color>}
+            {typeof(Color), PrimitiveWriter<Color>},
+            {typeof(IReadOnlyArray2d<>), ReadOnlyArray2dWriter}
         };
 
         _readerEmitters = new()
         {
             {typeof(IFormLinkNullable<>), IFormLinkNullableReader},
             {typeof(IFormLink<>), IFormLinkReader},
+            {typeof(FormKey), FormKeyReader},
             {typeof(ExtendedList<>), ExtendedListReader},
             {typeof(IGenderedItem<>), GenderedItemReader},
             {typeof(float), PrimitiveReader<float>},
@@ -76,7 +81,9 @@ public class CFile
             {typeof(bool), PrimitiveReader<bool>},
             {typeof(string), PrimitiveReader<string>},
             {typeof(P3Int16), PrimitiveReader<P3Int16>},
+            {typeof(P3UInt8), PrimitiveReader<P3UInt8>},
             {typeof(P2Int), PrimitiveReader<P2Int>},
+            {typeof(P2Int16), PrimitiveReader<P2Int16>},
             {typeof(P3Float), PrimitiveReader<P3Float>},
             {typeof(Color), PrimitiveReader<Color>},
             {typeof(ILoquiObject), LoquiObjectReader},
@@ -84,7 +91,9 @@ public class CFile
             {typeof(Nullable<>), NullableReader},
             {typeof(MemorySlice<>), MemorySliceReader},
             {typeof(TranslatedString), TranslatedStringReader},
-            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableGetterReader}
+            {typeof(IFormLinkNullableGetter<>), IFormLinkNullableGetterReader},
+            {typeof(IArray2d<>), Array2dReader},
+            {typeof(RecordType), RecortTypeReader}
 
         };
 
@@ -103,6 +112,44 @@ public class CFile
         SB.AppendLine("using Mutagen.Bethesda.Plugins;");
         SB.AppendLine("using Noggog;");
         SB.AppendLine();
+    }
+
+    private void RecortTypeReader(Type type, string getter, Context ctx)
+    {
+        SB.AppendLine($"{getter} = new RecordType(reader.ReadString());");
+    }
+
+    private void FormKeyReader(Type type, string getter, Context ctx)
+    {
+        SB.AppendLine($"{getter} = SerializerExtensions.ReadFormKeyValue(ref reader, options);");
+    }
+
+    private void Array2dReader(Type type, string getter, Context ctx)
+    {
+        var tinner = type.GetGenericArguments()[0];
+        SB.AppendLine("SerializerExtensions.Array2dReader(ref reader, () => ");
+        using (SB.CurlyBrace())
+        {
+            var itm = GetItem();
+            EmitCtor(itm, tinner, true);
+            EmitReader(tinner, itm, ctx);
+            SB.AppendLine($"return {itm};");
+        }
+        SB.AppendLine(");");
+    }
+
+    private void ReadOnlyArray2dWriter(Type type, string getter, Context ctx)
+    {
+        var tinner = type.GetGenericArguments()[0];
+        SB.AppendLine($"writer.ReadOnlyArray2dWriter({getter}, itm =>");
+        using (SB.CurlyBrace())
+        {
+            var itm = GetItem();
+            
+            EmitCtor(itm, tinner, true);
+            EmitWriter(tinner, itm, ctx with {IsConstructed = true});
+        }
+        SB.AppendLine(");");
     }
 
     private void GenderedItemReader(Type type, string getter, Context ctx)
@@ -352,6 +399,14 @@ public class CFile
         {
             SB.AppendLine($"writer.WriteP3Int16({getter}, options);");
         }
+        else if (typeof(T) == typeof(P2Int16))
+        {
+            SB.AppendLine($"writer.WriteP2Int16({getter}, options);");
+        }
+        else if (typeof(T) == typeof(P3UInt8))
+        {
+            SB.AppendLine($"writer.WriteP3UInt8({getter}, options);");
+        }
         else if (typeof(T) == typeof(P3Float))
         {
             SB.AppendLine($"writer.WriteP3Float({getter}, options);");
@@ -359,6 +414,10 @@ public class CFile
         else if (typeof(T) == typeof(P2Int))
         {
             SB.AppendLine($"writer.WriteP2Int({getter}, options);");
+        }
+        else if (typeof(T) == typeof(RecordType))
+        {
+            SB.AppendLine($"writer.WriteString({getter}.ToString(), options);");
         }
         else
         {
@@ -411,6 +470,14 @@ public class CFile
         else if (typeof(T) == typeof(P3Int16))
         {
             SB.AppendLine($"{getter} = SerializerExtensions.ReadP3Int16(ref reader, options);");
+        }
+        else if (typeof(T) == typeof(P2Int16))
+        {
+            SB.AppendLine($"{getter} = SerializerExtensions.ReadP2Int16(ref reader, options);");
+        }
+        else if (typeof(T) == typeof(P3UInt8))
+        {
+            SB.AppendLine($"{getter} = SerializerExtensions.ReadP3UInt8(ref reader, options);");
         }
         else if (typeof(T) == typeof(P2Int))
         {
@@ -844,7 +911,7 @@ public class CFile
 
     public void EmitCtor(string retval, Type tMain, bool emitVar = false)
     {
-        var prefix = emitVar ? "var " : "";
+        var prefix = emitVar ? $"{TypeToCS(tMain)} " : "";
         if (tMain.InheritsFrom(typeof(IMajorRecord)))
         {
             if (_game == GameRelease.SkyrimLE || _game == GameRelease.SkyrimSE)
@@ -863,6 +930,13 @@ public class CFile
         if (tMain.GetConstructors().Any(t => t.GetParameters().Length == 0))
         {
             SB.AppendLine($"{prefix}{retval} = new {tMain.FullName}();");
+            return;
+        }
+
+
+        if (tMain.IsPrimitive || tMain.IsValueType)
+        {
+            SB.AppendLine($"{prefix}{retval} = default;");
             return;
         }
 

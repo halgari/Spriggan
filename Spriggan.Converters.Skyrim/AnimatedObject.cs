@@ -142,7 +142,7 @@ public class AnimatedObject_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.An
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.AnimatedObject(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.AnimatedObject retval = new Mutagen.Bethesda.Skyrim.AnimatedObject(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -196,7 +196,7 @@ public class AnimatedObject_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.An
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm3 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm3 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)

@@ -498,7 +498,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.ArmorAddon(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.ArmorAddon retval = new Mutagen.Bethesda.Skyrim.ArmorAddon(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -616,7 +616,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm9 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm9 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -693,7 +693,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm12 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm12 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -961,7 +961,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm24 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm24 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1038,7 +1038,7 @@ public class ArmorAddon_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.ArmorA
                                                             reader.Read();
                                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                                 break;
-                                                            var itm27 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm27 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)

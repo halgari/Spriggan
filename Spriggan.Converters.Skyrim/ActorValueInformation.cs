@@ -231,7 +231,7 @@ public class ActorValueInformation_Converter : JsonConverter<Mutagen.Bethesda.Sk
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.ActorValueInformation(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.ActorValueInformation retval = new Mutagen.Bethesda.Skyrim.ActorValueInformation(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -286,7 +286,7 @@ public class ActorValueInformation_Converter : JsonConverter<Mutagen.Bethesda.Sk
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            var itm3 = new Mutagen.Bethesda.Skyrim.ActorValuePerkNode();
+                            Mutagen.Bethesda.Skyrim.ActorValuePerkNode itm3 = new Mutagen.Bethesda.Skyrim.ActorValuePerkNode();
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 if (reader.TokenType != JsonTokenType.StartObject)

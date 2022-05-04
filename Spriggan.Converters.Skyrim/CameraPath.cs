@@ -360,7 +360,7 @@ public class CameraPath_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Camera
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.CameraPath(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.CameraPath retval = new Mutagen.Bethesda.Skyrim.CameraPath(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();

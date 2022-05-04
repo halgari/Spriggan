@@ -299,7 +299,7 @@ public class BodyPartData_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Body
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.BodyPartData(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.BodyPartData retval = new Mutagen.Bethesda.Skyrim.BodyPartData(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -353,7 +353,7 @@ public class BodyPartData_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Body
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm4 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm4 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -414,7 +414,7 @@ public class BodyPartData_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Body
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            var itm6 = new Mutagen.Bethesda.Skyrim.BodyPart();
+                            Mutagen.Bethesda.Skyrim.BodyPart itm6 = new Mutagen.Bethesda.Skyrim.BodyPart();
                             if (reader.TokenType != JsonTokenType.Null)
                             {
                                 if (reader.TokenType != JsonTokenType.StartObject)

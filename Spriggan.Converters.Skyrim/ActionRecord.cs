@@ -86,7 +86,7 @@ public class ActionRecord_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Acti
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.ActionRecord(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.ActionRecord retval = new Mutagen.Bethesda.Skyrim.ActionRecord(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();

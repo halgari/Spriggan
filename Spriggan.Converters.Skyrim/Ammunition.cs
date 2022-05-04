@@ -417,7 +417,7 @@ public class Ammunition_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Ammuni
         if (reader.TokenType != JsonTokenType.StartObject)
             throw new JsonException();
         reader.Read();
-        var retval = new Mutagen.Bethesda.Skyrim.Ammunition(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+        Mutagen.Bethesda.Skyrim.Ammunition retval = new Mutagen.Bethesda.Skyrim.Ammunition(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
         while (true)
         {
             reader.Read();
@@ -500,7 +500,7 @@ public class Ammunition_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Ammuni
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm7 = new Mutagen.Bethesda.Skyrim.DestructionStage();
+                                            Mutagen.Bethesda.Skyrim.DestructionStage itm7 = new Mutagen.Bethesda.Skyrim.DestructionStage();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -587,7 +587,7 @@ public class Ammunition_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Ammuni
                                                                                     reader.Read();
                                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                                         break;
-                                                                                    var itm11 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                                                    Mutagen.Bethesda.Skyrim.AlternateTexture itm11 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                                                     if (reader.TokenType != JsonTokenType.Null)
                                                                                     {
                                                                                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -748,7 +748,7 @@ public class Ammunition_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Ammuni
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            var itm15 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm15 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
