@@ -28,6 +28,7 @@ internal static class ConditionFloat_Reader
             switch(prop1)
             {
                 case "Data":
+                    cls.Data = ConditionData_Reader.ReadOuter(ref reader, options);
                     break;
                 case "ComparisonValue":
                     cls.ComparisonValue = reader.GetSingle();

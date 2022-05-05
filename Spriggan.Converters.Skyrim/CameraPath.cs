@@ -157,6 +157,7 @@ public class CameraPath_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Camera
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
                             Condition itm4 = default;
+                            itm4 = Condition_Reader.ReadOuter(ref reader, options);
                             retval.Conditions.Add(itm4);
                         }
                     }

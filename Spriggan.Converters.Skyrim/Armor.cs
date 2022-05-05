@@ -1155,6 +1155,7 @@ public class Armor_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Armor>
                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                         break;
                                                                     ScriptProperty itm22 = default;
+                                                                    itm22 = ScriptProperty_Reader.ReadOuter(ref reader, options);
                                                                     itm20.Properties.Add(itm22);
                                                                 }
                                                             }

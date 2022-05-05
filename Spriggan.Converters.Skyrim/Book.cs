@@ -921,6 +921,7 @@ public class Book_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Book>
                     retval.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
                     break;
                 case "Teaches":
+                    retval.Teaches = BookTeachTarget_Reader.ReadOuter(ref reader, options);
                     break;
                 case "Type":
                     retval.Type = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.Book.BookType>(ref reader, options);
@@ -999,6 +1000,7 @@ public class Book_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Book>
                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                         break;
                                                                     ScriptProperty itm23 = default;
+                                                                    itm23 = ScriptProperty_Reader.ReadOuter(ref reader, options);
                                                                     itm21.Properties.Add(itm23);
                                                                 }
                                                             }

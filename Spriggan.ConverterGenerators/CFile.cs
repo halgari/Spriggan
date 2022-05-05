@@ -137,7 +137,7 @@ public class CFile
 
     private void RecortTypeReader(Type type, string getter, Context ctx)
     {
-        SB.AppendLine($"{getter} = new RecordType(reader.ReadString());");
+        SB.AppendLine($"{getter} = new RecordType(reader.GetString());");
     }
 
     private void FormKeyReader(Type type, string getter, Context ctx)
@@ -688,6 +688,8 @@ public class CFile
 
         if (!AbstractTypes.Contains((type, AbstractMethod.AbstractReader)))
             AbstractTypes.Add((type, AbstractMethod.AbstractReader));
+        
+        SB.AppendLine($"{getter} = {type.Name}_Reader.ReadOuter(ref reader, options);");
         return true;
     }
 

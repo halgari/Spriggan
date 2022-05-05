@@ -941,6 +941,7 @@ public class Activator_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Activat
                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                         break;
                                                                     ScriptProperty itm22 = default;
+                                                                    itm22 = ScriptProperty_Reader.ReadOuter(ref reader, options);
                                                                     itm20.Properties.Add(itm22);
                                                                 }
                                                             }
