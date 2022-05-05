@@ -23,7 +23,7 @@ var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly)
 var propLimit = 1000;
 
 var majorTypes = allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name)
-    .Take(17);
+    .Take(16);
 // Writers
 foreach (var t in majorTypes)
 {
@@ -155,6 +155,24 @@ foreach (var t in majorTypes)
     }
 
     cfile.Write($"../Spriggan.Converters.Skyrim/{t.Main.Name}.cs");
+}
+
+// Use a for loop as abstract types could have abstract types
+for (var i = 0; i < CFile.AbstractTypes.Count; i++)
+{
+    var def = CFile.AbstractTypes[i];
+    var cfile = new CFile(GameRelease.SkyrimSE);
+    Console.WriteLine($"Emitting {def.Item1.Name} - {def.Item2}");
+    if (def.Item2 == CFile.AbstractMethod.AbstractWriter)
+    {
+        cfile.EmitAbstractClassWriter(def.Item1);
+        cfile.Write($"../Spriggan.Converters.Skyrim/AbstractSubRecords/{def.Item1.Name}_Writer.cs");
+    }
+    else if (def.Item2 == CFile.AbstractMethod.ConcreteWriter)
+    {
+        cfile.EmitConcreteClassWriter(def.Item1);
+        cfile.Write($"../Spriggan.Converters.Skyrim/ConcreteSubRecords/{def.Item1.Name}_Writer.cs");
+    }
 }
 
 {

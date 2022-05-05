@@ -15,4 +15,9 @@
       <ProjectReference Include="..\Spriggan.Converters.Base\Spriggan.Converters.Base.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="AbstractSubRecords" />
+      <Folder Include="ConcreteSubRecords" />
+    </ItemGroup>
+
 </Project>

@@ -236,6 +236,14 @@ public static class SerializerExtensions
         writer.WriteNumberValue(value.Y);
         writer.WriteEndArray();
     }
+    
+    public static void WriteP2Int16(this Utf8JsonWriter writer, P2Int16 value, JsonSerializerOptions options)
+    {
+        writer.WriteStartArray();
+        writer.WriteNumberValue(value.X);
+        writer.WriteNumberValue(value.Y);
+        writer.WriteEndArray();
+    }
 
     public static P2Int ReadP2Int(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
@@ -247,6 +255,24 @@ public static class SerializerExtensions
         ret.X = reader.GetInt32();
         reader.Read();
         ret.Y = reader.GetInt32();
+        reader.Read();
+        
+        if (reader.TokenType != JsonTokenType.EndArray)
+            throw new JsonException();
+        return ret;
+
+    }
+    
+    public static P2Int16 ReadP2Int16(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    {
+        if (reader.TokenType != JsonTokenType.StartArray)
+            throw new JsonException();
+
+        var ret = new P2Int16();
+        reader.Read();
+        ret.X = reader.GetInt16();
+        reader.Read();
+        ret.Y = reader.GetInt16();
         reader.Read();
         
         if (reader.TokenType != JsonTokenType.EndArray)

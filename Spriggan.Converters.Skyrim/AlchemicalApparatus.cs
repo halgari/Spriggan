@@ -401,264 +401,7 @@ public class IAlchemicalApparatusGetter_Converter : JsonConverter<IAlchemicalApp
                             writer.WriteStartArray();
                             foreach(var itm5 in itm4.Properties)
                             {
-                                if (itm5 != null)
-                                {
-                                    writer.WriteStartObject();
-                                    switch (itm5)
-                                    {
-                                        case Mutagen.Bethesda.Skyrim.IScriptObjectPropertyGetter itm6:
-                                            writer.WriteString("$type", "ScriptObjectProperty");
-                                            
-                                            // Object
-                                            writer.WritePropertyName("Object");
-                                            writer.WriteStringValue(itm6.Object.FormKey.ToString());
-                                            
-                                            // Alias
-                                            writer.WritePropertyName("Alias");
-                                            writer.WriteNumberValue(itm6.Alias);
-                                            
-                                            // Unused
-                                            writer.WritePropertyName("Unused");
-                                            writer.WriteNumberValue((uint)itm6.Unused);
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm6.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm6.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptStringPropertyGetter itm7:
-                                            writer.WriteString("$type", "ScriptStringProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            writer.WriteStringValue(itm7.Data);
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm7.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm7.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptIntPropertyGetter itm8:
-                                            writer.WriteString("$type", "ScriptIntProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            writer.WriteNumberValue(itm8.Data);
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm8.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm8.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptFloatPropertyGetter itm9:
-                                            writer.WriteString("$type", "ScriptFloatProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            writer.WriteNumberValue(itm9.Data);
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm9.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm9.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptBoolPropertyGetter itm10:
-                                            writer.WriteString("$type", "ScriptBoolProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            writer.WriteBooleanValue(itm10.Data);
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm10.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm10.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptObjectListPropertyGetter itm11:
-                                            writer.WriteString("$type", "ScriptObjectListProperty");
-                                            
-                                            // Objects
-                                            writer.WritePropertyName("Objects");
-                                            if (itm11.Objects != null)
-                                            {
-                                                writer.WriteStartArray();
-                                                foreach(var itm12 in itm11.Objects)
-                                                {
-                                                    if (itm12 != null)
-                                                    {
-                                                        writer.WriteStartObject();
-                                                        
-                                                        // Object
-                                                        writer.WritePropertyName("Object");
-                                                        writer.WriteStringValue(itm12.Object.FormKey.ToString());
-                                                        
-                                                        // Alias
-                                                        writer.WritePropertyName("Alias");
-                                                        writer.WriteNumberValue(itm12.Alias);
-                                                        
-                                                        // Unused
-                                                        writer.WritePropertyName("Unused");
-                                                        writer.WriteNumberValue((uint)itm12.Unused);
-                                                        
-                                                        // Name
-                                                        writer.WritePropertyName("Name");
-                                                        writer.WriteStringValue(itm12.Name);
-                                                        
-                                                        // Flags
-                                                        writer.WritePropertyName("Flags");
-                                                        writer.WriteEnum(itm12.Flags);
-                                                        writer.WriteEndObject();
-                                                    }
-                                                    else
-                                                    {
-                                                        writer.WriteNullValue();
-                                                    }
-                                                }
-                                                writer.WriteEndArray();
-                                            }
-                                            else
-                                            {
-                                                writer.WriteNullValue();
-                                            }
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm11.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm11.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptIntListPropertyGetter itm13:
-                                            writer.WriteString("$type", "ScriptIntListProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            if (itm13.Data != null)
-                                            {
-                                                writer.WriteStartArray();
-                                                foreach(var itm14 in itm13.Data)
-                                                {
-                                                    writer.WriteNumberValue(itm14);
-                                                }
-                                                writer.WriteEndArray();
-                                            }
-                                            else
-                                            {
-                                                writer.WriteNullValue();
-                                            }
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm13.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm13.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptFloatListPropertyGetter itm15:
-                                            writer.WriteString("$type", "ScriptFloatListProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            if (itm15.Data != null)
-                                            {
-                                                writer.WriteStartArray();
-                                                foreach(var itm16 in itm15.Data)
-                                                {
-                                                    writer.WriteNumberValue(itm16);
-                                                }
-                                                writer.WriteEndArray();
-                                            }
-                                            else
-                                            {
-                                                writer.WriteNullValue();
-                                            }
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm15.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm15.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptBoolListPropertyGetter itm17:
-                                            writer.WriteString("$type", "ScriptBoolListProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            if (itm17.Data != null)
-                                            {
-                                                writer.WriteStartArray();
-                                                foreach(var itm18 in itm17.Data)
-                                                {
-                                                    writer.WriteBooleanValue(itm18);
-                                                }
-                                                writer.WriteEndArray();
-                                            }
-                                            else
-                                            {
-                                                writer.WriteNullValue();
-                                            }
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm17.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm17.Flags);
-                                            break;
-                                        case Mutagen.Bethesda.Skyrim.IScriptStringListPropertyGetter itm19:
-                                            writer.WriteString("$type", "ScriptStringListProperty");
-                                            
-                                            // Data
-                                            writer.WritePropertyName("Data");
-                                            if (itm19.Data != null)
-                                            {
-                                                writer.WriteStartArray();
-                                                foreach(var itm20 in itm19.Data)
-                                                {
-                                                    writer.WriteStringValue(itm20);
-                                                }
-                                                writer.WriteEndArray();
-                                            }
-                                            else
-                                            {
-                                                writer.WriteNullValue();
-                                            }
-                                            
-                                            // Name
-                                            writer.WritePropertyName("Name");
-                                            writer.WriteStringValue(itm19.Name);
-                                            
-                                            // Flags
-                                            writer.WritePropertyName("Flags");
-                                            writer.WriteEnum(itm19.Flags);
-                                            break;
-                                    }
-                                    writer.WriteEndObject();
-                                }
-                                else
-                                {
-                                    writer.WriteNullValue();
-                                }
+                                IScriptPropertyGetter_Writer.WriteOuter(writer, itm5, options);
                             }
                             writer.WriteEndArray();
                         }
@@ -746,9 +489,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop21 = reader.GetString();
+                            var prop6 = reader.GetString();
                             reader.Read();
-                            switch(prop21)
+                            switch(prop6)
                             {
                                 case "Data":
                                     retval.Destructible.Data = new Mutagen.Bethesda.Skyrim.DestructableData();
@@ -761,9 +504,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop22 = reader.GetString();
+                                            var prop7 = reader.GetString();
                                             reader.Read();
-                                            switch(prop22)
+                                            switch(prop7)
                                             {
                                                 case "Health":
                                                     retval.Destructible.Data.Health = reader.GetInt32();
@@ -795,7 +538,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            Mutagen.Bethesda.Skyrim.DestructionStage itm23 = new Mutagen.Bethesda.Skyrim.DestructionStage();
+                                            Mutagen.Bethesda.Skyrim.DestructionStage itm8 = new Mutagen.Bethesda.Skyrim.DestructionStage();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -805,12 +548,12 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                         break;
-                                                    var prop24 = reader.GetString();
+                                                    var prop9 = reader.GetString();
                                                     reader.Read();
-                                                    switch(prop24)
+                                                    switch(prop9)
                                                     {
                                                         case "Data":
-                                                            itm23.Data = new Mutagen.Bethesda.Skyrim.DestructionStageData();
+                                                            itm8.Data = new Mutagen.Bethesda.Skyrim.DestructionStageData();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -820,33 +563,33 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop25 = reader.GetString();
+                                                                    var prop10 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop25)
+                                                                    switch(prop10)
                                                                     {
                                                                         case "HealthPercent":
-                                                                            itm23.Data.HealthPercent = reader.GetByte();
+                                                                            itm8.Data.HealthPercent = reader.GetByte();
                                                                             break;
                                                                         case "Index":
-                                                                            itm23.Data.Index = reader.GetByte();
+                                                                            itm8.Data.Index = reader.GetByte();
                                                                             break;
                                                                         case "ModelDamageStage":
-                                                                            itm23.Data.ModelDamageStage = reader.GetByte();
+                                                                            itm8.Data.ModelDamageStage = reader.GetByte();
                                                                             break;
                                                                         case "Flags":
-                                                                            itm23.Data.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.DestructionStageData.Flag>(ref reader, options);
+                                                                            itm8.Data.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.DestructionStageData.Flag>(ref reader, options);
                                                                             break;
                                                                         case "SelfDamagePerSecond":
-                                                                            itm23.Data.SelfDamagePerSecond = reader.GetInt32();
+                                                                            itm8.Data.SelfDamagePerSecond = reader.GetInt32();
                                                                             break;
                                                                         case "Explosion":
-                                                                            itm23.Data.Explosion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm8.Data.Explosion.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "Debris":
-                                                                            itm23.Data.Debris.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                            itm8.Data.Debris.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                             break;
                                                                         case "DebrisCount":
-                                                                            itm23.Data.DebrisCount = reader.GetInt32();
+                                                                            itm8.Data.DebrisCount = reader.GetInt32();
                                                                             break;
                                                                     }
                                                                 }
@@ -857,7 +600,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                             }
                                                             break;
                                                         case "Model":
-                                                            itm23.Model = new Mutagen.Bethesda.Skyrim.Model();
+                                                            itm8.Model = new Mutagen.Bethesda.Skyrim.Model();
                                                             if (reader.TokenType != JsonTokenType.Null)
                                                             {
                                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -867,14 +610,14 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                                         break;
-                                                                    var prop26 = reader.GetString();
+                                                                    var prop11 = reader.GetString();
                                                                     reader.Read();
-                                                                    switch(prop26)
+                                                                    switch(prop11)
                                                                     {
                                                                         case "AlternateTextures":
                                                                             if (reader.TokenType != JsonTokenType.Null)
                                                                             {
-                                                                                itm23.Model.AlternateTextures ??= new();
+                                                                                itm8.Model.AlternateTextures ??= new();
                                                                                 if (reader.TokenType != JsonTokenType.StartArray)
                                                                                     throw new JsonException();
                                                                                 while (true)
@@ -882,7 +625,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                                     reader.Read();
                                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                                         break;
-                                                                                    Mutagen.Bethesda.Skyrim.AlternateTexture itm27 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                                                                    Mutagen.Bethesda.Skyrim.AlternateTexture itm12 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                                                                     if (reader.TokenType != JsonTokenType.Null)
                                                                                     {
                                                                                         if (reader.TokenType != JsonTokenType.StartObject)
@@ -892,18 +635,18 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                                             reader.Read();
                                                                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                                                                 break;
-                                                                                            var prop28 = reader.GetString();
+                                                                                            var prop13 = reader.GetString();
                                                                                             reader.Read();
-                                                                                            switch(prop28)
+                                                                                            switch(prop13)
                                                                                             {
                                                                                                 case "Name":
-                                                                                                    itm27.Name = reader.GetString();
+                                                                                                    itm12.Name = reader.GetString();
                                                                                                     break;
                                                                                                 case "NewTexture":
-                                                                                                    itm27.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                                                                    itm12.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                                                                     break;
                                                                                                 case "Index":
-                                                                                                    itm27.Index = reader.GetInt32();
+                                                                                                    itm12.Index = reader.GetInt32();
                                                                                                     break;
                                                                                             }
                                                                                         }
@@ -912,17 +655,17 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                                     {
                                                                                         reader.Skip();
                                                                                     }
-                                                                                    itm23.Model.AlternateTextures.Add(itm27);
+                                                                                    itm8.Model.AlternateTextures.Add(itm12);
                                                                                 }
                                                                             }
                                                                             break;
                                                                         case "File":
-                                                                            itm23.Model.File = reader.GetString();
+                                                                            itm8.Model.File = reader.GetString();
                                                                             break;
                                                                         case "Data":
                                                                             if (reader.TokenType != JsonTokenType.Null)
                                                                             {
-                                                                                itm23.Model.Data = reader.GetBytesFromBase64();
+                                                                                itm8.Model.Data = reader.GetBytesFromBase64();
                                                                             }
                                                                             break;
                                                                     }
@@ -940,7 +683,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             {
                                                 reader.Skip();
                                             }
-                                            retval.Destructible.Stages.Add(itm23);
+                                            retval.Destructible.Stages.Add(itm8);
                                         }
                                     }
                                     break;
@@ -969,9 +712,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop29 = reader.GetString();
+                            var prop14 = reader.GetString();
                             reader.Read();
-                            switch(prop29)
+                            switch(prop14)
                             {
                                 case "LargeIconFilename":
                                     retval.Icons.LargeIconFilename = reader.GetString();
@@ -1007,9 +750,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop30 = reader.GetString();
+                            var prop15 = reader.GetString();
                             reader.Read();
-                            switch(prop30)
+                            switch(prop15)
                             {
                                 case "AlternateTextures":
                                     if (reader.TokenType != JsonTokenType.Null)
@@ -1022,7 +765,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm31 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
+                                            Mutagen.Bethesda.Skyrim.AlternateTexture itm16 = new Mutagen.Bethesda.Skyrim.AlternateTexture();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1032,18 +775,18 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                         break;
-                                                    var prop32 = reader.GetString();
+                                                    var prop17 = reader.GetString();
                                                     reader.Read();
-                                                    switch(prop32)
+                                                    switch(prop17)
                                                     {
                                                         case "Name":
-                                                            itm31.Name = reader.GetString();
+                                                            itm16.Name = reader.GetString();
                                                             break;
                                                         case "NewTexture":
-                                                            itm31.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                                                            itm16.NewTexture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                                                             break;
                                                         case "Index":
-                                                            itm31.Index = reader.GetInt32();
+                                                            itm16.Index = reader.GetInt32();
                                                             break;
                                                     }
                                                 }
@@ -1052,7 +795,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             {
                                                 reader.Skip();
                                             }
-                                            retval.Model.AlternateTextures.Add(itm31);
+                                            retval.Model.AlternateTextures.Add(itm16);
                                         }
                                     }
                                     break;
@@ -1088,9 +831,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop33 = reader.GetString();
+                            var prop18 = reader.GetString();
                             reader.Read();
-                            switch(prop33)
+                            switch(prop18)
                             {
                                 case "First":
                                     retval.ObjectBounds.First = SerializerExtensions.ReadP3Int16(ref reader, options);
@@ -1143,9 +886,9 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop34 = reader.GetString();
+                            var prop19 = reader.GetString();
                             reader.Read();
-                            switch(prop34)
+                            switch(prop19)
                             {
                                 case "Version":
                                     retval.VirtualMachineAdapter.Version = reader.GetInt16();
@@ -1163,7 +906,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndArray)
                                                 break;
-                                            Mutagen.Bethesda.Skyrim.ScriptEntry itm35 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
+                                            Mutagen.Bethesda.Skyrim.ScriptEntry itm20 = new Mutagen.Bethesda.Skyrim.ScriptEntry();
                                             if (reader.TokenType != JsonTokenType.Null)
                                             {
                                                 if (reader.TokenType != JsonTokenType.StartObject)
@@ -1173,15 +916,15 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                     reader.Read();
                                                     if (reader.TokenType == JsonTokenType.EndObject)
                                                         break;
-                                                    var prop36 = reader.GetString();
+                                                    var prop21 = reader.GetString();
                                                     reader.Read();
-                                                    switch(prop36)
+                                                    switch(prop21)
                                                     {
                                                         case "Name":
-                                                            itm35.Name = reader.GetString();
+                                                            itm20.Name = reader.GetString();
                                                             break;
                                                         case "Flags":
-                                                            itm35.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptEntry.Flag>(ref reader, options);
+                                                            itm20.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptEntry.Flag>(ref reader, options);
                                                             break;
                                                         case "Properties":
                                                             if (reader.TokenType != JsonTokenType.Null)
@@ -1193,368 +936,8 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                                                     reader.Read();
                                                                     if (reader.TokenType == JsonTokenType.EndArray)
                                                                         break;
-                                                                    ScriptProperty itm37 = default;
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                                            throw new JsonException();
-                                                                        switch(SerializerExtensions.ReadTag(ref reader, $"$type", options))
-                                                                        {
-                                                                            case "ScriptObjectProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptObjectProperty itm38 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop39 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop39)
-                                                                                    {
-                                                                                        case "Object":
-                                                                                            itm38.Object.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                            break;
-                                                                                        case "Alias":
-                                                                                            itm38.Alias = reader.GetInt16();
-                                                                                            break;
-                                                                                        case "Unused":
-                                                                                            itm38.Unused = reader.GetUInt16();
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm38.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm38.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm38;
-                                                                                break;
-                                                                            case "ScriptStringProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptStringProperty itm40 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop41 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop41)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            itm40.Data = reader.GetString();
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm40.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm40.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm40;
-                                                                                break;
-                                                                            case "ScriptIntProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptIntProperty itm42 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop43 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop43)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            itm42.Data = reader.GetInt32();
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm42.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm42.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm42;
-                                                                                break;
-                                                                            case "ScriptFloatProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptFloatProperty itm44 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop45 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop45)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            itm44.Data = reader.GetSingle();
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm44.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm44.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm44;
-                                                                                break;
-                                                                            case "ScriptBoolProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptBoolProperty itm46 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop47 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop47)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            itm46.Data = reader.GetBoolean();
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm46.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm46.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm46;
-                                                                                break;
-                                                                            case "ScriptObjectListProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptObjectListProperty itm48 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop49 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop49)
-                                                                                    {
-                                                                                        case "Objects":
-                                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                                            {
-                                                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                                                    throw new JsonException();
-                                                                                                while (true)
-                                                                                                {
-                                                                                                    reader.Read();
-                                                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                                        break;
-                                                                                                    Mutagen.Bethesda.Skyrim.ScriptObjectProperty itm50 = new Mutagen.Bethesda.Skyrim.ScriptObjectProperty();
-                                                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                                                    {
-                                                                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                                                                            throw new JsonException();
-                                                                                                        while (true)
-                                                                                                        {
-                                                                                                            reader.Read();
-                                                                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                                                break;
-                                                                                                            var prop51 = reader.GetString();
-                                                                                                            reader.Read();
-                                                                                                            switch(prop51)
-                                                                                                            {
-                                                                                                                case "Object":
-                                                                                                                    itm50.Object.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                                                    break;
-                                                                                                                case "Alias":
-                                                                                                                    itm50.Alias = reader.GetInt16();
-                                                                                                                    break;
-                                                                                                                case "Unused":
-                                                                                                                    itm50.Unused = reader.GetUInt16();
-                                                                                                                    break;
-                                                                                                                case "Name":
-                                                                                                                    itm50.Name = reader.GetString();
-                                                                                                                    break;
-                                                                                                                case "Flags":
-                                                                                                                    itm50.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                                                    break;
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    else
-                                                                                                    {
-                                                                                                        reader.Skip();
-                                                                                                    }
-                                                                                                    itm48.Objects.Add(itm50);
-                                                                                                }
-                                                                                            }
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm48.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm48.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm48;
-                                                                                break;
-                                                                            case "ScriptIntListProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptIntListProperty itm52 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop53 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop53)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                                            {
-                                                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                                                    throw new JsonException();
-                                                                                                while (true)
-                                                                                                {
-                                                                                                    reader.Read();
-                                                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                                        break;
-                                                                                                    Int32 itm54 = default;
-                                                                                                    itm54 = reader.GetInt32();
-                                                                                                    itm52.Data.Add(itm54);
-                                                                                                }
-                                                                                            }
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm52.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm52.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm52;
-                                                                                break;
-                                                                            case "ScriptFloatListProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptFloatListProperty itm55 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop56 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop56)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                                            {
-                                                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                                                    throw new JsonException();
-                                                                                                while (true)
-                                                                                                {
-                                                                                                    reader.Read();
-                                                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                                        break;
-                                                                                                    Single itm57 = default;
-                                                                                                    itm57 = reader.GetSingle();
-                                                                                                    itm55.Data.Add(itm57);
-                                                                                                }
-                                                                                            }
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm55.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm55.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm55;
-                                                                                break;
-                                                                            case "ScriptBoolListProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptBoolListProperty itm58 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop59 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop59)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                                            {
-                                                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                                                    throw new JsonException();
-                                                                                                while (true)
-                                                                                                {
-                                                                                                    reader.Read();
-                                                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                                        break;
-                                                                                                    Boolean itm60 = default;
-                                                                                                    itm60 = reader.GetBoolean();
-                                                                                                    itm58.Data.Add(itm60);
-                                                                                                }
-                                                                                            }
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm58.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm58.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm58;
-                                                                                break;
-                                                                            case "ScriptStringListProperty":
-                                                                                Mutagen.Bethesda.Skyrim.ScriptStringListProperty itm61 = new();
-                                                                                while (true)
-                                                                                {
-                                                                                    reader.Read();
-                                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                        break;
-                                                                                    var prop62 = reader.GetString();
-                                                                                    reader.Read();
-                                                                                    switch(prop62)
-                                                                                    {
-                                                                                        case "Data":
-                                                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                                                            {
-                                                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                                                    throw new JsonException();
-                                                                                                while (true)
-                                                                                                {
-                                                                                                    reader.Read();
-                                                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                                                        break;
-                                                                                                    String itm63 = default;
-                                                                                                    itm63 = reader.GetString();
-                                                                                                    itm61.Data.Add(itm63);
-                                                                                                }
-                                                                                            }
-                                                                                            break;
-                                                                                        case "Name":
-                                                                                            itm61.Name = reader.GetString();
-                                                                                            break;
-                                                                                        case "Flags":
-                                                                                            itm61.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
-                                                                                            break;
-                                                                                    }
-                                                                                }
-                                                                                itm37 = itm61;
-                                                                                break;
-                                                                            default:
-                                                                                reader.Skip();
-                                                                                break;
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        reader.Skip();
-                                                                    }
-                                                                    itm35.Properties.Add(itm37);
+                                                                    ScriptProperty itm22 = default;
+                                                                    itm20.Properties.Add(itm22);
                                                                 }
                                                             }
                                                             break;
@@ -1565,7 +948,7 @@ public class AlchemicalApparatus_Converter : JsonConverter<Mutagen.Bethesda.Skyr
                                             {
                                                 reader.Skip();
                                             }
-                                            retval.VirtualMachineAdapter.Scripts.Add(itm35);
+                                            retval.VirtualMachineAdapter.Scripts.Add(itm20);
                                         }
                                     }
                                     break;
