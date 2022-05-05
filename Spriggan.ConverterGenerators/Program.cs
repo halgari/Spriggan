@@ -173,6 +173,16 @@ for (var i = 0; i < CFile.AbstractTypes.Count; i++)
         cfile.EmitConcreteClassWriter(def.Item1);
         cfile.Write($"../Spriggan.Converters.Skyrim/ConcreteSubRecords/{def.Item1.Name}_Writer.cs");
     }
+    else if (def.Item2 == CFile.AbstractMethod.AbstractReader)
+    {
+        cfile.EmitAbstractClassReader(def.Item1);
+        cfile.Write($"../Spriggan.Converters.Skyrim/AbstractSubRecords/{def.Item1.Name}_Reader.cs");
+    }
+    else if (def.Item2 == CFile.AbstractMethod.ConcreteReader)
+    {
+        cfile.EmitConcreteClassReader(def.Item1);
+        cfile.Write($"../Spriggan.Converters.Skyrim/ConcreteSubRecords/{def.Item1.Name}_Reader.cs");
+    }
 }
 
 {

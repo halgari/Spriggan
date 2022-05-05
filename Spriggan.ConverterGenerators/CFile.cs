@@ -610,7 +610,7 @@ public class CFile
 
         if (!AbstractTypes.Contains((info, AbstractMethod.AbstractWriter)))
             AbstractTypes.Add((info, AbstractMethod.AbstractWriter));
-        
+
         SB.AppendLine($"{info.Name}_Writer.WriteOuter(writer, {getter}, options);");
         return true;
     }
@@ -686,79 +686,8 @@ public class CFile
         var allTypes = Inheritors(type);
         if (allTypes.Length <= 1) return false;
 
-        if (!AbstractTypes.Contains((type, AbstractMethod.AbstractWriter)))
-            AbstractTypes.Add((type, AbstractMethod.AbstractWriter));
-        return true;
-
-
-        ctx = ctx with {IsConstructed = false};
-
-        SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
-        using (SB.CurlyBrace())
-        {
-            SB.AppendLine("if (reader.TokenType != JsonTokenType.StartObject)");
-            using (SB.IncreaseDepth())
-                SB.AppendLine("throw new JsonException();");
-
-
-            SB.AppendLine("switch(SerializerExtensions.ReadTag(ref reader, $\"$type\", options))");
-            using (SB.CurlyBrace())
-            {
-                foreach (var tp in allTypes)
-                {
-                    SB.AppendLine($"case \"{tp.Name}\":");
-
-                    using (SB.IncreaseDepth())
-                    {
-                        var itm = GetItem();
-                        SB.AppendLine($"{TypeToCS(tp)} {itm} = new();");
-                        SB.AppendLine("while (true)");
-                        using (SB.CurlyBrace())
-                        {
-                            SB.AppendLine("reader.Read();");
-                            SB.AppendLine("if (reader.TokenType == JsonTokenType.EndObject)");
-                            using (SB.IncreaseDepth())
-                                SB.AppendLine("break;");
-
-                            var propName = GetProp();
-                            SB.AppendLine($"var {propName} = reader.GetString();");
-                            SB.AppendLine("reader.Read();");
-
-                            SB.AppendLine($"switch({propName})");
-                            using (SB.CurlyBrace())
-                            {
-                                foreach (var prop in VisitorGenerator.Members(tp))
-                                {
-                                    SB.AppendLine($"case \"{prop.Name}\":");
-
-                                    using var _ = SB.IncreaseDepth();
-                                    EmitReader(prop.PropertyType, $"{itm}.{prop.Name}",
-                                        ctx with {IsSettable = IsSettable(prop)});
-                                    SB.AppendLine("break;");
-                                }
-                            }
-                        }
-
-                        SB.AppendLine($"{getter} = {itm};");
-                        SB.AppendLine("break;");
-                    }
-                }
-
-                SB.AppendLine("default:");
-                using (SB.IncreaseDepth())
-                {
-                    SB.AppendLine("reader.Skip();");
-                    SB.AppendLine("break;");
-                }
-            }
-        }
-
-        SB.AppendLine("else");
-        using (SB.CurlyBrace())
-        {
-            SB.AppendLine("reader.Skip();");
-        }
-
+        if (!AbstractTypes.Contains((type, AbstractMethod.AbstractReader)))
+            AbstractTypes.Add((type, AbstractMethod.AbstractReader));
         return true;
     }
 
@@ -947,7 +876,7 @@ public class CFile
             if (!AbstractTypes.Contains((itm, AbstractMethod.ConcreteWriter)))
                 AbstractTypes.Add((itm, AbstractMethod.ConcreteWriter));
         }
-        
+
         var ctx = new Context(true, false, true);
         using (var c = SB.Class($"{tp.Name}_Writer"))
         {
@@ -957,7 +886,8 @@ public class CFile
 
         using (SB.CurlyBrace())
         {
-            SB.AppendLine($"public static void WriteOuter(Utf8JsonWriter writer, {TypeToCS(tp)}? value, JsonSerializerOptions options)");
+            SB.AppendLine(
+                $"public static void WriteOuter(Utf8JsonWriter writer, {TypeToCS(tp)}? value, JsonSerializerOptions options)");
             var getter = "value";
             using (SB.CurlyBrace())
             {
@@ -978,15 +908,6 @@ public class CFile
                             {
                                 SB.AppendLine($"writer.WriteString(\"$type\", \"{t.Name}\");");
                                 SB.AppendLine($"{t.Name}_Writer.WriteInner(writer, {itm}, options);");
-/*
-                                foreach (var p in VisitorGenerator.Members(ifaceType))
-                                {
-                                    SB.AppendLine("");
-                                    SB.AppendLine($"// {p.Name}");
-                                    SB.AppendLine($"writer.WritePropertyName(\"{p.Name}\");");
-                                    EmitWriter(p.PropertyType, $"{itm}." + p.Name, ctx);
-                                }
-                                */
 
                                 SB.AppendLine("break;");
                             }
@@ -1009,10 +930,10 @@ public class CFile
     {
         return tp.Assembly.GetTypes().First(t => t.IsInterface && t.Name == "I" + tp.Name + "Getter");
     }
-    
-     public void EmitConcreteClassWriter(Type tp)
-     { 
-         var itm = "value";
+
+    public void EmitConcreteClassWriter(Type tp)
+    {
+        var itm = "value";
         var ctx = new Context(true, false, true);
         var iface = GetterFor(tp);
         using (var c = SB.Class($"{tp.Name}_Writer"))
@@ -1023,7 +944,8 @@ public class CFile
 
         using (SB.CurlyBrace())
         {
-            SB.AppendLine($"public static void WriteInner(Utf8JsonWriter writer, {TypeToCS(iface)}? value, JsonSerializerOptions options)");
+            SB.AppendLine(
+                $"public static void WriteInner(Utf8JsonWriter writer, {TypeToCS(iface)}? value, JsonSerializerOptions options)");
             var getter = "value";
             using (SB.CurlyBrace())
             {
@@ -1047,6 +969,124 @@ public class CFile
                 {
                     SB.AppendLine("writer.WriteNullValue();");
                 }
+            }
+        }
+    }
+
+    public void EmitAbstractClassReader(Type type)
+    {
+        using (var c = SB.Class($"{type.Name}_Reader"))
+        {
+            c.Static = true;
+            c.AccessModifier = AccessModifier.Internal;
+        }
+
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine(
+                $"public static {TypeToCS(type)} ReadOuter(ref Utf8JsonReader reader, JsonSerializerOptions options)");
+            var getter = "value";
+            using (SB.CurlyBrace())
+            {
+
+                var allTypes = Inheritors(type);
+
+                foreach (var itm in allTypes)
+                {
+                    if (!AbstractTypes.Contains((itm, AbstractMethod.ConcreteReader)))
+                        AbstractTypes.Add((itm, AbstractMethod.ConcreteReader));
+                }
+
+                var ctx = new Context(true, false, false);
+
+                SB.AppendLine("if (reader.TokenType != JsonTokenType.Null)");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("if (reader.TokenType != JsonTokenType.StartObject)");
+                    using (SB.IncreaseDepth())
+                        SB.AppendLine("throw new JsonException();");
+
+
+                    SB.AppendLine("switch(SerializerExtensions.ReadTag(ref reader, $\"$type\", options))");
+                    using (SB.CurlyBrace())
+                    {
+                        foreach (var tp in allTypes)
+                        {
+                            SB.AppendLine($"case \"{tp.Name}\":");
+
+                            using (SB.IncreaseDepth())
+                            {
+                                SB.AppendLine($"return {tp.Name}_Reader.ReadInner(ref reader, options);");
+                            }
+                        }
+
+                        SB.AppendLine("default:");
+                        using (SB.IncreaseDepth())
+                        {
+                            SB.AppendLine("reader.Skip();");
+                            SB.AppendLine("break;");
+                        }
+                    }
+                }
+
+                SB.AppendLine("else");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("reader.Skip();");
+                }
+                
+                SB.AppendLine("return default;");
+            }
+        }
+    }
+
+    public void EmitConcreteClassReader(Type type)
+    {
+        var itm = "cls";
+        
+        using (var c = SB.Class($"{type.Name}_Reader"))
+        {
+            c.Static = true;
+            c.AccessModifier = AccessModifier.Internal;
+        }
+
+        using (SB.CurlyBrace())
+        {
+            SB.AppendLine(
+                $"public static {TypeToCS(type)} ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)");
+            var getter = "value";
+            using (SB.CurlyBrace())
+            {
+
+                SB.AppendLine($"{TypeToCS(type)} {itm} = new();");
+                var ctx = new Context(true, false, true);
+                SB.AppendLine("while (true)");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("reader.Read();");
+                    SB.AppendLine("if (reader.TokenType == JsonTokenType.EndObject)");
+                    using (SB.IncreaseDepth())
+                        SB.AppendLine("break;");
+
+                    var propName = GetProp();
+                    SB.AppendLine($"var {propName} = reader.GetString();");
+                    SB.AppendLine("reader.Read();");
+
+                    SB.AppendLine($"switch({propName})");
+                    using (SB.CurlyBrace())
+                    {
+                        foreach (var prop in VisitorGenerator.Members(type))
+                        {
+                            SB.AppendLine($"case \"{prop.Name}\":");
+
+                            using var _ = SB.IncreaseDepth();
+                            EmitReader(prop.PropertyType, $"{itm}.{prop.Name}",
+                                ctx with {IsSettable = IsSettable(prop)});
+                            SB.AppendLine("break;");
+                        }
+                    }
+                }
+                SB.AppendLine($"return {itm};");
             }
         }
     }
