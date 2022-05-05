@@ -17,7 +17,7 @@ internal static class BookTeachesNothing_Reader
 {
     public static Mutagen.Bethesda.Skyrim.BookTeachesNothing ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.BookTeachesNothing cls = new();
+        Mutagen.Bethesda.Skyrim.BookTeachesNothing cls = new Mutagen.Bethesda.Skyrim.BookTeachesNothing();
         while (true)
         {
             reader.Read();

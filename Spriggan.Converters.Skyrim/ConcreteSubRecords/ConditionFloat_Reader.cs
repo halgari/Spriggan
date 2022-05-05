@@ -17,7 +17,7 @@ internal static class ConditionFloat_Reader
 {
     public static Mutagen.Bethesda.Skyrim.ConditionFloat ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.ConditionFloat cls = new();
+        Mutagen.Bethesda.Skyrim.ConditionFloat cls = new Mutagen.Bethesda.Skyrim.ConditionFloat();
         while (true)
         {
             reader.Read();
@@ -32,15 +32,6 @@ internal static class ConditionFloat_Reader
                     break;
                 case "ComparisonValue":
                     cls.ComparisonValue = reader.GetSingle();
-                    break;
-                case "CompareOperator":
-                    cls.CompareOperator = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.CompareOperator>(ref reader, options);
-                    break;
-                case "Flags":
-                    cls.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Condition.Flag>(ref reader, options);
-                    break;
-                case "Unknown1":
-                    cls.Unknown1 = reader.GetBytesFromBase64();
                     break;
             }
         }

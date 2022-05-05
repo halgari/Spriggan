@@ -47,6 +47,17 @@ public static class SerializerExtensions
         return new FormKey(new ModKey(split[0], mt), uint.Parse(split[3], NumberStyles.HexNumber));
     }
 
+    public static string MajorRecordInternalFormKeyString(IMajorRecordInternal r)
+    {
+        return $"{r.FormKey}:{r.Type.Name}";
+    }
+
+    public static (FormKey FormKey, string Type) MajorRecordInternalFormKeyParse(string r)
+    {
+        var s = r.Split(":");
+        return (FormKey.Factory($"{s[0]}:{s[1]}"), s[2]);
+    }
+
     /// <summary>
     /// Gets the value for the given property as a string, will not advance the reader, so use this
     /// to parse the type of an object before parsing the rest of the object

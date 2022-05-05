@@ -17,7 +17,7 @@ internal static class BookSpell_Reader
 {
     public static Mutagen.Bethesda.Skyrim.BookSpell ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.BookSpell cls = new();
+        Mutagen.Bethesda.Skyrim.BookSpell cls = new Mutagen.Bethesda.Skyrim.BookSpell();
         while (true)
         {
             reader.Read();

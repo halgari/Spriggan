@@ -17,7 +17,7 @@ internal static class ScriptBoolProperty_Reader
 {
     public static Mutagen.Bethesda.Skyrim.ScriptBoolProperty ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.ScriptBoolProperty cls = new();
+        Mutagen.Bethesda.Skyrim.ScriptBoolProperty cls = new Mutagen.Bethesda.Skyrim.ScriptBoolProperty();
         while (true)
         {
             reader.Read();
@@ -29,12 +29,6 @@ internal static class ScriptBoolProperty_Reader
             {
                 case "Data":
                     cls.Data = reader.GetBoolean();
-                    break;
-                case "Name":
-                    cls.Name = reader.GetString();
-                    break;
-                case "Flags":
-                    cls.Flags = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.ScriptProperty.Flag>(ref reader, options);
                     break;
             }
         }

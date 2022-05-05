@@ -17,7 +17,7 @@ internal static class ConditionGlobal_Reader
 {
     public static Mutagen.Bethesda.Skyrim.ConditionGlobal ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.ConditionGlobal cls = new();
+        Mutagen.Bethesda.Skyrim.ConditionGlobal cls = new Mutagen.Bethesda.Skyrim.ConditionGlobal();
         while (true)
         {
             reader.Read();
@@ -32,15 +32,6 @@ internal static class ConditionGlobal_Reader
                     break;
                 case "ComparisonValue":
                     cls.ComparisonValue.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
-                case "CompareOperator":
-                    cls.CompareOperator = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.CompareOperator>(ref reader, options);
-                    break;
-                case "Flags":
-                    cls.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Condition.Flag>(ref reader, options);
-                    break;
-                case "Unknown1":
-                    cls.Unknown1 = reader.GetBytesFromBase64();
                     break;
             }
         }

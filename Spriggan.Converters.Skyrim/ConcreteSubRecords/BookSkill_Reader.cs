@@ -17,7 +17,7 @@ internal static class BookSkill_Reader
 {
     public static Mutagen.Bethesda.Skyrim.BookSkill ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.BookSkill cls = new();
+        Mutagen.Bethesda.Skyrim.BookSkill cls = new Mutagen.Bethesda.Skyrim.BookSkill();
         while (true)
         {
             reader.Read();

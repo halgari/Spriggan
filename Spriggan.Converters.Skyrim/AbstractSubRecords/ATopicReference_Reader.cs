@@ -13,9 +13,9 @@ using System.Globalization;
 using Mutagen.Bethesda.Plugins;
 using Noggog;
 
-internal static class BookTeachTarget_Reader
+internal static class ATopicReference_Reader
 {
-    public static Mutagen.Bethesda.Skyrim.BookTeachTarget ReadOuter(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    public static Mutagen.Bethesda.Skyrim.ATopicReference ReadOuter(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.Null)
         {
@@ -24,12 +24,10 @@ internal static class BookTeachTarget_Reader
             var itm1 = SerializerExtensions.ReadTag(ref reader, $"$type", options);
             switch(itm1)
             {
-                case "BookSkill":
-                    return BookSkill_Reader.ReadInner(ref reader, options);
-                case "BookSpell":
-                    return BookSpell_Reader.ReadInner(ref reader, options);
-                case "BookTeachesNothing":
-                    return BookTeachesNothing_Reader.ReadInner(ref reader, options);
+                case "TopicReference":
+                    return TopicReference_Reader.ReadInner(ref reader, options);
+                case "TopicReferenceSubtype":
+                    return TopicReferenceSubtype_Reader.ReadInner(ref reader, options);
                 default:
                     reader.Skip();
                     break;

@@ -21,7 +21,8 @@ internal static class Condition_Reader
         {
             if (reader.TokenType != JsonTokenType.StartObject)
                 throw new JsonException();
-            switch(SerializerExtensions.ReadTag(ref reader, $"$type", options))
+            var itm1 = SerializerExtensions.ReadTag(ref reader, $"$type", options);
+            switch(itm1)
             {
                 case "ConditionFloat":
                     return ConditionFloat_Reader.ReadInner(ref reader, options);

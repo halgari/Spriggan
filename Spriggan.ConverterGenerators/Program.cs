@@ -23,7 +23,7 @@ var allTypes = VisitorGenerator.GetAllTypes(typeof(ISkyrimMajorRecord).Assembly)
 var propLimit = 1000;
 
 var majorTypes = allTypes.Where(a => a.Getter.InheritsFrom(typeof(IMajorRecordGetter))).OrderBy(t => t.Main.Name)
-    .Take(16);
+    .Take(17);
 // Writers
 foreach (var t in majorTypes)
 {

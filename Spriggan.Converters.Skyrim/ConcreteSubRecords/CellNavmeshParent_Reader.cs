@@ -13,11 +13,11 @@ using System.Globalization;
 using Mutagen.Bethesda.Plugins;
 using Noggog;
 
-internal static class GetEventData_Reader
+internal static class CellNavmeshParent_Reader
 {
-    public static Mutagen.Bethesda.Skyrim.GetEventData ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    public static Mutagen.Bethesda.Skyrim.CellNavmeshParent ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.GetEventData cls = new Mutagen.Bethesda.Skyrim.GetEventData();
+        Mutagen.Bethesda.Skyrim.CellNavmeshParent cls = new Mutagen.Bethesda.Skyrim.CellNavmeshParent();
         while (true)
         {
             reader.Read();
@@ -27,14 +27,11 @@ internal static class GetEventData_Reader
             reader.Read();
             switch(prop1)
             {
-                case "EventFunction":
-                    cls.EventFunction = reader.GetUInt16();
+                case "UnusedWorldspaceParent":
+                    cls.UnusedWorldspaceParent.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                     break;
-                case "EventMember":
-                    cls.EventMember = reader.GetUInt16();
-                    break;
-                case "Parameter3":
-                    cls.Parameter3.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                case "Parent":
+                    cls.Parent.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
                     break;
             }
         }

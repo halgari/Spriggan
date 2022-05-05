@@ -49,6 +49,8 @@ public static class GeneratedConvertersExtensions
         services.AddSingleton<JsonConverter, CameraPath_Converter>();
         services.AddSingleton<JsonConverter, ICameraShotGetter_Converter>();
         services.AddSingleton<JsonConverter, CameraShot_Converter>();
+        services.AddSingleton<JsonConverter, ICellGetter_Converter>();
+        services.AddSingleton<JsonConverter, Cell_Converter>();
         return services;
     }
     public static (Type Main, Type Getter)[] SupportedRecords = new[]
@@ -69,5 +71,6 @@ public static class GeneratedConvertersExtensions
         (typeof(Mutagen.Bethesda.Skyrim.Book), typeof(Mutagen.Bethesda.Skyrim.IBookGetter)),
         (typeof(Mutagen.Bethesda.Skyrim.CameraPath), typeof(Mutagen.Bethesda.Skyrim.ICameraPathGetter)),
         (typeof(Mutagen.Bethesda.Skyrim.CameraShot), typeof(Mutagen.Bethesda.Skyrim.ICameraShotGetter)),
+        (typeof(Mutagen.Bethesda.Skyrim.Cell), typeof(Mutagen.Bethesda.Skyrim.ICellGetter)),
     };
 }

@@ -13,11 +13,11 @@ using System.Globalization;
 using Mutagen.Bethesda.Plugins;
 using Noggog;
 
-internal static class GetEventData_Reader
+internal static class TopicReferenceSubtype_Reader
 {
-    public static Mutagen.Bethesda.Skyrim.GetEventData ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    public static Mutagen.Bethesda.Skyrim.TopicReferenceSubtype ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.GetEventData cls = new Mutagen.Bethesda.Skyrim.GetEventData();
+        Mutagen.Bethesda.Skyrim.TopicReferenceSubtype cls = new Mutagen.Bethesda.Skyrim.TopicReferenceSubtype();
         while (true)
         {
             reader.Read();
@@ -27,14 +27,8 @@ internal static class GetEventData_Reader
             reader.Read();
             switch(prop1)
             {
-                case "EventFunction":
-                    cls.EventFunction = reader.GetUInt16();
-                    break;
-                case "EventMember":
-                    cls.EventMember = reader.GetUInt16();
-                    break;
-                case "Parameter3":
-                    cls.Parameter3.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
+                case "Subtype":
+                    cls.Subtype = new RecordType(reader.GetString());
                     break;
             }
         }

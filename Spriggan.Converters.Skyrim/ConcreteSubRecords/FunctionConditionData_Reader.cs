@@ -17,7 +17,7 @@ internal static class FunctionConditionData_Reader
 {
     public static Mutagen.Bethesda.Skyrim.FunctionConditionData ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
-        Mutagen.Bethesda.Skyrim.FunctionConditionData cls = new();
+        Mutagen.Bethesda.Skyrim.FunctionConditionData cls = new Mutagen.Bethesda.Skyrim.FunctionConditionData();
         while (true)
         {
             reader.Read();
@@ -50,15 +50,6 @@ internal static class FunctionConditionData_Reader
                     break;
                 case "ParameterTwoString":
                     cls.ParameterTwoString = reader.GetString();
-                    break;
-                case "RunOnType":
-                    cls.RunOnType = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Skyrim.Condition.RunOnType>(ref reader, options);
-                    break;
-                case "Reference":
-                    cls.Reference.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                    break;
-                case "Unknown3":
-                    cls.Unknown3 = reader.GetInt32();
                     break;
             }
         }
