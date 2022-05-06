@@ -102,7 +102,7 @@ internal static class PlacedObject_Writer
                 writer.WriteNullValue();
             else
             {
-                writer.WriteP3Float(value.BoundHalfExtents, options);
+                writer.WriteP3Float(value.BoundHalfExtents.Value, options);
             }
             
             // Primitive

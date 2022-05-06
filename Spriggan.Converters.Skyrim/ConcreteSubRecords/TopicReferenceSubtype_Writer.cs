@@ -23,7 +23,7 @@ internal static class TopicReferenceSubtype_Writer
             
             // Subtype
             writer.WritePropertyName("Subtype");
-            writer.WriteString(value.Subtype.ToString(), options);
+            writer.WriteStringValue(value.Subtype.ToString());
             writer.WriteEndObject();
         }
         else

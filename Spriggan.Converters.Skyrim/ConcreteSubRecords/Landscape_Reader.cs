@@ -66,7 +66,7 @@ internal static class Landscape_Reader
                                         itm6 = reader.GetByte();
                                         return itm6;
                                     }
-                                    cls.VertexHeightMap.HeightMap = SerializerExtensions.Array2dReader(ref reader, itm5);
+                                    cls.VertexHeightMap.HeightMap.Set(SerializerExtensions.Array2dReader(ref reader, itm5));
                                     break;
                                 case "Unknown":
                                     cls.VertexHeightMap.Unknown = SerializerExtensions.ReadP3UInt8(ref reader, options);

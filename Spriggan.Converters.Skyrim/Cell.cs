@@ -969,7 +969,7 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                     break;
                 case "Landscape":
                     var itm16 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
-                    retval.Landscape = Landscape_Reader.ReadInner(writer, itm16, options);
+                    retval.Landscape = Landscape_Reader.ReadInner(ref reader, itm16.FormKey, options);
                     break;
                 case "Lighting":
                     retval.Lighting = new Mutagen.Bethesda.Skyrim.CellLighting();
@@ -1140,7 +1140,7 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                                         itm21 = reader.GetByte();
                                         return itm21;
                                     }
-                                    retval.MaxHeightData.HeightMap = SerializerExtensions.Array2dReader(ref reader, itm20);
+                                    retval.MaxHeightData.HeightMap.Set(SerializerExtensions.Array2dReader(ref reader, itm20));
                                     break;
                             }
                         }
@@ -1170,7 +1170,7 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                                 break;
                             Mutagen.Bethesda.Skyrim.NavigationMesh itm22 = new Mutagen.Bethesda.Skyrim.NavigationMesh(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
                             var itm23 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
-                            itm22 = NavigationMesh_Reader.ReadInner(writer, itm23, options);
+                            itm22 = NavigationMesh_Reader.ReadInner(ref reader, itm23.FormKey, options);
                             retval.NavigationMeshes.Add(itm22);
                         }
                     }

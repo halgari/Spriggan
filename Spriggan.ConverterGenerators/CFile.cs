@@ -153,8 +153,11 @@ public class CFile
             SB.AppendLine($"return {itm};");
         }
 
-        
-        SB.AppendLine($"{getter} = SerializerExtensions.Array2dReader(ref reader, {fn});");
+        if (ctx.IsSettable) 
+            SB.AppendLine($"{getter} = SerializerExtensions.Array2dReader(ref reader, {fn});");
+        else
+            SB.AppendLine($"{getter}.Set(SerializerExtensions.Array2dReader(ref reader, {fn}));");
+            
     }
 
     private void ReadOnlyArray2dWriter(Type type, string getter, Context ctx)
@@ -433,7 +436,11 @@ public class CFile
         }
         else if (typeof(T) == typeof(P3Float))
         {
-            SB.AppendLine($"writer.WriteP3Float({getter}, options);");
+            if (ctx.IsNullable) 
+                SB.AppendLine($"writer.WriteP3Float({getter}.Value, options);");
+            else
+                SB.AppendLine($"writer.WriteP3Float({getter}, options);");
+                
         }
         else if (typeof(T) == typeof(P2Int))
         {
@@ -441,7 +448,7 @@ public class CFile
         }
         else if (typeof(T) == typeof(RecordType))
         {
-            SB.AppendLine($"writer.WriteString({getter}.ToString(), options);");
+            SB.AppendLine($"writer.WriteStringValue({getter}.ToString());");
         }
         else
         {
@@ -635,7 +642,7 @@ public class CFile
                 AbstractTypes.Add((type, AbstractMethod.ConcreteReader));
             var itm = GetItem();
             SB.AppendLine($"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
-            SB.AppendLine($"{getter} = {type.Name}_Reader.ReadInner(writer, {itm}, options);");
+            SB.AppendLine($"{getter} = {type.Name}_Reader.ReadInner(ref reader, {itm}.FormKey, options);");
             return;
             
         }
