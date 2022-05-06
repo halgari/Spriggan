@@ -968,204 +968,8 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                     retval.IsDeleted = reader.GetBoolean();
                     break;
                 case "Landscape":
-                    retval.Landscape = new Mutagen.Bethesda.Skyrim.Landscape(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
-                    if (reader.TokenType != JsonTokenType.Null)
-                    {
-                        if (reader.TokenType != JsonTokenType.StartObject)
-                            throw new JsonException();
-                        while (true)
-                        {
-                            reader.Read();
-                            if (reader.TokenType == JsonTokenType.EndObject)
-                                break;
-                            var prop16 = reader.GetString();
-                            reader.Read();
-                            switch(prop16)
-                            {
-                                case "Flags":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        retval.Landscape.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.Landscape.Flag>(ref reader, options);
-                                    }
-                                    break;
-                                case "VertexNormals":
-                                    Noggog.P3UInt8 itm17(ref Utf8JsonReader reader)
-                                    {
-                                        Noggog.P3UInt8 itm18 = default;
-                                        itm18 = SerializerExtensions.ReadP3UInt8(ref reader, options);
-                                        return itm18;
-                                    }
-                                    retval.Landscape.VertexNormals = SerializerExtensions.Array2dReader(ref reader, itm17);
-                                    break;
-                                case "VertexHeightMap":
-                                    retval.Landscape.VertexHeightMap = new Mutagen.Bethesda.Skyrim.LandscapeVertexHeightMap();
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                            throw new JsonException();
-                                        while (true)
-                                        {
-                                            reader.Read();
-                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                break;
-                                            var prop19 = reader.GetString();
-                                            reader.Read();
-                                            switch(prop19)
-                                            {
-                                                case "Offset":
-                                                    retval.Landscape.VertexHeightMap.Offset = reader.GetSingle();
-                                                    break;
-                                                case "HeightMap":
-                                                    Byte itm20(ref Utf8JsonReader reader)
-                                                    {
-                                                        Byte itm21 = default;
-                                                        itm21 = reader.GetByte();
-                                                        return itm21;
-                                                    }
-                                                    retval.Landscape.VertexHeightMap.HeightMap = SerializerExtensions.Array2dReader(ref reader, itm20);
-                                                    break;
-                                                case "Unknown":
-                                                    retval.Landscape.VertexHeightMap.Unknown = SerializerExtensions.ReadP3UInt8(ref reader, options);
-                                                    break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        reader.Skip();
-                                    }
-                                    break;
-                                case "VertexColors":
-                                    Noggog.P3UInt8 itm22(ref Utf8JsonReader reader)
-                                    {
-                                        Noggog.P3UInt8 itm23 = default;
-                                        itm23 = SerializerExtensions.ReadP3UInt8(ref reader, options);
-                                        return itm23;
-                                    }
-                                    retval.Landscape.VertexColors = SerializerExtensions.Array2dReader(ref reader, itm22);
-                                    break;
-                                case "Layers":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        if (reader.TokenType != JsonTokenType.StartArray)
-                                            throw new JsonException();
-                                        while (true)
-                                        {
-                                            reader.Read();
-                                            if (reader.TokenType == JsonTokenType.EndArray)
-                                                break;
-                                            Mutagen.Bethesda.Skyrim.BaseLayer itm24 = new Mutagen.Bethesda.Skyrim.BaseLayer();
-                                            if (reader.TokenType != JsonTokenType.Null)
-                                            {
-                                                if (reader.TokenType != JsonTokenType.StartObject)
-                                                    throw new JsonException();
-                                                while (true)
-                                                {
-                                                    reader.Read();
-                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                        break;
-                                                    var prop25 = reader.GetString();
-                                                    reader.Read();
-                                                    switch(prop25)
-                                                    {
-                                                        case "Header":
-                                                            itm24.Header = new Mutagen.Bethesda.Skyrim.LayerHeader();
-                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                            {
-                                                                if (reader.TokenType != JsonTokenType.StartObject)
-                                                                    throw new JsonException();
-                                                                while (true)
-                                                                {
-                                                                    reader.Read();
-                                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                                        break;
-                                                                    var prop26 = reader.GetString();
-                                                                    reader.Read();
-                                                                    switch(prop26)
-                                                                    {
-                                                                        case "Texture":
-                                                                            itm24.Header.Texture.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                            break;
-                                                                        case "Quadrant":
-                                                                            itm24.Header.Quadrant = SerializerExtensions.ReadEnum<Mutagen.Bethesda.Plugins.Records.Quadrant>(ref reader, options);
-                                                                            break;
-                                                                        case "Unused":
-                                                                            itm24.Header.Unused = reader.GetByte();
-                                                                            break;
-                                                                        case "LayerNumber":
-                                                                            itm24.Header.LayerNumber = reader.GetUInt16();
-                                                                            break;
-                                                                    }
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                reader.Skip();
-                                                            }
-                                                            break;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                reader.Skip();
-                                            }
-                                            retval.Landscape.Layers.Add(itm24);
-                                        }
-                                    }
-                                    break;
-                                case "Textures":
-                                    if (reader.TokenType != JsonTokenType.Null)
-                                    {
-                                        retval.Landscape.Textures ??= new();
-                                        if (reader.TokenType != JsonTokenType.StartArray)
-                                            throw new JsonException();
-                                        while (true)
-                                        {
-                                            reader.Read();
-                                            if (reader.TokenType == JsonTokenType.EndArray)
-                                                break;
-                                            retval.Landscape.Textures.Add(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                        }
-                                    }
-                                    break;
-                                case "SkyrimMajorRecordFlags":
-                                    retval.Landscape.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
-                                    break;
-                                case "FormVersion":
-                                    retval.Landscape.FormVersion = reader.GetUInt16();
-                                    break;
-                                case "Version2":
-                                    retval.Landscape.Version2 = reader.GetUInt16();
-                                    break;
-                                case "EditorID":
-                                    retval.Landscape.EditorID = reader.GetString();
-                                    break;
-                                case "TitleString":
-                                    retval.Landscape.TitleString = reader.GetString();
-                                    break;
-                                case "IsCompressed":
-                                    retval.Landscape.IsCompressed = reader.GetBoolean();
-                                    break;
-                                case "IsDeleted":
-                                    retval.Landscape.IsDeleted = reader.GetBoolean();
-                                    break;
-                                case "MajorRecordFlagsRaw":
-                                    retval.Landscape.MajorRecordFlagsRaw = reader.GetInt32();
-                                    break;
-                                case "FormKey":
-                                    retval.Landscape.FormKey = SerializerExtensions.ReadFormKeyValue(ref reader, options);
-                                    break;
-                                case "VersionControl":
-                                    retval.Landscape.VersionControl = reader.GetUInt32();
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        reader.Skip();
-                    }
+                    var itm16 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
+                    retval.Landscape = Landscape_Reader.ReadInner(writer, itm16, options);
                     break;
                 case "Lighting":
                     retval.Lighting = new Mutagen.Bethesda.Skyrim.CellLighting();
@@ -1178,9 +982,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop27 = reader.GetString();
+                            var prop17 = reader.GetString();
                             reader.Read();
-                            switch(prop27)
+                            switch(prop17)
                             {
                                 case "Versioning":
                                     retval.Lighting.Versioning = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.CellLighting.VersioningBreaks>(ref reader, options);
@@ -1226,9 +1030,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop28 = reader.GetString();
+                                            var prop18 = reader.GetString();
                                             reader.Read();
-                                            switch(prop28)
+                                            switch(prop18)
                                             {
                                                 case "Versioning":
                                                     retval.Lighting.AmbientColors.Versioning = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.AmbientColors.VersioningBreaks>(ref reader, options);
@@ -1322,21 +1126,21 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop29 = reader.GetString();
+                            var prop19 = reader.GetString();
                             reader.Read();
-                            switch(prop29)
+                            switch(prop19)
                             {
                                 case "Offset":
                                     retval.MaxHeightData.Offset = reader.GetSingle();
                                     break;
                                 case "HeightMap":
-                                    Byte itm30(ref Utf8JsonReader reader)
+                                    Byte itm20(ref Utf8JsonReader reader)
                                     {
-                                        Byte itm31 = default;
-                                        itm31 = reader.GetByte();
-                                        return itm31;
+                                        Byte itm21 = default;
+                                        itm21 = reader.GetByte();
+                                        return itm21;
                                     }
-                                    retval.MaxHeightData.HeightMap = SerializerExtensions.Array2dReader(ref reader, itm30);
+                                    retval.MaxHeightData.HeightMap = SerializerExtensions.Array2dReader(ref reader, itm20);
                                     break;
                             }
                         }
@@ -1364,289 +1168,10 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            Mutagen.Bethesda.Skyrim.NavigationMesh itm32 = new Mutagen.Bethesda.Skyrim.NavigationMesh(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
-                            if (reader.TokenType != JsonTokenType.Null)
-                            {
-                                if (reader.TokenType != JsonTokenType.StartObject)
-                                    throw new JsonException();
-                                while (true)
-                                {
-                                    reader.Read();
-                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                        break;
-                                    var prop33 = reader.GetString();
-                                    reader.Read();
-                                    switch(prop33)
-                                    {
-                                        case "Data":
-                                            itm32.Data = new Mutagen.Bethesda.Skyrim.NavigationMeshData();
-                                            if (reader.TokenType != JsonTokenType.Null)
-                                            {
-                                                if (reader.TokenType != JsonTokenType.StartObject)
-                                                    throw new JsonException();
-                                                while (true)
-                                                {
-                                                    reader.Read();
-                                                    if (reader.TokenType == JsonTokenType.EndObject)
-                                                        break;
-                                                    var prop34 = reader.GetString();
-                                                    reader.Read();
-                                                    switch(prop34)
-                                                    {
-                                                        case "NavmeshVersion":
-                                                            itm32.Data.NavmeshVersion = reader.GetUInt32();
-                                                            break;
-                                                        case "Magic":
-                                                            itm32.Data.Magic = reader.GetUInt32();
-                                                            break;
-                                                        case "Parent":
-                                                            itm32.Data.Parent = ANavmeshParent_Reader.ReadOuter(ref reader, options);
-                                                            break;
-                                                        case "Vertices":
-                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                            {
-                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                    throw new JsonException();
-                                                                while (true)
-                                                                {
-                                                                    reader.Read();
-                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                        break;
-                                                                    Noggog.P3Float itm35 = default;
-                                                                    itm35 = SerializerExtensions.ReadP3Float(ref reader, options);
-                                                                    itm32.Data.Vertices.Add(itm35);
-                                                                }
-                                                            }
-                                                            break;
-                                                        case "Triangles":
-                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                            {
-                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                    throw new JsonException();
-                                                                while (true)
-                                                                {
-                                                                    reader.Read();
-                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                        break;
-                                                                    Mutagen.Bethesda.Skyrim.NavmeshTriangle itm36 = new Mutagen.Bethesda.Skyrim.NavmeshTriangle();
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                                            throw new JsonException();
-                                                                        while (true)
-                                                                        {
-                                                                            reader.Read();
-                                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                break;
-                                                                            var prop37 = reader.GetString();
-                                                                            reader.Read();
-                                                                            switch(prop37)
-                                                                            {
-                                                                                case "Vertices":
-                                                                                    itm36.Vertices = SerializerExtensions.ReadP3Int16(ref reader, options);
-                                                                                    break;
-                                                                                case "EdgeLink_0_1":
-                                                                                    itm36.EdgeLink_0_1 = reader.GetInt16();
-                                                                                    break;
-                                                                                case "EdgeLink_1_2":
-                                                                                    itm36.EdgeLink_1_2 = reader.GetInt16();
-                                                                                    break;
-                                                                                case "EdgeLink_2_0":
-                                                                                    itm36.EdgeLink_2_0 = reader.GetInt16();
-                                                                                    break;
-                                                                                case "Flags":
-                                                                                    itm36.Flags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.NavmeshTriangle.Flag>(ref reader, options);
-                                                                                    break;
-                                                                                case "CoverFlags":
-                                                                                    itm36.CoverFlags = reader.GetUInt16();
-                                                                                    break;
-                                                                                case "IsCover":
-                                                                                    itm36.IsCover = reader.GetBoolean();
-                                                                                    break;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        reader.Skip();
-                                                                    }
-                                                                    itm32.Data.Triangles.Add(itm36);
-                                                                }
-                                                            }
-                                                            break;
-                                                        case "EdgeLinks":
-                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                            {
-                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                    throw new JsonException();
-                                                                while (true)
-                                                                {
-                                                                    reader.Read();
-                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                        break;
-                                                                    Mutagen.Bethesda.Skyrim.EdgeLink itm38 = new Mutagen.Bethesda.Skyrim.EdgeLink();
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                                            throw new JsonException();
-                                                                        while (true)
-                                                                        {
-                                                                            reader.Read();
-                                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                break;
-                                                                            var prop39 = reader.GetString();
-                                                                            reader.Read();
-                                                                            switch(prop39)
-                                                                            {
-                                                                                case "Unknown":
-                                                                                    itm38.Unknown = reader.GetInt32();
-                                                                                    break;
-                                                                                case "Mesh":
-                                                                                    itm38.Mesh.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                    break;
-                                                                                case "TriangleIndex":
-                                                                                    itm38.TriangleIndex = reader.GetInt16();
-                                                                                    break;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        reader.Skip();
-                                                                    }
-                                                                    itm32.Data.EdgeLinks.Add(itm38);
-                                                                }
-                                                            }
-                                                            break;
-                                                        case "DoorTriangles":
-                                                            if (reader.TokenType != JsonTokenType.Null)
-                                                            {
-                                                                if (reader.TokenType != JsonTokenType.StartArray)
-                                                                    throw new JsonException();
-                                                                while (true)
-                                                                {
-                                                                    reader.Read();
-                                                                    if (reader.TokenType == JsonTokenType.EndArray)
-                                                                        break;
-                                                                    Mutagen.Bethesda.Skyrim.DoorTriangle itm40 = new Mutagen.Bethesda.Skyrim.DoorTriangle();
-                                                                    if (reader.TokenType != JsonTokenType.Null)
-                                                                    {
-                                                                        if (reader.TokenType != JsonTokenType.StartObject)
-                                                                            throw new JsonException();
-                                                                        while (true)
-                                                                        {
-                                                                            reader.Read();
-                                                                            if (reader.TokenType == JsonTokenType.EndObject)
-                                                                                break;
-                                                                            var prop41 = reader.GetString();
-                                                                            reader.Read();
-                                                                            switch(prop41)
-                                                                            {
-                                                                                case "TriangleBeforeDoor":
-                                                                                    itm40.TriangleBeforeDoor = reader.GetInt16();
-                                                                                    break;
-                                                                                case "Unknown":
-                                                                                    itm40.Unknown = reader.GetInt32();
-                                                                                    break;
-                                                                                case "Door":
-                                                                                    itm40.Door.SetTo(SerializerExtensions.ReadFormKeyValue(ref reader, options));
-                                                                                    break;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        reader.Skip();
-                                                                    }
-                                                                    itm32.Data.DoorTriangles.Add(itm40);
-                                                                }
-                                                            }
-                                                            break;
-                                                        case "NavmeshGridDivisor":
-                                                            itm32.Data.NavmeshGridDivisor = reader.GetUInt32();
-                                                            break;
-                                                        case "MaxDistanceX":
-                                                            itm32.Data.MaxDistanceX = reader.GetSingle();
-                                                            break;
-                                                        case "MaxDistanceY":
-                                                            itm32.Data.MaxDistanceY = reader.GetSingle();
-                                                            break;
-                                                        case "Min":
-                                                            itm32.Data.Min = SerializerExtensions.ReadP3Float(ref reader, options);
-                                                            break;
-                                                        case "Max":
-                                                            itm32.Data.Max = SerializerExtensions.ReadP3Float(ref reader, options);
-                                                            break;
-                                                        case "NavmeshGrid":
-                                                            itm32.Data.NavmeshGrid = reader.GetBytesFromBase64();
-                                                            break;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                reader.Skip();
-                                            }
-                                            break;
-                                        case "ONAM":
-                                            if (reader.TokenType != JsonTokenType.Null)
-                                            {
-                                                itm32.ONAM = reader.GetBytesFromBase64();
-                                            }
-                                            break;
-                                        case "PNAM":
-                                            if (reader.TokenType != JsonTokenType.Null)
-                                            {
-                                                itm32.PNAM = reader.GetBytesFromBase64();
-                                            }
-                                            break;
-                                        case "NNAM":
-                                            if (reader.TokenType != JsonTokenType.Null)
-                                            {
-                                                itm32.NNAM = reader.GetBytesFromBase64();
-                                            }
-                                            break;
-                                        case "MajorFlags":
-                                            itm32.MajorFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.NavigationMesh.MajorFlag>(ref reader, options);
-                                            break;
-                                        case "SkyrimMajorRecordFlags":
-                                            itm32.SkyrimMajorRecordFlags = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.SkyrimMajorRecord.SkyrimMajorRecordFlag>(ref reader, options);
-                                            break;
-                                        case "FormVersion":
-                                            itm32.FormVersion = reader.GetUInt16();
-                                            break;
-                                        case "Version2":
-                                            itm32.Version2 = reader.GetUInt16();
-                                            break;
-                                        case "EditorID":
-                                            itm32.EditorID = reader.GetString();
-                                            break;
-                                        case "TitleString":
-                                            itm32.TitleString = reader.GetString();
-                                            break;
-                                        case "IsCompressed":
-                                            itm32.IsCompressed = reader.GetBoolean();
-                                            break;
-                                        case "IsDeleted":
-                                            itm32.IsDeleted = reader.GetBoolean();
-                                            break;
-                                        case "MajorRecordFlagsRaw":
-                                            itm32.MajorRecordFlagsRaw = reader.GetInt32();
-                                            break;
-                                        case "FormKey":
-                                            itm32.FormKey = SerializerExtensions.ReadFormKeyValue(ref reader, options);
-                                            break;
-                                        case "VersionControl":
-                                            itm32.VersionControl = reader.GetUInt32();
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                reader.Skip();
-                            }
-                            retval.NavigationMeshes.Add(itm32);
+                            Mutagen.Bethesda.Skyrim.NavigationMesh itm22 = new Mutagen.Bethesda.Skyrim.NavigationMesh(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
+                            var itm23 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
+                            itm22 = NavigationMesh_Reader.ReadInner(writer, itm23, options);
+                            retval.NavigationMeshes.Add(itm22);
                         }
                     }
                     break;
@@ -1667,9 +1192,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop42 = reader.GetString();
+                            var prop24 = reader.GetString();
                             reader.Read();
-                            switch(prop42)
+                            switch(prop24)
                             {
                                 case "Owner":
                                     if (reader.TokenType != JsonTokenType.Null)
@@ -1699,9 +1224,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            IPlaced itm43 = default;
-                            itm43 = IPlaced_Reader.ReadOuter(ref reader, options);
-                            retval.Persistent.Add(itm43);
+                            IPlaced itm25 = default;
+                            itm25 = IPlaced_Reader.ReadOuter(ref reader, options);
+                            retval.Persistent.Add(itm25);
                         }
                     }
                     break;
@@ -1743,9 +1268,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            IPlaced itm44 = default;
-                            itm44 = IPlaced_Reader.ReadOuter(ref reader, options);
-                            retval.Temporary.Add(itm44);
+                            IPlaced itm26 = default;
+                            itm26 = IPlaced_Reader.ReadOuter(ref reader, options);
+                            retval.Temporary.Add(itm26);
                         }
                     }
                     break;
@@ -1794,9 +1319,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop45 = reader.GetString();
+                            var prop27 = reader.GetString();
                             reader.Read();
-                            switch(prop45)
+                            switch(prop27)
                             {
                                 case "Offset":
                                     retval.WaterVelocity.Offset = SerializerExtensions.ReadP3Float(ref reader, options);

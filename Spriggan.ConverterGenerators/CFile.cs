@@ -577,6 +577,15 @@ public class CFile
             return;
         }
 
+        if (info.InheritsFrom(typeof(IMajorRecordInternal)))
+        {
+            if (!AbstractTypes.Contains((info, AbstractMethod.ConcreteWriter)))
+                AbstractTypes.Add((info, AbstractMethod.ConcreteWriter));
+            SB.AppendLine($"{info.Name}_Writer.WriteInner(writer, {getter}, options);");
+            return;
+            
+        }
+
         SB.AppendLine($"if ({getter} != null)");
         using (SB.CurlyBrace())
         {
@@ -618,6 +627,17 @@ public class CFile
         if (Inheritors(type).Length > 1 && AbstractLoquiObjectReader(type, getter, ctx))
         {
             return;
+        }
+        
+        if (type.InheritsFrom(typeof(IMajorRecordInternal)))
+        {
+            if (!AbstractTypes.Contains((type, AbstractMethod.ConcreteReader)))
+                AbstractTypes.Add((type, AbstractMethod.ConcreteReader));
+            var itm = GetItem();
+            SB.AppendLine($"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
+            SB.AppendLine($"{getter} = {type.Name}_Reader.ReadInner(writer, {itm}, options);");
+            return;
+            
         }
 
         if (!ctx.IsConstructed)
