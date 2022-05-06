@@ -17,7 +17,7 @@ internal static class ScriptFloatListProperty_Writer
 {
     public static void WriteInner(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.IScriptFloatListPropertyGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             

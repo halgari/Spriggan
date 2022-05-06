@@ -17,7 +17,7 @@ internal static class ScriptBoolProperty_Writer
 {
     public static void WriteInner(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.IScriptBoolPropertyGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             

@@ -17,7 +17,7 @@ internal static class PlacedArrow_Writer
 {
     public static void WriteInner(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.IPlacedArrowGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             

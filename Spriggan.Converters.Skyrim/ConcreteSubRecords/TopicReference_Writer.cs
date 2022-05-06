@@ -17,7 +17,7 @@ internal static class TopicReference_Writer
 {
     public static void WriteInner(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.ITopicReferenceGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             

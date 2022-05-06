@@ -17,7 +17,7 @@ internal static class IBaseLayerGetter_Writer
 {
     public static void WriteOuter(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.IBaseLayerGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             switch (value)

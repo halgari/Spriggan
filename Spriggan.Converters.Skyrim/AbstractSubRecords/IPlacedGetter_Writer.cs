@@ -17,7 +17,7 @@ internal static class IPlacedGetter_Writer
 {
     public static void WriteOuter(Utf8JsonWriter writer, Mutagen.Bethesda.Skyrim.IPlacedGetter? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value != null)
         {
             writer.WriteStartObject();
             switch (value)

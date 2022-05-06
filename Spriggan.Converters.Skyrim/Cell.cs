@@ -87,131 +87,10 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         
         // Landscape
         writer.WritePropertyName("Landscape");
-        if (value.Landscape != null)
-        {
-            writer.WriteStartObject();
-            
-            // Flags
-            writer.WritePropertyName("Flags");
-            if (value.Landscape.Flags == null)
-                writer.WriteNullValue();
-            else
-            {
-                writer.WriteFlags(value.Landscape.Flags.Value);
-            }
-            
-            // VertexNormals
-            writer.WritePropertyName("VertexNormals");
-            writer.ReadOnlyArray2dWriter(value.Landscape.VertexNormals, itm =>
-            {
-                Noggog.P3UInt8 itm1 = default;
-                writer.WriteP3UInt8(itm1, options);
-            }
-            );
-            
-            // VertexHeightMap
-            writer.WritePropertyName("VertexHeightMap");
-            if (value.Landscape.VertexHeightMap != null)
-            {
-                writer.WriteStartObject();
-                
-                // Offset
-                writer.WritePropertyName("Offset");
-                writer.WriteNumberValue(value.Landscape.VertexHeightMap.Offset);
-                
-                // HeightMap
-                writer.WritePropertyName("HeightMap");
-                writer.ReadOnlyArray2dWriter(value.Landscape.VertexHeightMap.HeightMap, itm =>
-                {
-                    Byte itm2 = default;
-                    writer.WriteNumberValue(itm2);
-                }
-                );
-                
-                // Unknown
-                writer.WritePropertyName("Unknown");
-                writer.WriteP3UInt8(value.Landscape.VertexHeightMap.Unknown, options);
-                writer.WriteEndObject();
-            }
-            else
-            {
-                writer.WriteNullValue();
-            }
-            
-            // VertexColors
-            writer.WritePropertyName("VertexColors");
-            writer.ReadOnlyArray2dWriter(value.Landscape.VertexColors, itm =>
-            {
-                Noggog.P3UInt8 itm3 = default;
-                writer.WriteP3UInt8(itm3, options);
-            }
-            );
-            
-            // Layers
-            writer.WritePropertyName("Layers");
-            if (value.Landscape.Layers != null)
-            {
-                writer.WriteStartArray();
-                foreach(var itm4 in value.Landscape.Layers)
-                {
-                    IBaseLayerGetter_Writer.WriteOuter(writer, itm4, options);
-                }
-                writer.WriteEndArray();
-            }
-            else
-            {
-                writer.WriteNullValue();
-            }
-            
-            // Textures
-            writer.WritePropertyName("Textures");
-            if (value.Landscape.Textures != null)
-            {
-                writer.WriteStartArray();
-                foreach(var itm5 in value.Landscape.Textures)
-                {
-                    writer.WriteStringValue(itm5.FormKey.ToString());
-                }
-                writer.WriteEndArray();
-            }
-            else
-            {
-                writer.WriteNullValue();
-            }
-            
-            // FormVersion
-            writer.WritePropertyName("FormVersion");
-            writer.WriteNumberValue((uint)value.Landscape.FormVersion);
-            
-            // Version2
-            writer.WritePropertyName("Version2");
-            writer.WriteNumberValue((uint)value.Landscape.Version2);
-            
-            // IsCompressed
-            writer.WritePropertyName("IsCompressed");
-            writer.WriteBooleanValue(value.Landscape.IsCompressed);
-            
-            // IsDeleted
-            writer.WritePropertyName("IsDeleted");
-            writer.WriteBooleanValue(value.Landscape.IsDeleted);
-            
-            // MajorRecordFlagsRaw
-            writer.WritePropertyName("MajorRecordFlagsRaw");
-            writer.WriteNumberValue(value.Landscape.MajorRecordFlagsRaw);
-            
-            // VersionControl
-            writer.WritePropertyName("VersionControl");
-            writer.WriteNumberValue(value.Landscape.VersionControl);
-            
-            // EditorID
-            writer.WritePropertyName("EditorID");
-            writer.WriteStringValue(value.Landscape.EditorID);
-            writer.WriteEndObject();
-        }
-        else
-        {
-            writer.WriteNullValue();
-        }
+        writer.WriteStartObject();
+        writer.WriteFormKeyHeader(value, options);
+        ILandscapeGetter_Writer.WriteInner(writer, value.Landscape, options);
+        writer.WriteEndObject();
         
         // Lighting
         writer.WritePropertyName("Lighting");
@@ -386,8 +265,8 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
             writer.WritePropertyName("HeightMap");
             writer.ReadOnlyArray2dWriter(value.MaxHeightData.HeightMap, itm =>
             {
-                Byte itm6 = default;
-                writer.WriteNumberValue(itm6);
+                Byte itm1 = default;
+                writer.WriteNumberValue(itm1);
             }
             );
             writer.WriteEndObject();
@@ -413,264 +292,12 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         if (value.NavigationMeshes != null)
         {
             writer.WriteStartArray();
-            foreach(var itm7 in value.NavigationMeshes)
+            foreach(var itm2 in value.NavigationMeshes)
             {
-                if (itm7 != null)
-                {
-                    writer.WriteStartObject();
-                    
-                    // Data
-                    writer.WritePropertyName("Data");
-                    if (itm7.Data != null)
-                    {
-                        writer.WriteStartObject();
-                        
-                        // NavmeshVersion
-                        writer.WritePropertyName("NavmeshVersion");
-                        writer.WriteNumberValue(itm7.Data.NavmeshVersion);
-                        
-                        // Magic
-                        writer.WritePropertyName("Magic");
-                        writer.WriteNumberValue(itm7.Data.Magic);
-                        
-                        // Parent
-                        writer.WritePropertyName("Parent");
-                        IANavmeshParentGetter_Writer.WriteOuter(writer, itm7.Data.Parent, options);
-                        
-                        // Vertices
-                        writer.WritePropertyName("Vertices");
-                        if (itm7.Data.Vertices != null)
-                        {
-                            writer.WriteStartArray();
-                            foreach(var itm8 in itm7.Data.Vertices)
-                            {
-                                writer.WriteP3Float(itm8, options);
-                            }
-                            writer.WriteEndArray();
-                        }
-                        else
-                        {
-                            writer.WriteNullValue();
-                        }
-                        
-                        // Triangles
-                        writer.WritePropertyName("Triangles");
-                        if (itm7.Data.Triangles != null)
-                        {
-                            writer.WriteStartArray();
-                            foreach(var itm9 in itm7.Data.Triangles)
-                            {
-                                if (itm9 != null)
-                                {
-                                    writer.WriteStartObject();
-                                    
-                                    // Vertices
-                                    writer.WritePropertyName("Vertices");
-                                    writer.WriteP3Int16(itm9.Vertices, options);
-                                    
-                                    // EdgeLink_0_1
-                                    writer.WritePropertyName("EdgeLink_0_1");
-                                    writer.WriteNumberValue(itm9.EdgeLink_0_1);
-                                    
-                                    // EdgeLink_1_2
-                                    writer.WritePropertyName("EdgeLink_1_2");
-                                    writer.WriteNumberValue(itm9.EdgeLink_1_2);
-                                    
-                                    // EdgeLink_2_0
-                                    writer.WritePropertyName("EdgeLink_2_0");
-                                    writer.WriteNumberValue(itm9.EdgeLink_2_0);
-                                    
-                                    // Flags
-                                    writer.WritePropertyName("Flags");
-                                    writer.WriteFlags(itm9.Flags);
-                                    
-                                    // CoverFlags
-                                    writer.WritePropertyName("CoverFlags");
-                                    writer.WriteNumberValue((uint)itm9.CoverFlags);
-                                    
-                                    // IsCover
-                                    writer.WritePropertyName("IsCover");
-                                    writer.WriteBooleanValue(itm9.IsCover);
-                                    writer.WriteEndObject();
-                                }
-                                else
-                                {
-                                    writer.WriteNullValue();
-                                }
-                            }
-                            writer.WriteEndArray();
-                        }
-                        else
-                        {
-                            writer.WriteNullValue();
-                        }
-                        
-                        // EdgeLinks
-                        writer.WritePropertyName("EdgeLinks");
-                        if (itm7.Data.EdgeLinks != null)
-                        {
-                            writer.WriteStartArray();
-                            foreach(var itm10 in itm7.Data.EdgeLinks)
-                            {
-                                if (itm10 != null)
-                                {
-                                    writer.WriteStartObject();
-                                    
-                                    // Unknown
-                                    writer.WritePropertyName("Unknown");
-                                    writer.WriteNumberValue(itm10.Unknown);
-                                    
-                                    // Mesh
-                                    writer.WritePropertyName("Mesh");
-                                    writer.WriteStringValue(itm10.Mesh.FormKey.ToString());
-                                    
-                                    // TriangleIndex
-                                    writer.WritePropertyName("TriangleIndex");
-                                    writer.WriteNumberValue(itm10.TriangleIndex);
-                                    writer.WriteEndObject();
-                                }
-                                else
-                                {
-                                    writer.WriteNullValue();
-                                }
-                            }
-                            writer.WriteEndArray();
-                        }
-                        else
-                        {
-                            writer.WriteNullValue();
-                        }
-                        
-                        // DoorTriangles
-                        writer.WritePropertyName("DoorTriangles");
-                        if (itm7.Data.DoorTriangles != null)
-                        {
-                            writer.WriteStartArray();
-                            foreach(var itm11 in itm7.Data.DoorTriangles)
-                            {
-                                if (itm11 != null)
-                                {
-                                    writer.WriteStartObject();
-                                    
-                                    // TriangleBeforeDoor
-                                    writer.WritePropertyName("TriangleBeforeDoor");
-                                    writer.WriteNumberValue(itm11.TriangleBeforeDoor);
-                                    
-                                    // Unknown
-                                    writer.WritePropertyName("Unknown");
-                                    writer.WriteNumberValue(itm11.Unknown);
-                                    
-                                    // Door
-                                    writer.WritePropertyName("Door");
-                                    writer.WriteStringValue(itm11.Door.FormKey.ToString());
-                                    writer.WriteEndObject();
-                                }
-                                else
-                                {
-                                    writer.WriteNullValue();
-                                }
-                            }
-                            writer.WriteEndArray();
-                        }
-                        else
-                        {
-                            writer.WriteNullValue();
-                        }
-                        
-                        // NavmeshGridDivisor
-                        writer.WritePropertyName("NavmeshGridDivisor");
-                        writer.WriteNumberValue(itm7.Data.NavmeshGridDivisor);
-                        
-                        // MaxDistanceX
-                        writer.WritePropertyName("MaxDistanceX");
-                        writer.WriteNumberValue(itm7.Data.MaxDistanceX);
-                        
-                        // MaxDistanceY
-                        writer.WritePropertyName("MaxDistanceY");
-                        writer.WriteNumberValue(itm7.Data.MaxDistanceY);
-                        
-                        // Min
-                        writer.WritePropertyName("Min");
-                        writer.WriteP3Float(itm7.Data.Min, options);
-                        
-                        // Max
-                        writer.WritePropertyName("Max");
-                        writer.WriteP3Float(itm7.Data.Max, options);
-                        
-                        // NavmeshGrid
-                        writer.WritePropertyName("NavmeshGrid");
-                        writer.WriteBase64StringValue(itm7.Data.NavmeshGrid);
-                        writer.WriteEndObject();
-                    }
-                    else
-                    {
-                        writer.WriteNullValue();
-                    }
-                    
-                    // ONAM
-                    writer.WritePropertyName("ONAM");
-                    if (itm7.ONAM == null)
-                        writer.WriteNullValue();
-                    else
-                    {
-                        writer.WriteBase64StringValue(itm7.ONAM.Value);
-                    }
-                    
-                    // PNAM
-                    writer.WritePropertyName("PNAM");
-                    if (itm7.PNAM == null)
-                        writer.WriteNullValue();
-                    else
-                    {
-                        writer.WriteBase64StringValue(itm7.PNAM.Value);
-                    }
-                    
-                    // NNAM
-                    writer.WritePropertyName("NNAM");
-                    if (itm7.NNAM == null)
-                        writer.WriteNullValue();
-                    else
-                    {
-                        writer.WriteBase64StringValue(itm7.NNAM.Value);
-                    }
-                    
-                    // MajorFlags
-                    writer.WritePropertyName("MajorFlags");
-                    writer.WriteFlags(itm7.MajorFlags);
-                    
-                    // FormVersion
-                    writer.WritePropertyName("FormVersion");
-                    writer.WriteNumberValue((uint)itm7.FormVersion);
-                    
-                    // Version2
-                    writer.WritePropertyName("Version2");
-                    writer.WriteNumberValue((uint)itm7.Version2);
-                    
-                    // IsCompressed
-                    writer.WritePropertyName("IsCompressed");
-                    writer.WriteBooleanValue(itm7.IsCompressed);
-                    
-                    // IsDeleted
-                    writer.WritePropertyName("IsDeleted");
-                    writer.WriteBooleanValue(itm7.IsDeleted);
-                    
-                    // MajorRecordFlagsRaw
-                    writer.WritePropertyName("MajorRecordFlagsRaw");
-                    writer.WriteNumberValue(itm7.MajorRecordFlagsRaw);
-                    
-                    // VersionControl
-                    writer.WritePropertyName("VersionControl");
-                    writer.WriteNumberValue(itm7.VersionControl);
-                    
-                    // EditorID
-                    writer.WritePropertyName("EditorID");
-                    writer.WriteStringValue(itm7.EditorID);
-                    writer.WriteEndObject();
-                }
-                else
-                {
-                    writer.WriteNullValue();
-                }
+                writer.WriteStartObject();
+                writer.WriteFormKeyHeader(value, options);
+                INavigationMeshGetter_Writer.WriteInner(writer, itm2, options);
+                writer.WriteEndObject();
             }
             writer.WriteEndArray();
         }
@@ -721,9 +348,9 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         if (value.Persistent != null)
         {
             writer.WriteStartArray();
-            foreach(var itm12 in value.Persistent)
+            foreach(var itm3 in value.Persistent)
             {
-                IPlacedGetter_Writer.WriteOuter(writer, itm12, options);
+                IPlacedGetter_Writer.WriteOuter(writer, itm3, options);
             }
             writer.WriteEndArray();
         }
@@ -745,9 +372,9 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         if (value.Regions != null)
         {
             writer.WriteStartArray();
-            foreach(var itm13 in value.Regions)
+            foreach(var itm4 in value.Regions)
             {
-                writer.WriteStringValue(itm13.FormKey.ToString());
+                writer.WriteStringValue(itm4.FormKey.ToString());
             }
             writer.WriteEndArray();
         }
@@ -768,9 +395,9 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         if (value.Temporary != null)
         {
             writer.WriteStartArray();
-            foreach(var itm14 in value.Temporary)
+            foreach(var itm5 in value.Temporary)
             {
-                IPlacedGetter_Writer.WriteOuter(writer, itm14, options);
+                IPlacedGetter_Writer.WriteOuter(writer, itm5, options);
             }
             writer.WriteEndArray();
         }
@@ -939,9 +566,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop15 = reader.GetString();
+                            var prop6 = reader.GetString();
                             reader.Read();
-                            switch(prop15)
+                            switch(prop6)
                             {
                                 case "Point":
                                     retval.Grid.Point = SerializerExtensions.ReadP2Int(ref reader, options);
@@ -968,8 +595,22 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                     retval.IsDeleted = reader.GetBoolean();
                     break;
                 case "Landscape":
-                    var itm16 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
-                    retval.Landscape = Landscape_Reader.ReadInner(ref reader, itm16.FormKey, options);
+                    if (reader.TokenType == JsonTokenType.Null)
+                    {
+                        reader.Skip();
+                    }
+                    else
+                    {
+                        if(reader.TokenType != JsonTokenType.StartObject)
+                        {
+                            throw new JsonException();
+                        }
+                        else
+                        {
+                            var itm7 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
+                            retval.Landscape = Landscape_Reader.ReadInner(ref reader, itm7.FormKey, options);
+                        }
+                    }
                     break;
                 case "Lighting":
                     retval.Lighting = new Mutagen.Bethesda.Skyrim.CellLighting();
@@ -982,9 +623,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop17 = reader.GetString();
+                            var prop8 = reader.GetString();
                             reader.Read();
-                            switch(prop17)
+                            switch(prop8)
                             {
                                 case "Versioning":
                                     retval.Lighting.Versioning = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.CellLighting.VersioningBreaks>(ref reader, options);
@@ -1030,9 +671,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                                             reader.Read();
                                             if (reader.TokenType == JsonTokenType.EndObject)
                                                 break;
-                                            var prop18 = reader.GetString();
+                                            var prop9 = reader.GetString();
                                             reader.Read();
-                                            switch(prop18)
+                                            switch(prop9)
                                             {
                                                 case "Versioning":
                                                     retval.Lighting.AmbientColors.Versioning = SerializerExtensions.ReadFlags<Mutagen.Bethesda.Skyrim.AmbientColors.VersioningBreaks>(ref reader, options);
@@ -1126,21 +767,21 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop19 = reader.GetString();
+                            var prop10 = reader.GetString();
                             reader.Read();
-                            switch(prop19)
+                            switch(prop10)
                             {
                                 case "Offset":
                                     retval.MaxHeightData.Offset = reader.GetSingle();
                                     break;
                                 case "HeightMap":
-                                    Byte itm20(ref Utf8JsonReader reader)
+                                    Byte itm11(ref Utf8JsonReader reader)
                                     {
-                                        Byte itm21 = default;
-                                        itm21 = reader.GetByte();
-                                        return itm21;
+                                        Byte itm12 = default;
+                                        itm12 = reader.GetByte();
+                                        return itm12;
                                     }
-                                    retval.MaxHeightData.HeightMap.Set(SerializerExtensions.Array2dReader(ref reader, itm20));
+                                    retval.MaxHeightData.HeightMap.Set(SerializerExtensions.Array2dReader(ref reader, itm11));
                                     break;
                             }
                         }
@@ -1168,10 +809,24 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            Mutagen.Bethesda.Skyrim.NavigationMesh itm22 = new Mutagen.Bethesda.Skyrim.NavigationMesh(SerializerExtensions.ReadFormKeyHeader(ref reader, options), SkyrimRelease.SkyrimSE);
-                            var itm23 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
-                            itm22 = NavigationMesh_Reader.ReadInner(ref reader, itm23.FormKey, options);
-                            retval.NavigationMeshes.Add(itm22);
+                            NavigationMesh itm13 = default;
+                            if (reader.TokenType == JsonTokenType.Null)
+                            {
+                                reader.Skip();
+                            }
+                            else
+                            {
+                                if(reader.TokenType != JsonTokenType.StartObject)
+                                {
+                                    throw new JsonException();
+                                }
+                                else
+                                {
+                                    var itm14 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
+                                    itm13 = NavigationMesh_Reader.ReadInner(ref reader, itm14.FormKey, options);
+                                }
+                            }
+                            retval.NavigationMeshes.Add(itm13);
                         }
                     }
                     break;
@@ -1192,9 +847,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop24 = reader.GetString();
+                            var prop15 = reader.GetString();
                             reader.Read();
-                            switch(prop24)
+                            switch(prop15)
                             {
                                 case "Owner":
                                     if (reader.TokenType != JsonTokenType.Null)
@@ -1224,9 +879,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            IPlaced itm25 = default;
-                            itm25 = IPlaced_Reader.ReadOuter(ref reader, options);
-                            retval.Persistent.Add(itm25);
+                            IPlaced itm16 = default;
+                            itm16 = IPlaced_Reader.ReadOuter(ref reader, options);
+                            retval.Persistent.Add(itm16);
                         }
                     }
                     break;
@@ -1268,9 +923,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndArray)
                                 break;
-                            IPlaced itm26 = default;
-                            itm26 = IPlaced_Reader.ReadOuter(ref reader, options);
-                            retval.Temporary.Add(itm26);
+                            IPlaced itm17 = default;
+                            itm17 = IPlaced_Reader.ReadOuter(ref reader, options);
+                            retval.Temporary.Add(itm17);
                         }
                     }
                     break;
@@ -1319,9 +974,9 @@ public class Cell_Converter : JsonConverter<Mutagen.Bethesda.Skyrim.Cell>
                             reader.Read();
                             if (reader.TokenType == JsonTokenType.EndObject)
                                 break;
-                            var prop27 = reader.GetString();
+                            var prop18 = reader.GetString();
                             reader.Read();
-                            switch(prop27)
+                            switch(prop18)
                             {
                                 case "Offset":
                                     retval.WaterVelocity.Offset = SerializerExtensions.ReadP3Float(ref reader, options);

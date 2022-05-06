@@ -153,11 +153,10 @@ public class CFile
             SB.AppendLine($"return {itm};");
         }
 
-        if (ctx.IsSettable) 
+        if (ctx.IsSettable)
             SB.AppendLine($"{getter} = SerializerExtensions.Array2dReader(ref reader, {fn});");
         else
             SB.AppendLine($"{getter}.Set(SerializerExtensions.Array2dReader(ref reader, {fn}));");
-            
     }
 
     private void ReadOnlyArray2dWriter(Type type, string getter, Context ctx)
@@ -436,11 +435,10 @@ public class CFile
         }
         else if (typeof(T) == typeof(P3Float))
         {
-            if (ctx.IsNullable) 
+            if (ctx.IsNullable)
                 SB.AppendLine($"writer.WriteP3Float({getter}.Value, options);");
             else
                 SB.AppendLine($"writer.WriteP3Float({getter}, options);");
-                
         }
         else if (typeof(T) == typeof(P2Int))
         {
@@ -577,6 +575,20 @@ public class CFile
         SB.AppendLine($"writer.WriteStringValue({getter}.FormKey.ToString());");
     }
 
+    private bool IsMajorRecordInternal(Type t)
+    {
+        if (t.InheritsFrom(typeof(IMajorRecordInternal))) return true;
+        if (t.IsInterface && t.Name.StartsWith("I") && t.Name.EndsWith("Getter"))
+        {
+            var tp = t.Assembly.GetTypes()
+                .Where(ti => ti.IsPublic)
+                .FirstOrDefault(ti => ti.Name == t.Name[1..^6]);
+            if (tp != null) return tp.InheritsFrom(typeof(IMajorRecordInternal));
+        }
+
+        return false;
+    }
+
     private void LoquiObjectWriter(Type info, string getter, Context ctx)
     {
         if (info.IsAbstract && AbstractLoquiObjectWriter(info, getter, ctx))
@@ -584,14 +596,21 @@ public class CFile
             return;
         }
 
-        if (info.InheritsFrom(typeof(IMajorRecordInternal)))
+        if (IsMajorRecordInternal(info))
         {
             if (!AbstractTypes.Contains((info, AbstractMethod.ConcreteWriter)))
                 AbstractTypes.Add((info, AbstractMethod.ConcreteWriter));
-            SB.AppendLine($"{info.Name}_Writer.WriteInner(writer, {getter}, options);");
-            return;
             
+            SB.AppendLine("writer.WriteStartObject();");
+            EmitTypeHeader(info, getter);
+            SB.AppendLine($"{info.Name}_Writer.WriteInner(writer, {getter}, options);");
+            SB.AppendLine("writer.WriteEndObject();");
+            return;
         }
+
+        NavigationMesh n;
+        INavigationMeshGetter g;
+            
 
         SB.AppendLine($"if ({getter} != null)");
         using (SB.CurlyBrace())
@@ -635,16 +654,36 @@ public class CFile
         {
             return;
         }
-        
+
         if (type.InheritsFrom(typeof(IMajorRecordInternal)))
         {
             if (!AbstractTypes.Contains((type, AbstractMethod.ConcreteReader)))
                 AbstractTypes.Add((type, AbstractMethod.ConcreteReader));
             var itm = GetItem();
-            SB.AppendLine($"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
-            SB.AppendLine($"{getter} = {type.Name}_Reader.ReadInner(ref reader, {itm}.FormKey, options);");
+            SB.AppendLine("if (reader.TokenType == JsonTokenType.Null)");
+            using (SB.CurlyBrace())
+            {
+                SB.AppendLine("reader.Skip();");
+            }
+
+            SB.AppendLine("else");
+            using (SB.CurlyBrace())
+            {
+                SB.AppendLine("if(reader.TokenType != JsonTokenType.StartObject)");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine("throw new JsonException();");
+                }
+                SB.AppendLine("else");
+                using (SB.CurlyBrace())
+                {
+                    SB.AppendLine(
+                        $"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
+                    SB.AppendLine($"{getter} = {type.Name}_Reader.ReadInner(ref reader, {itm}.FormKey, options);");
+                }
+            }
+
             return;
-            
         }
 
         if (!ctx.IsConstructed)
@@ -712,7 +751,7 @@ public class CFile
 
         if (!AbstractTypes.Contains((type, AbstractMethod.AbstractReader)))
             AbstractTypes.Add((type, AbstractMethod.AbstractReader));
-        
+
         SB.AppendLine($"{getter} = {type.Name}_Reader.ReadOuter(ref reader, options);");
         return true;
     }
@@ -822,7 +861,7 @@ public class CFile
     private void EmitExtendedListOtherReadOne(Type info, Type itemType, string getter, Context ctx)
     {
         var sym = GetItem();
-        if (itemType.IsPrimitive || itemType == typeof(string) || Inheritors(itemType).Length > 1)
+        if (itemType.IsPrimitive || itemType == typeof(string) || Inheritors(itemType).Length > 1 || itemType.InheritsFrom(typeof(IMajorRecordInternal)))
         {
             SB.AppendLine($"{itemType.Name} {sym} = default;");
             EmitReader(itemType, sym, ctx with {IsSettable = false});
@@ -917,7 +956,7 @@ public class CFile
             var getter = "value";
             using (SB.CurlyBrace())
             {
-                SB.AppendLine($"if ({getter} == null)");
+                SB.AppendLine($"if ({getter} != null)");
                 using (SB.CurlyBrace())
                 {
                     SB.AppendLine("writer.WriteStartObject();");
@@ -954,6 +993,7 @@ public class CFile
 
     private Type GetterFor(Type tp)
     {
+        if (tp.Name.StartsWith("I") && tp.IsInterface && tp.Name.EndsWith("Getter")) return tp;
         return tp.Assembly.GetTypes().First(t => t.IsInterface && t.Name == "I" + tp.Name + "Getter");
     }
 
@@ -975,7 +1015,7 @@ public class CFile
             var getter = "value";
             using (SB.CurlyBrace())
             {
-                SB.AppendLine($"if ({getter} == null)");
+                SB.AppendLine($"if ({getter} != null)");
                 using (SB.CurlyBrace())
                 {
                     SB.AppendLine("writer.WriteStartObject();");
@@ -1016,8 +1056,6 @@ public class CFile
             var getter = "value";
             using (SB.CurlyBrace())
             {
-                
-
                 var allTypes = Inheritors(type);
 
                 foreach (var itm in allTypes)
@@ -1038,7 +1076,8 @@ public class CFile
                     var itm = GetItem();
                     if (isMajor)
                     {
-                        SB.AppendLine($"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
+                        SB.AppendLine(
+                            $"var {itm} = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $\"FormKey\", options));");
                         SB.AppendLine($"switch({itm}.Type)");
                     }
                     else
@@ -1058,8 +1097,8 @@ public class CFile
                             {
                                 if (isMajor)
                                 {
-                                    SB.AppendLine($"return {tp.Name}_Reader.ReadInner(ref reader, {itm}.FormKey, options);");
-
+                                    SB.AppendLine(
+                                        $"return {tp.Name}_Reader.ReadInner(ref reader, {itm}.FormKey, options);");
                                 }
                                 else
                                 {
@@ -1082,7 +1121,7 @@ public class CFile
                 {
                     SB.AppendLine("reader.Skip();");
                 }
-                
+
                 SB.AppendLine("return default;");
             }
         }
@@ -1093,15 +1132,15 @@ public class CFile
         var itm = "cls";
 
         var isMajor = type.InheritsFrom(typeof(IMajorRecordInternal));
-        
+
         using (var c = SB.Class($"{type.Name}_Reader"))
         {
             c.Static = true;
             c.AccessModifier = AccessModifier.Internal;
         }
-        
+
         var iface = GetterFor(type);
-        
+
         using (SB.CurlyBrace())
         {
             if (isMajor)
@@ -1113,13 +1152,11 @@ public class CFile
             {
                 SB.AppendLine(
                     $"public static {TypeToCS(type)} ReadInner(ref Utf8JsonReader reader, JsonSerializerOptions options)");
-
             }
-            
+
             var getter = "value";
             using (SB.CurlyBrace())
             {
-
                 if (isMajor)
                 {
                     SB.AppendLine($"var {itm} = new {TypeToCS(type)}(formKey, SkyrimRelease.SkyrimSE);");
@@ -1145,7 +1182,8 @@ public class CFile
                     SB.AppendLine($"switch({propName})");
                     using (SB.CurlyBrace())
                     {
-                        foreach (var prop in VisitorGenerator.Members(type).Where(p => iface.GetProperty(p.Name) != null))
+                        foreach (var prop in VisitorGenerator.Members(type)
+                                     .Where(p => iface.GetProperty(p.Name) != null))
                         {
                             SB.AppendLine($"case \"{prop.Name}\":");
 
@@ -1156,6 +1194,7 @@ public class CFile
                         }
                     }
                 }
+
                 SB.AppendLine($"return {itm};");
             }
         }
