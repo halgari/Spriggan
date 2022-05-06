@@ -19,7 +19,6 @@ internal static class GetEventData_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // EventFunction
             writer.WritePropertyName("EventFunction");
@@ -44,7 +43,6 @@ internal static class GetEventData_Writer
             // Unknown3
             writer.WritePropertyName("Unknown3");
             writer.WriteNumberValue(value.Unknown3);
-            writer.WriteEndObject();
         }
         else
         {

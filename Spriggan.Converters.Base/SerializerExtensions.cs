@@ -36,15 +36,9 @@ public static class SerializerExtensions
         cReader.Read();
         
         var split = key.Split(":");
-        var mt = ModType.Master;
-        if (split[0].EndsWith(".esm"))
-            mt = ModType.Master;
-        else if (split[0].EndsWith(".esp"))
-            mt = ModType.Plugin;
-        else if (split[0].EndsWith(".esl"))
-            mt = ModType.LightMaster;
 
-        return new FormKey(new ModKey(split[0], mt), uint.Parse(split[3], NumberStyles.HexNumber));
+
+        return FormKey.Factory($"{split[2]}:{split[0]}");
     }
 
     public static string MajorRecordInternalFormKeyString(IMajorRecordInternal r)
@@ -55,7 +49,7 @@ public static class SerializerExtensions
     public static (FormKey FormKey, string Type) MajorRecordInternalFormKeyParse(string r)
     {
         var s = r.Split(":");
-        return (FormKey.Factory($"{s[0]}:{s[1]}"), s[2]);
+        return (FormKey.Factory($"{s[2]}:{s[0]}"), s[3]);
     }
 
     /// <summary>
@@ -70,7 +64,7 @@ public static class SerializerExtensions
         var cReader = reader;
         while (true)
         {
-            cReader.Read();
+            //cReader.Read();
             if (cReader.TokenType == JsonTokenType.EndObject)
             {
                 throw new JsonException($"End of object before property {property} was found");
@@ -99,7 +93,7 @@ public static class SerializerExtensions
     public static void WriteFormKeyHeader(this Utf8JsonWriter writer, IMajorRecordGetter rec, JsonSerializerOptions options)
     {
         writer.WriteString("FormKey",
-            $"{rec.FormKey.ModKey.Name}:{rec.FormKey.ModKey.Type}:{rec.FormVersion}:{rec.FormKey.ID.ToString("x8")}");
+            $"{rec.FormKey.ModKey.FileName}:{rec.FormVersion}:{rec.FormKey.ID.ToString("x6")}:{rec.Type.Name}");
 
     }
 

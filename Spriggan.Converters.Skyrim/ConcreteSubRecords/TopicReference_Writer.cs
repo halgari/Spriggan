@@ -19,12 +19,10 @@ internal static class TopicReference_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Reference
             writer.WritePropertyName("Reference");
             writer.WriteStringValue(value.Reference.FormKey.ToString());
-            writer.WriteEndObject();
         }
         else
         {

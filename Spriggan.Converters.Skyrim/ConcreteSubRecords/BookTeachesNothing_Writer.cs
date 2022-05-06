@@ -19,12 +19,10 @@ internal static class BookTeachesNothing_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // RawContent
             writer.WritePropertyName("RawContent");
             writer.WriteNumberValue(value.RawContent);
-            writer.WriteEndObject();
         }
         else
         {

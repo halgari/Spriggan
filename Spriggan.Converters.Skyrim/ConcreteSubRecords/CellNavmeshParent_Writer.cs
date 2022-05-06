@@ -19,7 +19,6 @@ internal static class CellNavmeshParent_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // UnusedWorldspaceParent
             writer.WritePropertyName("UnusedWorldspaceParent");
@@ -28,7 +27,6 @@ internal static class CellNavmeshParent_Writer
             // Parent
             writer.WritePropertyName("Parent");
             writer.WriteStringValue(value.Parent.FormKey.ToString());
-            writer.WriteEndObject();
         }
         else
         {

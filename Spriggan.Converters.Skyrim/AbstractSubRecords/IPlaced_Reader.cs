@@ -21,6 +21,7 @@ internal static class IPlaced_Reader
         {
             if (reader.TokenType != JsonTokenType.StartObject)
                 throw new JsonException();
+            reader.Read();
             var itm1 = SerializerExtensions.MajorRecordInternalFormKeyParse(SerializerExtensions.ReadTag(ref reader, $"FormKey", options));
             switch(itm1.Type)
             {

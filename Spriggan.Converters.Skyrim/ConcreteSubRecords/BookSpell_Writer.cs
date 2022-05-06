@@ -19,12 +19,10 @@ internal static class BookSpell_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Spell
             writer.WritePropertyName("Spell");
             writer.WriteStringValue(value.Spell.FormKey.ToString());
-            writer.WriteEndObject();
         }
         else
         {

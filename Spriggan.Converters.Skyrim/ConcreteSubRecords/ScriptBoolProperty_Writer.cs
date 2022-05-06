@@ -19,7 +19,6 @@ internal static class ScriptBoolProperty_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Data
             writer.WritePropertyName("Data");
@@ -32,7 +31,6 @@ internal static class ScriptBoolProperty_Writer
             // Flags
             writer.WritePropertyName("Flags");
             writer.WriteEnum(value.Flags);
-            writer.WriteEndObject();
         }
         else
         {

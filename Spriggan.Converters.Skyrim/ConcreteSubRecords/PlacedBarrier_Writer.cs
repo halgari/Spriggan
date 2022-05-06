@@ -19,7 +19,6 @@ internal static class PlacedBarrier_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Projectile
             writer.WritePropertyName("Projectile");
@@ -416,7 +415,6 @@ internal static class PlacedBarrier_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {

@@ -19,7 +19,6 @@ internal static class FunctionConditionData_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Function
             writer.WritePropertyName("Function");
@@ -64,7 +63,6 @@ internal static class FunctionConditionData_Writer
             // Unknown3
             writer.WritePropertyName("Unknown3");
             writer.WriteNumberValue(value.Unknown3);
-            writer.WriteEndObject();
         }
         else
         {

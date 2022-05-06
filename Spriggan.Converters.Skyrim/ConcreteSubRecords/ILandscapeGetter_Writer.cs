@@ -19,7 +19,6 @@ internal static class ILandscapeGetter_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Flags
             writer.WritePropertyName("Flags");
@@ -136,7 +135,6 @@ internal static class ILandscapeGetter_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {

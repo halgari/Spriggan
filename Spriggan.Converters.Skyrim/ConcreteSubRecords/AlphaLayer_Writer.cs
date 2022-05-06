@@ -19,7 +19,6 @@ internal static class AlphaLayer_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // AlphaLayerData
             writer.WritePropertyName("AlphaLayerData");
@@ -57,7 +56,6 @@ internal static class AlphaLayer_Writer
             {
                 writer.WriteNullValue();
             }
-            writer.WriteEndObject();
         }
         else
         {

@@ -19,7 +19,6 @@ internal static class ConditionFloat_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // ComparisonValue
             writer.WritePropertyName("ComparisonValue");
@@ -40,7 +39,6 @@ internal static class ConditionFloat_Writer
             // Unknown1
             writer.WritePropertyName("Unknown1");
             writer.WriteBase64StringValue(value.Unknown1);
-            writer.WriteEndObject();
         }
         else
         {

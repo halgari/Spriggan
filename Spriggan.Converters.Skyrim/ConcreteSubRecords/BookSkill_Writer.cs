@@ -19,7 +19,6 @@ internal static class BookSkill_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Skill
             writer.WritePropertyName("Skill");
@@ -29,7 +28,6 @@ internal static class BookSkill_Writer
             {
                 writer.WriteEnum(value.Skill.Value);
             }
-            writer.WriteEndObject();
         }
         else
         {

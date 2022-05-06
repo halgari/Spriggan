@@ -19,7 +19,6 @@ internal static class PlacedNpc_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // VirtualMachineAdapter
             writer.WritePropertyName("VirtualMachineAdapter");
@@ -515,7 +514,6 @@ internal static class PlacedNpc_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {

@@ -19,7 +19,6 @@ internal static class ScriptIntListProperty_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Data
             writer.WritePropertyName("Data");
@@ -44,7 +43,6 @@ internal static class ScriptIntListProperty_Writer
             // Flags
             writer.WritePropertyName("Flags");
             writer.WriteEnum(value.Flags);
-            writer.WriteEndObject();
         }
         else
         {

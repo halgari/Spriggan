@@ -19,7 +19,6 @@ internal static class PlacedHazard_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Hazard
             writer.WritePropertyName("Hazard");
@@ -416,7 +415,6 @@ internal static class PlacedHazard_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {

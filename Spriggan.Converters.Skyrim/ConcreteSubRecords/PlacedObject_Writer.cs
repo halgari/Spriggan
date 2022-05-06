@@ -19,7 +19,6 @@ internal static class PlacedObject_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // VirtualMachineAdapter
             writer.WritePropertyName("VirtualMachineAdapter");
@@ -1022,7 +1021,6 @@ internal static class PlacedObject_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {

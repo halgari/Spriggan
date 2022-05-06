@@ -21,6 +21,7 @@ internal static class ATopicReference_Reader
         {
             if (reader.TokenType != JsonTokenType.StartObject)
                 throw new JsonException();
+            reader.Read();
             var itm1 = SerializerExtensions.ReadTag(ref reader, $"$type", options);
             switch(itm1)
             {

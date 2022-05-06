@@ -87,10 +87,17 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
         
         // Landscape
         writer.WritePropertyName("Landscape");
-        writer.WriteStartObject();
-        writer.WriteFormKeyHeader(value, options);
-        ILandscapeGetter_Writer.WriteInner(writer, value.Landscape, options);
-        writer.WriteEndObject();
+        if (value.Landscape != null)
+        {
+            writer.WriteStartObject();
+            writer.WriteFormKeyHeader(value, options);
+            ILandscapeGetter_Writer.WriteInner(writer, value.Landscape, options);
+            writer.WriteEndObject();
+        }
+        else
+        {
+            writer.WriteNullValue();
+        }
         
         // Lighting
         writer.WritePropertyName("Lighting");
@@ -294,10 +301,17 @@ public class ICellGetter_Converter : JsonConverter<ICellGetter>
             writer.WriteStartArray();
             foreach(var itm2 in value.NavigationMeshes)
             {
-                writer.WriteStartObject();
-                writer.WriteFormKeyHeader(value, options);
-                INavigationMeshGetter_Writer.WriteInner(writer, itm2, options);
-                writer.WriteEndObject();
+                if (itm2 != null)
+                {
+                    writer.WriteStartObject();
+                    writer.WriteFormKeyHeader(value, options);
+                    INavigationMeshGetter_Writer.WriteInner(writer, itm2, options);
+                    writer.WriteEndObject();
+                }
+                else
+                {
+                    writer.WriteNullValue();
+                }
             }
             writer.WriteEndArray();
         }

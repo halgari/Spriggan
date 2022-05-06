@@ -19,7 +19,6 @@ internal static class WorldspaceNavmeshParent_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Parent
             writer.WritePropertyName("Parent");
@@ -28,7 +27,6 @@ internal static class WorldspaceNavmeshParent_Writer
             // Coordinates
             writer.WritePropertyName("Coordinates");
             writer.WriteP2Int16(value.Coordinates, options);
-            writer.WriteEndObject();
         }
         else
         {

@@ -19,12 +19,10 @@ internal static class TopicReferenceSubtype_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Subtype
             writer.WritePropertyName("Subtype");
             writer.WriteStringValue(value.Subtype.ToString());
-            writer.WriteEndObject();
         }
         else
         {

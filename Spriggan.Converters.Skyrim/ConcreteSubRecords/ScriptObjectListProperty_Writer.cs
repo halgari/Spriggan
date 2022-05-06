@@ -19,7 +19,6 @@ internal static class ScriptObjectListProperty_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Objects
             writer.WritePropertyName("Objects");
@@ -72,7 +71,6 @@ internal static class ScriptObjectListProperty_Writer
             // Flags
             writer.WritePropertyName("Flags");
             writer.WriteEnum(value.Flags);
-            writer.WriteEndObject();
         }
         else
         {

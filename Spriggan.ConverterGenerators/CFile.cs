@@ -600,11 +600,20 @@ public class CFile
         {
             if (!AbstractTypes.Contains((info, AbstractMethod.ConcreteWriter)))
                 AbstractTypes.Add((info, AbstractMethod.ConcreteWriter));
-            
-            SB.AppendLine("writer.WriteStartObject();");
-            EmitTypeHeader(info, getter);
-            SB.AppendLine($"{info.Name}_Writer.WriteInner(writer, {getter}, options);");
-            SB.AppendLine("writer.WriteEndObject();");
+            SB.AppendLine($"if ({getter} != null)");
+            using (SB.CurlyBrace())
+            {
+                SB.AppendLine("writer.WriteStartObject();");
+                EmitTypeHeader(info, getter);
+                SB.AppendLine($"{info.Name}_Writer.WriteInner(writer, {getter}, options);");
+                SB.AppendLine("writer.WriteEndObject();");
+            }
+            SB.AppendLine("else");
+            using (SB.CurlyBrace())
+            {
+                SB.AppendLine("writer.WriteNullValue();");
+            }
+
             return;
         }
 
@@ -1018,7 +1027,7 @@ public class CFile
                 SB.AppendLine($"if ({getter} != null)");
                 using (SB.CurlyBrace())
                 {
-                    SB.AppendLine("writer.WriteStartObject();");
+                    //SB.AppendLine("writer.WriteStartObject();");
                     foreach (var p in VisitorGenerator.Members(iface))
                     {
                         SB.AppendLine("");
@@ -1027,7 +1036,7 @@ public class CFile
                         EmitWriter(p.PropertyType, $"{itm}." + p.Name, ctx);
                     }
 
-                    SB.AppendLine("writer.WriteEndObject();");
+                    //SB.AppendLine("writer.WriteEndObject();");
                 }
 
                 SB.AppendLine("else");
@@ -1073,6 +1082,7 @@ public class CFile
                     using (SB.IncreaseDepth())
                         SB.AppendLine("throw new JsonException();");
 
+                    SB.AppendLine("reader.Read();");
                     var itm = GetItem();
                     if (isMajor)
                     {

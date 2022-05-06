@@ -19,7 +19,6 @@ internal static class INavigationMeshGetter_Writer
     {
         if (value != null)
         {
-            writer.WriteStartObject();
             
             // Data
             writer.WritePropertyName("Data");
@@ -267,7 +266,6 @@ internal static class INavigationMeshGetter_Writer
             // EditorID
             writer.WritePropertyName("EditorID");
             writer.WriteStringValue(value.EditorID);
-            writer.WriteEndObject();
         }
         else
         {
